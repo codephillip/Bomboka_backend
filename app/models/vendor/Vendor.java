@@ -1,6 +1,7 @@
 package models.vendor;
 
 
+import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
@@ -10,10 +11,14 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 public class Vendor {
     @MongoObjectId
-    private Long _id;
+    private ObjectId _id;
     private String companyName;
     private String website;
     private boolean verified;
+
+
+    public Vendor() {
+    }
 
     public Vendor(String companyName, String website, boolean verified) {
         this.companyName = companyName;

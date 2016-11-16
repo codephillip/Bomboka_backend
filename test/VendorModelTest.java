@@ -24,6 +24,9 @@ public class VendorModelTest {
         Jongo jongo = new Jongo(db);
         collection = jongo.getCollection("vendor");
 
+        collection.remove("{companyName: 'Unilever Ltd' }");
+
+        collection.save(new Vendor("Unilever Ltd", "https://unilever.com"));
     }
 
     @Test
@@ -31,14 +34,15 @@ public class VendorModelTest {
         // create
         collection.save(new Vendor("Maganjo", "https://maganjo.com"));
         collection.save(new Vendor("Azam", "https://azam.com"));
+        collection.save(new Vendor("Mukwano", "https://mukwano.com"));
     }
 
     @Test
     public void testGetterName() throws Exception{
         // read
-        Vendor unilever = collection.findOne("{companyName: 'Unilever'}").as(Vendor.class);
-//        System.out.print(unilever);
-        assert unilever.getCompanyName().equals("Unilever");
+        Vendor unilever = collection.findOne("{companyName: 'Unilever Ltd'}").as(Vendor.class);
+        System.out.print(unilever);
+        assert unilever.getCompanyName().equals("Unilever Ltd");
 
     }
 
@@ -46,7 +50,7 @@ public class VendorModelTest {
     public void testSetterName() throws Exception{
         //update
         String newName = "Unilever Ltd";
-        Vendor unilever = collection.findOne("{companyName: 'Unilever'}").as(Vendor.class);
+        Vendor unilever = collection.findOne("{companyName: 'Unilever Ltd'}").as(Vendor.class);
         unilever.setCompanyName(newName);
         collection.save(unilever);
         assert unilever.getCompanyName().equals(newName);
@@ -57,5 +61,6 @@ public class VendorModelTest {
         // delete
         collection.remove("{companyName: 'Maganjo' }");
         collection.remove("{companyName: 'Azam' }");
+        collection.remove("{companyName: 'Mukwano' }");
     }
 }

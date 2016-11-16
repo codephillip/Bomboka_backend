@@ -47,6 +47,7 @@ public class Vendor {
         this.companyName = companyName;
     }
 
+
     public Vendor(String companyName, String website) {
         this.createdAt = new Date();
         this.companyName = companyName;

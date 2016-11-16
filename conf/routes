@@ -9,7 +9,7 @@ GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
 GET     /message                    controllers.AsyncController.message
 
-GET     /api/vendor/new             controllers.VendorController.addVendor
+POST     /api/vendor/new             controllers.VendorController.addVendor
 
 GET     /api/vendor/:vendorID       controllers.VendorController.viewVendorDetails(vendorID: String)
 
@@ -17,7 +17,15 @@ GET     /api/vendor/shop/:vendorID  controllers.VendorController.viewVendorShops
 
 POST    /api/vendor/shop/new        controllers.VendorController.addVendorShop
 
-GET    /api/vendor/shop/:shopID    controllers.VendorController.viewShopDetails(shopID: String)
+GET    /api/vendor/shop/:shopID     controllers.VendorController.viewShopDetails(shopID: String)
+
+GET    /api/vendor                 controllers.VendorController.viewAllVendors
+
+POST    /api/vendor/shop/edit/:shopID                 controllers.VendorController.editShopDetails
+
+POST    /api/vendor/edit/:vendorID                 controllers.VendorController.editVendorDetails
+
+
 
 
 

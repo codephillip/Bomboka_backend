@@ -5,11 +5,12 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 import play.data.format.Formats;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Ahereza on 11/15/16.
  */
-public class VendorShops {
+public class Shop {
     @MongoObjectId
     private ObjectId _id;
     private double longitude;
@@ -19,20 +20,24 @@ public class VendorShops {
     private Date modificationTimeStamp;
     private Date tombstone;
     private String address;
+    private ObjectId vendor;
+    private List<ObjectId> products;
+    private List<ObjectId> reviews;
+    private List<ObjectId> ratings;
 
-    public VendorShops(String address) {
+    public Shop(String address) {
         this.timestamp = new Date();
         this.address = address;
     }
 
-    public VendorShops(double longitude, double latitude, String address) {
+    public Shop(double longitude, double latitude, String address) {
         this.timestamp = new Date();
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
     }
 
-    public VendorShops() {
+    public Shop() {
     }
 
     public Date getTimestamp() {
@@ -85,5 +90,49 @@ public class VendorShops {
 
     public ObjectId get_id() {
         return _id;
+    }
+
+    public List<ObjectId> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ObjectId> reviews) {
+        this.reviews = reviews;
+    }
+
+
+    public List<ObjectId> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<ObjectId> ratings) {
+        this.ratings = ratings;
+    }
+    public void addReview(Review review){
+        reviews.add(review.get_id());
+    }
+
+    public void addRating(Rating rating){
+        ratings.add(rating.get_id());
+    }
+
+    public List<ObjectId> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ObjectId> products) {
+        this.products = products;
+    }
+
+    public void addToProductsList(Product product){
+        products.add(product.get_id());
+    }
+
+    public ObjectId getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(ObjectId vendor) {
+        this.vendor = vendor;
     }
 }

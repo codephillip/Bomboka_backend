@@ -2,11 +2,7 @@ package models.vendor;
 
 
 import org.bson.types.ObjectId;
-import org.jongo.MongoCollection;
-import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
-import play.api.Play;
-import uk.co.panaxiom.playjongo.PlayJongo;
 
 import java.util.Date;
 import java.util.List;
@@ -27,8 +23,17 @@ public class Vendor {
     private String website;
     private boolean verified;
     private Date createdAt;
-    private List<VendorShops> vendorShopsList;
+    private boolean approved;
+    private List<ObjectId> reviews;
+    private List<ObjectId> ratings;
 
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
 
     public Vendor()
     {
@@ -47,6 +52,9 @@ public class Vendor {
         this.companyName = companyName;
     }
 
+    public ObjectId get_id() {
+        return _id;
+    }
 
     public Vendor(String companyName, String website) {
         this.createdAt = new Date();
@@ -82,12 +90,30 @@ public class Vendor {
         return createdAt;
     }
 
-    public List<VendorShops> getVendorShopsList() {
-        return vendorShopsList;
+
+    public List<ObjectId> getReviews() {
+        return reviews;
     }
 
-    public void setVendorShopsList(List<VendorShops> vendorShopsList) {
-        this.vendorShopsList = vendorShopsList;
+    public void setReviews(List<ObjectId> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<ObjectId> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<ObjectId> ratings) {
+        this.ratings = ratings;
+    }
+
+
+    public void addReview(Review review){
+        reviews.add(review.get_id());
+    }
+
+    public void addRating(Rating rating){
+        ratings.add(rating.get_id());
     }
 }
 

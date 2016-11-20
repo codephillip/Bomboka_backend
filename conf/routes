@@ -15,15 +15,28 @@ GET     /api/vendor/:vendorID       controllers.VendorController.viewVendorDetai
 
 GET     /api/vendor/shop/:vendorID  controllers.VendorController.viewVendorShops(vendorID: String)
 
-POST    /api/vendor/shop/new        controllers.VendorController.addVendorShop
+POST    /api/vendor/shop/new/:vendorID        controllers.VendorController.addVendorShop(vendorID: String)
 
-GET    /api/vendor/shop/:shopID     controllers.VendorController.viewShopDetails(shopID: String)
+GET    /api/vendor/shop/details/:shopID     controllers.VendorController.viewShopDetails(shopID: String)
 
 GET    /api/vendor                 controllers.VendorController.viewAllVendors
 
-POST    /api/vendor/shop/edit/:shopID                 controllers.VendorController.editShopDetails
+POST    /api/vendor/shop/edit/:shopID                 controllers.VendorController.editShopDetails(shopID: String)
 
-POST    /api/vendor/edit/:vendorID                 controllers.VendorController.editVendorDetails
+POST    /api/vendor/edit/:vendorID                 controllers.VendorController.editVendorDetails(vendorID: String)
+
+POST    /api/vendor/approve/:vendorID    controllers.VendorController.approveVendor(vendorID: String)
+
+POST    /api/vendor/disapprove/:vendorID    controllers.VendorController.disapproveVendor(vendorID: String)
+
+POST    /api/vendor/delete/:vendorID    controllers.VendorController.deleteVendor(vendorID: String)
+
+POST    /api/vendor/shop/delete/:shopID    controllers.VendorController.deleteVendor(shopID: String)
+
+# passing 2 arguments into the url
+
+
+
 
 
 

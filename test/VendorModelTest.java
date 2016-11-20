@@ -1,7 +1,7 @@
 import com.mongodb.DB;
 import com.mongodb.Mongo;
 import models.vendor.Vendor;
-import models.vendor.VendorShops;
+import models.vendor.Shop;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Ahereza on 11/15/16.
@@ -27,20 +26,21 @@ public class VendorModelTest {
         DB db = mongo.getDB("bomboka");
 
         Jongo jongo = new Jongo(db);
-        collection = jongo.getCollection("vendor");
+        collection = jongo.getCollection("vendors");
 
         collection.remove("{companyName: 'Unilever Ltd' }");
 
-        collection.save(new Vendor("Unilever Ltd", "https://unilever.com"));
+        //collection.insert(new Vendor("Unilever Ltd", "https://unilever.com"));
     }
 
     @Test
     public void createDocument() throws Exception{
         // create
-        //collection.save(new Vendor("Unilever Ltd", "https://unilever.com"));
-        collection.save(new Vendor("Maganjo", "https://maganjo.com"));
-        collection.save(new Vendor("Azam", "https://azam.com"));
-        collection.save(new Vendor("Mukwano", "https://mukwano.com"));
+        collection.insert(new Vendor("Maganjo", "https://maganjo.com"));
+        collection.insert(new Vendor("Unilever Ltd", "https://unilever.com"));
+
+        collection.insert(new Vendor("Azam", "https://azam.com"));
+        collection.insert(new Vendor("Mukwano", "https://mukwano.com"));
     }
 
     @Test
@@ -58,24 +58,8 @@ public class VendorModelTest {
         String newName = "Unilever Ltd";
         Vendor unilever = collection.findOne("{companyName: 'Unilever Ltd'}").as(Vendor.class);
         unilever.setCompanyName(newName);
-        collection.save(unilever);
+        collection.update(unilever.get_id());
         assert unilever.getCompanyName().equals(newName);
-    }
-
-    @Test
-    public void testSetVendorShopsList() throws Exception{
-        List<VendorShops> vendorShopsList = new ArrayList<VendorShops>();
-        VendorShops mombasa = new VendorShops("Mombasa");
-        VendorShops nairobi = new VendorShops("Nairobi");
-        VendorShops kisumu = new VendorShops("Kisumu");
-        vendorShopsList.add(mombasa);
-        vendorShopsList.add(nairobi);
-        vendorShopsList.add(kisumu);
-
-        Vendor unilever = collection.findOne("{companyName: 'Unilever Ltd'}").as(Vendor.class);
-        unilever.setVendorShopsList(vendorShopsList);
-        collection.save(unilever);
-
     }
 
     @Test
@@ -99,8 +83,8 @@ public class VendorModelTest {
     @After
     public void tearDown() throws Exception{
         // delete
-        collection.remove("{companyName: 'Maganjo' }");
-        collection.remove("{companyName: 'Azam' }");
-        collection.remove("{companyName: 'Mukwano' }");
+//        collection.remove("{companyName: 'Maganjo' }");
+//        collection.remove("{companyName: 'Azam' }");
+//        collection.remove("{companyName: 'Mukwano' }");
     }
 }

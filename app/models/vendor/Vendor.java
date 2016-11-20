@@ -4,6 +4,7 @@ package models.vendor;
 import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class Vendor {
     private boolean approved;
     private List<ObjectId> reviews;
     private List<ObjectId> ratings;
+    private boolean blocked;
 
     public boolean isApproved() {
         return approved;
@@ -38,6 +40,8 @@ public class Vendor {
     public Vendor()
     {
         this.createdAt = new Date();
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
     }
 
     public Vendor(String companyName, String website, boolean verified) {
@@ -45,11 +49,16 @@ public class Vendor {
         this.companyName = companyName;
         this.website = website;
         this.verified = verified;
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
     }
 
     public Vendor(String companyName) {
         this.createdAt = new Date();
         this.companyName = companyName;
+        this.blocked = false;
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
     }
 
     public ObjectId get_id() {
@@ -60,6 +69,9 @@ public class Vendor {
         this.createdAt = new Date();
         this.companyName = companyName;
         this.website = website;
+        this.blocked = false;
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
     }
 
     public String getCompanyName() {
@@ -90,6 +102,13 @@ public class Vendor {
         return createdAt;
     }
 
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
 
     public List<ObjectId> getReviews() {
         return reviews;

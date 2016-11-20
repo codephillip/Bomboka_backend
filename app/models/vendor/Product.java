@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import play.data.format.Formats;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,11 +20,44 @@ public class Product {
     //products category
     private Date timestamp;
     private String manufacturer;
-    private List<Review> reviews;
-    private List<Rating> ratings;
+    private List<ObjectId> reviews;
+    private List<ObjectId> ratings;
 
     public ObjectId get_id() {
         return _id;
+    }
+
+    public Product(double price, String name, String description, String manufacturer) {
+        this.price = price;
+        this.name = name;
+        this.description = description;
+        this.manufacturer = manufacturer;
+        this.timestamp = new Date();
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
+    }
+
+    public Product(double price, String name, String description) {
+        this.price = price;
+        this.name = name;
+        this.description = description;
+        this.timestamp = new Date();
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
+    }
+
+    public Product(double price, String name) {
+        this.price = price;
+        this.name = name;
+        this.timestamp = new Date();
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
+    }
+
+    public Product() {
+        this.timestamp = new Date();
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
     }
 
     public void set_id(ObjectId _id) {
@@ -66,19 +100,26 @@ public class Product {
         this.manufacturer = manufacturer;
     }
 
-    public List<Review> getReviews() {
+    public List<ObjectId> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(List<ObjectId> reviews) {
         this.reviews = reviews;
     }
 
-    public List<Rating> getRatings() {
+    public List<ObjectId> getRatings() {
         return ratings;
     }
 
-    public void setRatings(List<Rating> ratings) {
+    public void setRatings(List<ObjectId> ratings) {
         this.ratings = ratings;
+    }
+
+    public void addRating(Rating rating){
+        ratings.add(rating.get_id());
+    }
+    public void addReview(Review review){
+        reviews.add(review.get_id());
     }
 }

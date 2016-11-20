@@ -22,6 +22,9 @@ public class VendorController extends Controller{
 
     private DatabaseUtils vendorManager = new DatabaseUtils("vendors");
     private DatabaseUtils shopManager = new DatabaseUtils("shops");
+    private DatabaseUtils productManager = new DatabaseUtils("products");
+    private DatabaseUtils ratingManager = new DatabaseUtils("ratings");
+    private DatabaseUtils reviewManager = new DatabaseUtils("reviews");
 
 
     private final FormFactory formFactory;
@@ -159,9 +162,97 @@ public class VendorController extends Controller{
     }
 
     public Result addProductToShop(String shopID){
+        // tested and working
+        Form<Product> newProduct = formFactory.form(Product.class).bindFromRequest();
+        Product obj = newProduct.get();
+        productManager.saveProduct(obj);
         Shop shop = shopManager.getVendorShopDetails(shopID);
-        // TODO: 11/19/16 get the product from a form and bind to a form model then save
+        shop.addToProductsList(obj);
+        shopManager.updateShop(shop);
+        return ok(Json.toJson(shop));
+    }
+
+    public Result deleteProductFromShop(String productID){
+        productManager.deleteProduct(productID);
         return ok();
+    }
+
+    public Result editProduct(String productID){
+        return ok();
+    }
+
+    public Result blockVendor(String vendorID){
+        Vendor vendor = vendorManager.getVendorByID(vendorID);
+        vendor.setBlocked(true);
+        vendorManager.updateVendor(vendor);
+        return ok(Json.toJson(vendor));
+    }
+
+    public Result unBlockVendor(String vendorID){
+        Vendor vendor = vendorManager.getVendorByID(vendorID);
+        vendor.setBlocked(false);
+        vendorManager.updateVendor(vendor);
+        return ok(Json.toJson(vendor));
+    }
+
+    public Result addRatingToVendor(String vendorID){
+        Form<Rating> newRating = formFactory.form(Rating.class).bindFromRequest();
+        Rating obj = newRating.get();
+        ratingManager.saveRating(obj);
+        Vendor vendor = vendorManager.getVendorByID(vendorID);
+        vendor.addRating(obj);
+        vendorManager.updateVendor(vendor);
+        return ok(Json.toJson(vendor));
+    }
+
+    public Result addRatingToShop(String shopID){
+        Form<Rating> newRating = formFactory.form(Rating.class).bindFromRequest();
+        Rating obj = newRating.get();
+        ratingManager.saveRating(obj);
+        Shop shop = shopManager.getVendorShopDetails(shopID);
+        shop.addRating(obj);
+        vendorManager.updateShop(shop);
+        return ok(Json.toJson(shop));
+    }
+
+    public Result addRatingToProduct(String productID){
+        Form<Rating> newRating = formFactory.form(Rating.class).bindFromRequest();
+        Rating obj = newRating.get();
+        ratingManager.saveRating(obj);
+        Product product = productManager.getProductByID(productID);
+        product.addRating(obj);
+        productManager.updateProduct(product);
+        return ok(Json.toJson(product));
+    }
+
+    public Result addReviewToVendor(String vendorID){
+        Form<Review> newReview = formFactory.form(Review.class).bindFromRequest();
+        Review obj = newReview.get();
+        reviewManager.saveReview(obj);
+        Vendor vendor = vendorManager.getVendorByID(vendorID);
+        vendor.addReview(obj);
+        vendorManager.updateVendor(vendor);
+        return ok(Json.toJson(vendor));
+    }
+
+    public Result addReviewToShop(String shopID){
+        Form<Review> newReview = formFactory.form(Review.class).bindFromRequest();
+        Review obj = newReview.get();
+        reviewManager.saveReview(obj);
+        Shop shop = shopManager.getVendorShopDetails(shopID);
+        shop.addReview(obj);
+        shopManager.updateShop(shop);
+        return ok(Json.toJson(shop));
+    }
+
+    public Result addReviewToProduct(String productID){
+        Form<Review> newReview = formFactory.form(Review.class).bindFromRequest();
+        Review obj = newReview.get();
+        reviewManager.saveReview(obj);
+        Product product = productManager.getProductByID(productID);
+        product.addReview(obj);
+        productManager.updateProduct(product);
+        return ok(Json.toJson(product));
     }
 
 

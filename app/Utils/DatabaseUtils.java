@@ -2,8 +2,7 @@ package Utils;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
-import models.vendor.Vendor;
-import models.vendor.Shop;
+import models.vendor.*;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
@@ -36,8 +35,23 @@ public class DatabaseUtils {
         this.collection.insert(shop);
     }
 
+    public void saveRating(Rating rating){
+        this.collection.insert(rating);
+    }
+    public void saveReview(Review review){
+        this.collection.insert(review);
+    }
+
+    public void saveProduct(Product product){
+        this.collection.insert(product);
+    }
+
     public Vendor getVendorByID(String vendorID){
         Vendor result = this.collection.findOne(new ObjectId(vendorID)).as(Vendor.class);
+        return result;
+    }
+    public Product getProductByID(String productID){
+        Product result = this.collection.findOne(new ObjectId(productID)).as(Product.class);
         return result;
     }
 
@@ -55,6 +69,10 @@ public class DatabaseUtils {
         this.collection.remove(new ObjectId(shopID));
     }
 
+    public void deleteProduct(String productID){
+        this.collection.remove(new ObjectId(productID));
+    }
+
 
     public List<Vendor> allVendors(){
         MongoCursor<Vendor> cursor = collection.find().as(Vendor.class);
@@ -68,11 +86,14 @@ public class DatabaseUtils {
 
     // TODO: 11/19/16 create update method
     public void updateVendor(Vendor vendor){
-        this.collection.update(vendor.get_id());
+        this.collection.save(vendor);
+    }
+    public void updateProduct(Product product){
+        this.collection.save(product);
     }
 
     public void updateShop(Shop shop){
-        this.collection.update(shop.get_id());
+        this.collection.save(shop);
     }
 
 
@@ -84,7 +105,6 @@ public class DatabaseUtils {
             shops.add(shop);
         }
         return shops;
-
 
     }
 

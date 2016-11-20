@@ -13,15 +13,15 @@ POST     /api/vendor/new             controllers.VendorController.addVendor
 
 GET     /api/vendor/:vendorID       controllers.VendorController.viewVendorDetails(vendorID: String)
 
-GET     /api/vendor/shop/:vendorID  controllers.VendorController.viewVendorShops(vendorID: String)
+GET     /api/shop/:vendorID  controllers.VendorController.viewVendorShops(vendorID: String)
 
-POST    /api/vendor/shop/new/:vendorID        controllers.VendorController.addVendorShop(vendorID: String)
+POST    /api/shop/new/:vendorID        controllers.VendorController.addVendorShop(vendorID: String)
 
-GET    /api/vendor/shop/details/:shopID     controllers.VendorController.viewShopDetails(shopID: String)
+GET    /api/shop/details/:shopID     controllers.VendorController.viewShopDetails(shopID: String)
 
 GET    /api/vendor                 controllers.VendorController.viewAllVendors
 
-POST    /api/vendor/shop/edit/:shopID                 controllers.VendorController.editShopDetails(shopID: String)
+POST    /api/shop/edit/:shopID                 controllers.VendorController.editShopDetails(shopID: String)
 
 POST    /api/vendor/edit/:vendorID                 controllers.VendorController.editVendorDetails(vendorID: String)
 
@@ -29,22 +29,31 @@ POST    /api/vendor/approve/:vendorID    controllers.VendorController.approveVen
 
 POST    /api/vendor/disapprove/:vendorID    controllers.VendorController.disapproveVendor(vendorID: String)
 
-POST    /api/vendor/delete/:vendorID    controllers.VendorController.deleteVendor(vendorID: String)
+DELETE    /api/vendor/delete/:vendorID    controllers.VendorController.deleteVendor(vendorID: String)
 
-POST    /api/vendor/shop/delete/:shopID    controllers.VendorController.deleteVendor(shopID: String)
+DELETE    /api/shop/delete/:shopID    controllers.VendorController.deleteVendor(shopID: String)
+
+DELETE    /api/shop/product/delete/:productID    controllers.VendorController.deleteVendor(productID: String)
+
+POST      /api/shop/product/add/:shopID    controllers.VendorController.addProductToShop(shopID: String)
+
+POST      /api/vendor/block/:vendorID      controllers.VendorController.blockVendor(vendorID: String)
+
+POST      /api/vendor/unblock/:vendorID      controllers.VendorController.unBlockVendor(vendorID: String)
+
+POST     /api/vendor/rating/add/:vendorID     controllers.VendorController.addRatingToVendor(vendorID: String)
+
+POST     /api/shop/rating/add/:shopID     controllers.VendorController.addRatingToShop(shopID: String)
+
+POST     /api/product/rating/add/:productID     controllers.VendorController.addRatingToProduct(productID: String)
+
+POST     /api/vendor/review/add/:vendorID     controllers.VendorController.addReviewToVendor(vendorID: String)
+
+POST     /api/shop/review/add/:shopID     controllers.VendorController.addReviewToShop(shopID: String)
+
+POST     /api/product/review/add/:productID     controllers.VendorController.addReviewToProduct(productID: String)
 
 # passing 2 arguments into the url
-
-
-
-
-
-
-
-
-
-
-
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

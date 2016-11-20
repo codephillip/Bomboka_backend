@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import play.data.format.Formats;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class Shop {
     public Shop(String address) {
         this.timestamp = new Date();
         this.address = address;
+        this.products = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
     }
 
     public Shop(double longitude, double latitude, String address) {
@@ -35,9 +39,16 @@ public class Shop {
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
+        this.products = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
     }
 
     public Shop() {
+        this.products = new ArrayList<ObjectId>();
+        this.timestamp = new Date();
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
     }
 
     public Date getTimestamp() {

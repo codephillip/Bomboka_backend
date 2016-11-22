@@ -61,6 +61,10 @@ public class Vendor {
         this.reviews = new ArrayList<ObjectId>();
     }
 
+    public void set_id(ObjectId _id) {
+        this._id = _id;
+    }
+
     public ObjectId get_id() {
         return _id;
     }

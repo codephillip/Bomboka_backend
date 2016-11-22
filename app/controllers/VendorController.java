@@ -4,6 +4,7 @@ import Utils.DatabaseUtils;
 import models.vendor.*;
 import org.bson.types.ObjectId;
 import org.jongo.MongoCursor;
+import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.libs.Json;
@@ -14,6 +15,7 @@ import play.mvc.Result;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Ahereza on 11/15/16.
@@ -25,6 +27,7 @@ public class VendorController extends Controller{
     private DatabaseUtils productManager = new DatabaseUtils("products");
     private DatabaseUtils ratingManager = new DatabaseUtils("ratings");
     private DatabaseUtils reviewManager = new DatabaseUtils("reviews");
+    private DatabaseUtils couponManager = new DatabaseUtils("coupons");
 
 
     private final FormFactory formFactory;
@@ -75,14 +78,6 @@ public class VendorController extends Controller{
         return ok(Json.toJson(shop));
     }
 
-    public Result editShopDetails(String shopID){
-        Form<Shop> shop = formFactory.form(Shop.class).bindFromRequest();
-        Shop obj = shop.get();
-        Shop original = shopManager.getVendorShopDetails(shopID);
-
-        return ok(shopID);
-    }
-
     public Result editVendorDetails(String vendorID){
         return ok(vendorID);
     }
@@ -120,7 +115,7 @@ public class VendorController extends Controller{
         Review review = new Review(reviewText);
         vendor.addReview(review);
         // TODO: 11/19/16  update the item
-        vendorManager.saveVendor(vendor);
+        vendorManager.updateVendor(vendor);
         return ok(Json.toJson(vendor));
     }
 
@@ -253,6 +248,73 @@ public class VendorController extends Controller{
         product.addReview(obj);
         productManager.updateProduct(product);
         return ok(Json.toJson(product));
+    }
+
+    public Result viewShopProducts(String shopID){
+        Shop shop = shopManager.getVendorShopDetails(shopID);
+        List<Product> productList = productManager.shopProducts(shop);
+        return ok(Json.toJson(productList));
+    }
+    public Result editVendor(String vendorID){
+        Form<Vendor> dataForm = formFactory.form(Vendor.class).bindFromRequest();
+        Vendor vendor = vendorManager.getVendorByID(vendorID);
+
+        Map<String, String> data = dataForm.data();
+        if(data.get("companyName") != null){
+            vendor.setCompanyName(data.get("companyName"));
+        }
+        if (data.get("website") != null){
+            vendor.setWebsite(data.get("website"));
+        }
+        vendorManager.updateVendor(vendor);
+
+        return ok(Json.toJson(vendor));
+    }
+
+    public Result editShopDetails(String shopID){
+        Form<Shop> dataForm = formFactory.form(Shop.class).bindFromRequest();
+        Shop obj = shopManager.getVendorShopDetails(shopID);
+        Map<String, String> data = dataForm.data();
+        double latitude = Double.parseDouble(data.get("latitude"));
+        String address = data.get("address");
+        if (address != null){
+            obj.setAddress(address);
+        }
+        if (data.get("longitude") != null){
+            obj.setLongitude(Double.parseDouble(data.get("longitude")));
+        }
+        if (data.get("latitude") != null){
+            obj.setLatitude(Double.parseDouble(data.get("latitude")));
+        }
+        return ok(Json.toJson(data));
+    }
+
+    public Result addCoupon(){
+        Form<Coupon> newCoupon = formFactory.form(Coupon.class).bindFromRequest();
+        Coupon obj = newCoupon.get();
+        couponManager.saveCoupon(obj);
+        return ok();
+    }
+    public Result showCoupons(){
+        List<Coupon> coupons = couponManager.showCoupons();
+        return ok(Json.toJson(coupons));
+    }
+    public Result deleteCoupon(String couponID){
+        couponManager.deleteCoupon(couponID);
+        return ok();
+    }
+
+    public Result validateCoupon(String couponID){
+        Coupon coupon = couponManager.getCouponByID(couponID);
+        coupon.setValid();
+        couponManager.updateCoupon(coupon);
+        return ok(Json.toJson(coupon));
+    }
+    public Result invalidateCoupon(String couponID){
+        Coupon coupon = couponManager.getCouponByID(couponID);
+        coupon.setInvalid();
+        couponManager.updateCoupon(coupon);
+        return ok(Json.toJson(coupon));
     }
 
 

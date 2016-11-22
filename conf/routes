@@ -23,8 +23,6 @@ GET    /api/vendor                 controllers.VendorController.viewAllVendors
 
 POST    /api/shop/edit/:shopID                 controllers.VendorController.editShopDetails(shopID: String)
 
-POST    /api/vendor/edit/:vendorID                 controllers.VendorController.editVendorDetails(vendorID: String)
-
 POST    /api/vendor/approve/:vendorID    controllers.VendorController.approveVendor(vendorID: String)
 
 POST    /api/vendor/disapprove/:vendorID    controllers.VendorController.disapproveVendor(vendorID: String)
@@ -53,7 +51,21 @@ POST     /api/shop/review/add/:shopID     controllers.VendorController.addReview
 
 POST     /api/product/review/add/:productID     controllers.VendorController.addReviewToProduct(productID: String)
 
-# passing 2 arguments into the url
+GET     /api/shop/products/:shopID          controllers.VendorController.viewShopProducts(shopID: String)
+
+POST    /api/vendor/edit/:vendorID          controllers.VendorController.editVendor(vendorID: String)
+
+POST    /api/shop/coupon/add                controllers.VendorController.addCoupon
+
+GET     /api/shop/coupons/                  controllers.VendorController.showCoupons
+
+DELETE  /api/shop/coupons/delete/:couponID            controllers.VendorController.deleteCoupon(couponID: String)
+
+POST  /api/shop/coupons/validate/:couponID            controllers.VendorController.validateCoupon(couponID: String)
+
+POST  /api/shop/coupons/invalidate/:couponID            controllers.VendorController.invalidateCoupon(couponID: String)
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

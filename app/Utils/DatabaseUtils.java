@@ -45,6 +45,21 @@ public class DatabaseUtils {
     public void saveProduct(Product product){
         this.collection.insert(product);
     }
+    public void saveCoupon(Coupon coupon){
+        this.collection.insert(coupon);
+    }
+    public List<Coupon> showCoupons(){
+        MongoCursor<Coupon> cursor = collection.find().as(Coupon.class);
+        List<Coupon> coupons = new ArrayList<>();
+        while (cursor.hasNext()){
+            Coupon coupon = cursor.next();
+            coupons.add(coupon);
+        }
+        return coupons;
+    }
+    public void deleteCoupon(String couponID){
+        this.collection.remove(new ObjectId(couponID));
+    }
 
     public Vendor getVendorByID(String vendorID){
         Vendor result = this.collection.findOne(new ObjectId(vendorID)).as(Vendor.class);
@@ -52,6 +67,11 @@ public class DatabaseUtils {
     }
     public Product getProductByID(String productID){
         Product result = this.collection.findOne(new ObjectId(productID)).as(Product.class);
+        return result;
+    }
+
+    public Coupon getCouponByID(String couponID){
+        Coupon result = this.collection.findOne(new ObjectId(couponID)).as(Coupon.class);
         return result;
     }
 
@@ -96,6 +116,10 @@ public class DatabaseUtils {
         this.collection.save(shop);
     }
 
+    public void updateCoupon(Coupon coupon){
+        this.collection.save(coupon);
+    }
+
 
     public List<Shop> findVendorShops(String vendorID){
         MongoCursor<Shop> cursor = this.collection.find("{vendor: #}", new ObjectId(vendorID)).as(Shop.class);
@@ -106,6 +130,16 @@ public class DatabaseUtils {
         }
         return shops;
 
+    }
+
+    public List<Product> shopProducts(Shop shop){
+        List<ObjectId> objList = shop.getProducts();
+        List<Product> productList = new ArrayList<>();
+        for (ObjectId objId: objList)
+            if (this.collection.findOne(objId).as(Product.class) != null) {
+                productList.add(this.collection.findOne(objId).as(Product.class));
+            }
+        return productList;
     }
 
 

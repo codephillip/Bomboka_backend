@@ -1,6 +1,7 @@
 package controllers;
 
 import Utils.DatabaseUtils;
+import models.User.User;
 import models.vendor.*;
 import org.bson.types.ObjectId;
 import org.jongo.MongoCursor;
@@ -28,7 +29,6 @@ public class VendorController extends Controller{
     private DatabaseUtils ratingManager = new DatabaseUtils("ratings");
     private DatabaseUtils reviewManager = new DatabaseUtils("reviews");
     private DatabaseUtils couponManager = new DatabaseUtils("coupons");
-
 
     private final FormFactory formFactory;
 
@@ -316,6 +316,5 @@ public class VendorController extends Controller{
         couponManager.updateCoupon(coupon);
         return ok(Json.toJson(coupon));
     }
-
 
 }

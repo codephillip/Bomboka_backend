@@ -2,6 +2,7 @@ package Utils;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
+import models.User.User;
 import models.vendor.*;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
@@ -140,6 +141,15 @@ public class DatabaseUtils {
                 productList.add(this.collection.findOne(objId).as(Product.class));
             }
         return productList;
+    }
+
+    public void registerUser(User user){
+        this.collection.insert(user);
+    }
+
+    public User getUserByUserName(String username){
+        User user = this.collection.findOne("{username:#}", username).as(User.class);
+        return user;
     }
 
 

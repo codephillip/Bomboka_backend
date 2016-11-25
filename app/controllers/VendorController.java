@@ -28,6 +28,7 @@ public class VendorController extends Controller{
     private DatabaseUtils ratingManager = new DatabaseUtils("ratings");
     private DatabaseUtils reviewManager = new DatabaseUtils("reviews");
     private DatabaseUtils couponManager = new DatabaseUtils("coupons");
+    private DatabaseUtils productCategoryManager = new DatabaseUtils("productCategory");
 
 
     private final FormFactory formFactory;
@@ -36,6 +37,13 @@ public class VendorController extends Controller{
     public VendorController(FormFactory formFactory) {
         this.formFactory = formFactory;
 
+    }
+
+    public Result addProductCategory() {
+        Form<ProductCategory> productCategoryForm = formFactory.form(ProductCategory.class).bindFromRequest();
+        ProductCategory obj = productCategoryForm.get();
+        productCategoryManager.saveProductCategory(obj);
+        return ok(Json.toJson(obj)) ;
     }
 
     public Result addVendor(){

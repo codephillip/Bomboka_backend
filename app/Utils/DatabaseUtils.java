@@ -45,6 +45,9 @@ public class DatabaseUtils {
     public void saveProduct(Product product){
         this.collection.insert(product);
     }
+    public void saveProductCategory(ProductCategory productCategory){
+        this.collection.insert(productCategory);
+    }
     public void saveCoupon(Coupon coupon){
         this.collection.insert(coupon);
     }
@@ -65,8 +68,14 @@ public class DatabaseUtils {
         Vendor result = this.collection.findOne(new ObjectId(vendorID)).as(Vendor.class);
         return result;
     }
+
     public Product getProductByID(String productID){
         Product result = this.collection.findOne(new ObjectId(productID)).as(Product.class);
+        return result;
+    }
+
+    public ProductCategory getProductCategoryByID(String productCategoryID){
+        ProductCategory result = this.collection.findOne(new ObjectId(productCategoryID)).as(ProductCategory.class);
         return result;
     }
 
@@ -92,6 +101,10 @@ public class DatabaseUtils {
     public void deleteProduct(String productID){
         this.collection.remove(new ObjectId(productID));
     }
+    
+    public void deleteProductCategory(String productCategoryID){
+        this.collection.remove(new ObjectId(productCategoryID));
+    }
 
 
     public List<Vendor> allVendors(){
@@ -104,12 +117,26 @@ public class DatabaseUtils {
         return vendors;
     }
 
+    public List<ProductCategory> allProductCategories(){
+        MongoCursor<ProductCategory> cursor = collection.find().as(ProductCategory.class);
+        List<ProductCategory> productCategorys = new ArrayList<ProductCategory>();
+        while (cursor.hasNext()){
+            ProductCategory productCategory = cursor.next();
+            productCategorys.add(productCategory);
+        }
+        return productCategorys;
+    }
+
     // TODO: 11/19/16 create update method
     public void updateVendor(Vendor vendor){
         this.collection.save(vendor);
     }
     public void updateProduct(Product product){
         this.collection.save(product);
+    }
+
+    public void updateProductCategory(ProductCategory productCategory){
+        this.collection.save(productCategory);
     }
 
     public void updateShop(Shop shop){

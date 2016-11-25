@@ -65,6 +65,8 @@ POST  /api/shop/coupons/validate/:couponID            controllers.VendorControll
 
 POST  /api/shop/coupons/invalidate/:couponID            controllers.VendorController.invalidateCoupon(couponID: String)
 
+POST  /api/productCategory/add                      controllers.VendorController.addProductCategory
+
 
 
 # Map static resources from the /public folder to the /assets URL path

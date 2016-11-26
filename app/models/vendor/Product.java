@@ -26,6 +26,17 @@ public class Product {
         return _id;
     }
 
+    public Product(double price, String name, String description, String manufacturer, ObjectId productCategory) {
+        this.price = price;
+        this.name = name;
+        this.description = description;
+        this.manufacturer = manufacturer;
+        this.timestamp = new Date();
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
+        this.productCategory = productCategory;
+    }
+
     public Product(double price, String name, String description, String manufacturer) {
         this.price = price;
         this.name = name;
@@ -36,21 +47,23 @@ public class Product {
         this.reviews = new ArrayList<ObjectId>();
     }
 
-    public Product(double price, String name, String description) {
+    public Product(double price, String name, String description, ObjectId productCategory) {
         this.price = price;
         this.name = name;
         this.description = description;
         this.timestamp = new Date();
         this.ratings = new ArrayList<ObjectId>();
         this.reviews = new ArrayList<ObjectId>();
+        this.productCategory = productCategory;
     }
 
-    public Product(double price, String name) {
+    public Product(double price, String name, ObjectId productCategory) {
         this.price = price;
         this.name = name;
         this.timestamp = new Date();
         this.ratings = new ArrayList<ObjectId>();
         this.reviews = new ArrayList<ObjectId>();
+        this.productCategory = productCategory;
     }
 
     public Product() {

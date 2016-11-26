@@ -135,4 +135,16 @@ public class Product {
     public void addReview(Review review) {
         reviews.add(review.get_id());
     }
+
+    public ObjectId getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(ObjectId productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 }

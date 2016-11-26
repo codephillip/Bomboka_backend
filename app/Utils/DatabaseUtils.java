@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
+import play.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +133,16 @@ public class DatabaseUtils {
         return productCategorys;
     }
 
+    public List<Product> allProducts() {
+        MongoCursor<Product> cursor = collection.find().as(Product.class);
+        List<Product> products = new ArrayList<Product>();
+        while (cursor.hasNext()) {
+            Product product = cursor.next();
+            products.add(product);
+        }
+        return products;
+    }
+
     // TODO: 11/19/16 create update method
     public void updateVendor(Vendor vendor) {
         this.collection.save(vendor);
@@ -175,5 +186,9 @@ public class DatabaseUtils {
         return productList;
     }
 
-
+    public ProductCategory getProductCategoryByName(String parent) {
+        ProductCategory result = this.collection.findOne("{name:\""+ parent +"\"}").as(ProductCategory.class);
+        Logger.debug("BYNAME#" + result.getAncestorCode().get(0));
+        return result;
+    }
 }

@@ -51,6 +51,14 @@ public class ProductCategory {
     public ProductCategory() {
     }
 
+    public ProductCategory(String name, ArrayList<String> code, String parent) {
+        this.name = name;
+        this.ancestorCode = code;
+        this.parent = parent;
+        this.timestamp = new Date();
+        this.tombstone = true;
+    }
+
     public ObjectId get_id() {
         return _id;
     }

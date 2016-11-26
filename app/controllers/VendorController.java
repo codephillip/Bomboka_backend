@@ -9,11 +9,13 @@ import play.data.FormFactory;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-//import views.html.vendor.viewAllVendors;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+//import views.html.vendor.viewAllVendors;
 
 /**
  * Created by Ahereza on 11/15/16.
@@ -37,27 +39,49 @@ public class VendorController extends Controller{
 
     }
 
+    public Result viewProducts() {
+        Logger.debug("viewProducts#");
+        List<Product> allProducts = productManager.allProducts();
+        Logger.debug("viewProducts#" + allProducts);
+        return ok(Json.toJson(allProducts));
+    }
+
+    public Result addProduct() {
+        Form<Product> uganda = formFactory.form(Product.class).bindFromRequest();
+        Product obj = uganda.get();
+        
+        //todo first finish productcategory
+//        productManager.saveProduct(obj); // saves to Product table
+        return ok(Json.toJson(obj)) ;
+    }
+
     public Result viewProductCategorys() {
-        Logger.debug("VPC#");
-        List<ProductCategory> allProductCategorys = productCategoryManager.allProductCategorys();
-        Logger.debug("VPC#" + allProductCategorys);
-        return ok(Json.toJson(allProductCategorys));
+        return ok(Json.toJson(productCategoryManager.allProductCategorys()));
     }
 
     public Result addProductCategory() {
-        Form<ProductCategory> x = formFactory.form(ProductCategory.class).bindFromRequest();
-        Map<String, String>hold = x.data();
-        Logger.debug("APC add#" + hold);
+        Form<ProductCategory> productCategory = formFactory.form(ProductCategory.class).bindFromRequest();
+        ProductCategory obj = productCategory.get(); // returns ProductCategory object from clean form
 
-//        ProductCategory p =new ProductCategory(hold.get("name"), hold.get("categoryCode"));
-//        String [] k = new String[5];
-//        k[0] = hold.get("")
-//        p.set
+        Map<String, String> hold = productCategory.data();
+        Logger.debug("insertProductCategory add#" + hold);
+        Logger.debug("insertProductCategory add2#" + hold.get("name"));
 
-        Form<ProductCategory> productCategoryForm = formFactory.form(ProductCategory.class).bindFromRequest();
-        ProductCategory obj = productCategoryForm.get();
-        productCategoryManager.saveProductCategory(obj);
-        return ok(Json.toJson(obj)) ;
+        ArrayList<String> code = new ArrayList<>();
+
+        try {
+            ProductCategory parentProductCategory = productCategoryManager.getProductCategoryByName(hold.get("parent"));
+            code = parentProductCategory.getAncestorCode(); // retrieves the arraylist(code) of the parent
+            code.add(hold.get("name")); // appends name of the child to the end of the arraylist
+        } catch (Exception e){
+            e.printStackTrace();
+            code.add(hold.get("name"));
+        }
+
+        ProductCategory childProductCategory = new ProductCategory(hold.get("name"), code, hold.get("parent"));
+        Logger.debug("insertProductCategory " + childProductCategory);
+        productCategoryManager.saveProductCategory(childProductCategory);
+        return ok(Json.toJson(obj));
     }
 
     public Result addVendor(){

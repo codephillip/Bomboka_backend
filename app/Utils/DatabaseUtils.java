@@ -27,100 +27,105 @@ public class DatabaseUtils {
         this.collection = jongo.getCollection(collectionName);
     }
 
-    public void saveVendor(Vendor vendor){
+    public void saveVendor(Vendor vendor) {
         this.collection.insert(vendor);
     }
 
-    public void saveShop(Shop shop){
+    public void saveShop(Shop shop) {
         this.collection.insert(shop);
     }
 
-    public void saveRating(Rating rating){
+    public void saveRating(Rating rating) {
         this.collection.insert(rating);
     }
-    public void saveReview(Review review){
+
+    public void saveReview(Review review) {
         this.collection.insert(review);
     }
 
-    public void saveProduct(Product product){
+    public void saveProduct(Product product) {
         this.collection.insert(product);
     }
-    public void saveProductCategory(ProductCategory productCategory){
+
+    public void saveProductCategory(ProductCategory productCategory) {
         this.collection.insert(productCategory);
     }
-    public void saveCoupon(Coupon coupon){
+
+    public void saveCoupon(Coupon coupon) {
         this.collection.insert(coupon);
     }
-    public List<Coupon> showCoupons(){
+
+    public List<Coupon> showCoupons() {
         MongoCursor<Coupon> cursor = collection.find().as(Coupon.class);
         List<Coupon> coupons = new ArrayList<>();
-        while (cursor.hasNext()){
+        while (cursor.hasNext()) {
             Coupon coupon = cursor.next();
             coupons.add(coupon);
         }
         return coupons;
     }
-    public void deleteCoupon(String couponID){
+
+    public void deleteCoupon(String couponID) {
         this.collection.remove(new ObjectId(couponID));
     }
 
-    public Vendor getVendorByID(String vendorID){
+    public Vendor getVendorByID(String vendorID) {
         Vendor result = this.collection.findOne(new ObjectId(vendorID)).as(Vendor.class);
         return result;
     }
 
-    public Product getProductByID(String productID){
+    public Product getProductByID(String productID) {
         Product result = this.collection.findOne(new ObjectId(productID)).as(Product.class);
         return result;
     }
 
-    public ProductCategory getProductCategoryByID(String productCategoryID){
+    public ProductCategory getProductCategoryByID(String productCategoryID) {
         ProductCategory result = this.collection.findOne(new ObjectId(productCategoryID)).as(ProductCategory.class);
         return result;
     }
 
-    public Coupon getCouponByID(String couponID){
+    public Coupon getCouponByID(String couponID) {
         Coupon result = this.collection.findOne(new ObjectId(couponID)).as(Coupon.class);
         return result;
     }
 
-    public Shop getVendorShopDetails(String shopID){
+    public Shop getVendorShopDetails(String shopID) {
         Shop shop = this.collection.findOne(new ObjectId(shopID)).as(Shop.class);
         return shop;
     }
 
-    public void deleteVendor(String vendorID){
+    public void deleteVendor(String vendorID) {
         this.collection.remove(new ObjectId(vendorID));
 
     }
 
-    public void deleteShop(String shopID){
+    public void deleteShop(String shopID) {
         this.collection.remove(new ObjectId(shopID));
     }
 
-    public void deleteProduct(String productID){
+    public void deleteProduct(String productID) {
         this.collection.remove(new ObjectId(productID));
     }
-    
-    public void deleteProductCategory(String productCategoryID){
+
+    public void deleteProductCategory(String productCategoryID) {
         this.collection.remove(new ObjectId(productCategoryID));
     }
 
 
-    public List<Vendor> allVendors(){
+    public List<Vendor> allVendors() {
         MongoCursor<Vendor> cursor = collection.find().as(Vendor.class);
         List<Vendor> vendors = new ArrayList<Vendor>();
-        while (cursor.hasNext()){
+        while (cursor.hasNext()) {
             Vendor vendor = cursor.next();
             vendors.add(vendor);
         }
         return vendors;
     }
 
-    public List<ProductCategory> allProductCategories(){
+    public List<ProductCategory> allProductCategorys() {
         MongoCursor<ProductCategory> cursor = collection.find().as(ProductCategory.class);
         List<ProductCategory> productCategorys = new ArrayList<ProductCategory>();
-        while (cursor.hasNext()){
+        while (cursor.hasNext()) {
             ProductCategory productCategory = cursor.next();
             productCategorys.add(productCategory);
         }
@@ -128,30 +133,31 @@ public class DatabaseUtils {
     }
 
     // TODO: 11/19/16 create update method
-    public void updateVendor(Vendor vendor){
+    public void updateVendor(Vendor vendor) {
         this.collection.save(vendor);
     }
-    public void updateProduct(Product product){
+
+    public void updateProduct(Product product) {
         this.collection.save(product);
     }
 
-    public void updateProductCategory(ProductCategory productCategory){
+    public void updateProductCategory(ProductCategory productCategory) {
         this.collection.save(productCategory);
     }
 
-    public void updateShop(Shop shop){
+    public void updateShop(Shop shop) {
         this.collection.save(shop);
     }
 
-    public void updateCoupon(Coupon coupon){
+    public void updateCoupon(Coupon coupon) {
         this.collection.save(coupon);
     }
 
 
-    public List<Shop> findVendorShops(String vendorID){
+    public List<Shop> findVendorShops(String vendorID) {
         MongoCursor<Shop> cursor = this.collection.find("{vendor: #}", new ObjectId(vendorID)).as(Shop.class);
         List<Shop> shops = new ArrayList<Shop>();
-        while (cursor.hasNext()){
+        while (cursor.hasNext()) {
             Shop shop = cursor.next();
             shops.add(shop);
         }
@@ -159,10 +165,10 @@ public class DatabaseUtils {
 
     }
 
-    public List<Product> shopProducts(Shop shop){
+    public List<Product> shopProducts(Shop shop) {
         List<ObjectId> objList = shop.getProducts();
         List<Product> productList = new ArrayList<>();
-        for (ObjectId objId: objList)
+        for (ObjectId objId : objList)
             if (this.collection.findOne(objId).as(Product.class) != null) {
                 productList.add(this.collection.findOne(objId).as(Product.class));
             }

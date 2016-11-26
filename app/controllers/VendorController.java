@@ -3,7 +3,6 @@ package controllers;
 import Utils.DatabaseUtils;
 import models.vendor.*;
 import org.bson.types.ObjectId;
-import org.jongo.MongoCursor;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
@@ -13,7 +12,6 @@ import play.mvc.Result;
 //import views.html.vendor.viewAllVendors;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +37,23 @@ public class VendorController extends Controller{
 
     }
 
+    public Result viewProductCategorys() {
+        Logger.debug("VPC#");
+        List<ProductCategory> allProductCategorys = productCategoryManager.allProductCategorys();
+        Logger.debug("VPC#" + allProductCategorys);
+        return ok(Json.toJson(allProductCategorys));
+    }
+
     public Result addProductCategory() {
+        Form<ProductCategory> x = formFactory.form(ProductCategory.class).bindFromRequest();
+        Map<String, String>hold = x.data();
+        Logger.debug("APC add#" + hold);
+
+//        ProductCategory p =new ProductCategory(hold.get("name"), hold.get("categoryCode"));
+//        String [] k = new String[5];
+//        k[0] = hold.get("")
+//        p.set
+
         Form<ProductCategory> productCategoryForm = formFactory.form(ProductCategory.class).bindFromRequest();
         ProductCategory obj = productCategoryForm.get();
         productCategoryManager.saveProductCategory(obj);

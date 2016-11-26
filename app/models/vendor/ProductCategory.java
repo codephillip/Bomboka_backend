@@ -5,21 +5,16 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-/**
- * - category name
- - {code,parent_code}
- - timestamp
- - modificationtimestamp
- - tombstone
- */
+
 public class ProductCategory {
 
     @MongoObjectId
     private ObjectId _id;
     private String name;
     private Date timestamp;
+    private ArrayList<String> ancestorCode;
+    private String parent;
     private Date modificationTimestamp;
     private boolean tombstone;
 
@@ -34,6 +29,15 @@ public class ProductCategory {
     public ProductCategory(ObjectId _id, String name, Date timestamp, boolean tombstone) {
         this._id = _id;
         this.name = name;
+        this.timestamp = new Date();
+        this.tombstone = true;
+    }
+
+    public ProductCategory(String name, Date timestamp, ArrayList<String> ancestorCode, String parent) {
+        this.name = name;
+        this.timestamp = timestamp;
+        this.ancestorCode = ancestorCode;
+        this.parent = parent;
         this.timestamp = new Date();
         this.tombstone = true;
     }
@@ -85,5 +89,21 @@ public class ProductCategory {
 
     public void setTombstone(boolean tombstone) {
         this.tombstone = tombstone;
+    }
+
+    public ArrayList<String> getAncestorCode() {
+        return ancestorCode;
+    }
+
+    public void setAncestorCode(ArrayList<String> ancestorCode) {
+        this.ancestorCode = ancestorCode;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 }

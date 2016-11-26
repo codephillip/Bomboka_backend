@@ -2,7 +2,6 @@ package models.vendor;
 
 import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
-import play.data.format.Formats;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,7 +16,7 @@ public class Product {
     private double price;
     private String name;
     private String description;
-    //products category
+    private ObjectId productCategory;
     private Date timestamp;
     private String manufacturer;
     private List<ObjectId> reviews;
@@ -116,10 +115,11 @@ public class Product {
         this.ratings = ratings;
     }
 
-    public void addRating(Rating rating){
+    public void addRating(Rating rating) {
         ratings.add(rating.get_id());
     }
-    public void addReview(Review review){
+
+    public void addReview(Review review) {
         reviews.add(review.get_id());
     }
 }

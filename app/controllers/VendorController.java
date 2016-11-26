@@ -47,12 +47,16 @@ public class VendorController extends Controller{
     }
 
     public Result addProduct() {
-        Form<Product> uganda = formFactory.form(Product.class).bindFromRequest();
-        Product obj = uganda.get();
-        
-        //todo first finish productcategory
-//        productManager.saveProduct(obj); // saves to Product table
-        return ok(Json.toJson(obj)) ;
+        Form<Product> product = formFactory.form(Product.class).bindFromRequest();
+        Product obj = product.get();
+
+        Map<String, String> hold = product.data();
+        Logger.debug("addProduct#" + hold);
+        ProductCategory parentProductCategory = productCategoryManager.getProductCategoryByName(hold.get("category"));
+
+        Product saveProduct = new Product(hold.get("name"), hold.get("price"), parentProductCategory.get_id());
+        productManager.saveProduct(saveProduct); // saves to Product table
+        return ok(Json.toJson(saveProduct)) ;
     }
 
     public Result viewProductCategorys() {

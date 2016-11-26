@@ -57,8 +57,8 @@ public class Product {
         this.productCategory = productCategory;
     }
 
-    public Product(double price, String name, ObjectId productCategory) {
-        this.price = price;
+    public Product(String name, String price, ObjectId productCategory) {
+        this.price = Double.parseDouble(price);
         this.name = name;
         this.timestamp = new Date();
         this.ratings = new ArrayList<ObjectId>();

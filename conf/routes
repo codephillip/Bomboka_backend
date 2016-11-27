@@ -69,6 +69,19 @@ POST /api/users/signup                                 controllers.UserControlle
 
 POST /api/users/signin                                 controllers.UserController.signIn
 
+POST /api/users/block/:userID                                 controllers.UserController.blockUser(userID: String)
+
+POST /api/users/unblock/:userID                                 controllers.UserController.unBlockUser(userID: String)
+
+DELETE /api/users/delete/:userID                                 controllers.UserController.deleteUser(userID: String)
+
+GET /api/users/recover/:uname                               controllers.UserController.recoverAccount(uname: String)
+
+DELETE /api/users/delete/:userID                                 controllers.UserController.deleteUser(userID: String)
+
+POST /api/users/role/:userID                           controllers.UserController.setRole(userID: String)
+
+GET /api/users/role/:userID                           controllers.UserController.getRole(userID: String)
 
 
 # Map static resources from the /public folder to the /assets URL path

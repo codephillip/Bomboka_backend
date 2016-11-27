@@ -10,6 +10,7 @@ import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -151,6 +152,33 @@ public class DatabaseUtils {
         User user = this.collection.findOne("{username:#}", username).as(User.class);
         return user;
     }
+    public User getUserByEmail(String email){
+        User user = this.collection.findOne("{email:#}", email).as(User.class);
+        return user;
+    }
+
+    public User getUserByID(String userID){
+        User user = this.collection.findOne(new ObjectId(userID)).as(User.class);
+        return user;
+    }
+
+    public void deleteUser(String userID){
+        User user = getUserByID(userID);
+        user.setActive(false);
+        user.setTombStone(new Date());
+        this.collection.save(user);
+    }
+
+    public void blockUser(String userID, boolean value){
+        User user = getUserByID(userID);
+        user.setBlocked(value);
+        this.collection.save(user);
+    }
+
+    public void updateUser(User user){
+        this.collection.save(user);
+    }
+
 
 
 }

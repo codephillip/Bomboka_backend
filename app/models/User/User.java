@@ -28,7 +28,8 @@ public class User {
     private String phoneNumber;
     private boolean blocked;
     private boolean verified;
-    private Role role;
+    private String role;
+    private boolean active;
 
     public User(String fullnames, String username, String email, String password, String address, double latitude,
                 double longitude, Date dob, int age, String country) throws Exception {
@@ -42,6 +43,9 @@ public class User {
         this.dob = dob;
         this.age = age;
         this.country = country;
+        this.role = "normal";
+        this.createdAt = new Date();
+        this.active = true;
     }
 
     public User(String fullnames, String username, String email, String password, String address, Date dob, int age, String country) throws Exception {
@@ -53,6 +57,9 @@ public class User {
         this.dob = dob;
         this.age = age;
         this.country = country;
+        this.role = "normal";
+        this.createdAt = new Date();
+        this.active = true;
     }
 
     public User(String fullnames, String username, String email, String password, Date dob) throws Exception {
@@ -61,16 +68,24 @@ public class User {
         this.email = email;
         this.password = Password.getSaltedHash(password);;
         this.dob = dob;
+        this.role = "normal";
+        this.createdAt = new Date();
+        this.active = true;
     }
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role = "normal";
+        this.createdAt = new Date();
+        this.active = true;
     }
 
     public User(){
         this.createdAt = new Date();
+        this.active = true;
+        this.role = "normal";
     }
 
     public ObjectId get_id() {
@@ -193,12 +208,27 @@ public class User {
         this.verified = verified;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Date getTombStone() {
+        return tombStone;
+    }
+
+    public void setTombStone(Date tombStone) {
+        this.tombStone = tombStone;
+    }
 }

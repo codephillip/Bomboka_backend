@@ -53,9 +53,9 @@ public class VendorController extends Controller{
         Logger.debug("addProduct#" + hold);
         ProductCategory parentProductCategory = productCategoryManager.getProductCategoryByName(hold.get("category"));
 
-        Product saveProduct = new Product(hold.get("name"), hold.get("price"), parentProductCategory.get_id());
-        productManager.saveProduct(saveProduct); // saves to Product table
-        return ok(Json.toJson(saveProduct)) ;
+        obj.setProductCategory(parentProductCategory.get_id());
+        productManager.saveProduct(obj); // saves to Product table
+        return ok(Json.toJson(obj)) ;
     }
 
     public Result viewProductCategorys() {

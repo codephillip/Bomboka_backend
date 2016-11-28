@@ -35,12 +35,21 @@ public class VendorController extends Controller{
     @Inject
     public VendorController(FormFactory formFactory) {
         this.formFactory = formFactory;
-
     }
 
     public Result viewProducts() {
+//        Logger.debug("viewProducts#");
+//        List<Product> allProducts = productManager.allProducts();
+//        Logger.debug("viewProducts#" + allProducts);
+//        return ok(Json.toJson(allProducts));
+
+        //debug purposes
         Logger.debug("viewProducts#");
         List<Product> allProducts = productManager.allProducts();
+        // debug purposes
+        for (Product allProduct : allProducts) {
+            Logger.debug("viewProducts#" + allProduct.get_id().toString());
+        }
         Logger.debug("viewProducts#" + allProducts);
         return ok(Json.toJson(allProducts));
     }
@@ -223,7 +232,12 @@ public class VendorController extends Controller{
     }
 
     public Result editProduct(String productID){
-        return ok();
+        Logger.debug("editProduct# "+ productID);
+        Form<Product> newProduct = formFactory.form(Product.class).bindFromRequest();
+        Product obj = newProduct.get();
+        obj.set_id(new ObjectId(productID));
+        productManager.updateProduct(obj);
+        return ok(Json.toJson(obj));
     }
 
     public Result blockVendor(String vendorID){

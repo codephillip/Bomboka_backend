@@ -133,18 +133,15 @@ public class VendorController extends Controller{
     public Result editVendorDetails(String vendorID){
         Logger.debug("editVendor# "+ vendorID);
         Form<Vendor> vendorForm = formFactory.form(Vendor.class).bindFromRequest();
-        Vendor obj = vendorForm.get();
         Vendor dbVendor = vendorManager.getVendorByID(vendorID);
-
         Logger.debug("editVendor# " + dbVendor.getCompanyName() + dbVendor.isApproved());
 
         Map<String, String> data = vendorForm.data();
-
-        if (!Objects.equals(dbVendor.getCompanyName(), obj.getCompanyName()) && obj.getCompanyName() != null) {
-            dbVendor.setCompanyName(obj.getCompanyName());
+        if (!Objects.equals(dbVendor.getCompanyName(), data.get("companyName")) && data.get("companyName") != null) {
+            dbVendor.setCompanyName(data.get("companyName"));
         }
-        if (!Objects.equals(dbVendor.getWebsite(), obj.getWebsite()) && obj.getWebsite() != null){
-            dbVendor.setWebsite(obj.getWebsite());
+        if (!Objects.equals(dbVendor.getWebsite(), data.get("website")) && data.get("website") != null){
+            dbVendor.setWebsite(data.get("website"));
         }
         if (!Objects.equals(String.valueOf(dbVendor.isVerified()), data.get("verified")) && data.get("verified") != null){
             Logger.debug("editvendor " + data.get("verified"));

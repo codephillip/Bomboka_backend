@@ -252,11 +252,13 @@ public class VendorController extends Controller{
 
     public Result editProduct(String productID){
         Logger.debug("editProduct# "+ productID);
-        Form<Product> newProduct = formFactory.form(Product.class).bindFromRequest();
-        Product obj = newProduct.get();
+        Form<Product> productForm = formFactory.form(Product.class).bindFromRequest();
+        Product obj = productForm.get();
         Product dbProduct = productManager.getProductByID(productID);
 
         Logger.debug("editProduct# " + dbProduct.getName() + dbProduct.getPrice());
+
+        Map<String, String> data = productForm.data();
 
         if (dbProduct.getPrice() != obj.getPrice() && obj.getPrice() != 0) {
             dbProduct.setPrice(obj.getPrice());
@@ -272,6 +274,10 @@ public class VendorController extends Controller{
         }
         if (!Objects.equals(dbProduct.getManufacturer(), obj.getManufacturer())){
             dbProduct.setManufacturer(obj.getManufacturer());
+        }
+        if (!Objects.equals(String.valueOf(dbProduct.isFake()), data.get("fake")) && data.get("fake") != null){
+            Logger.debug("editproduct " + data.get("fake"));
+            dbProduct.setFake(!dbProduct.isFake());
         }
 
         productManager.updateProduct(dbProduct);

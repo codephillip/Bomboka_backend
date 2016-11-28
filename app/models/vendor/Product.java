@@ -21,9 +21,23 @@ public class Product {
     private String manufacturer;
     private List<ObjectId> reviews;
     private List<ObjectId> ratings;
+    private boolean fake;
 
     public ObjectId get_id() {
         return _id;
+    }
+
+    public Product(ObjectId _id, double price, String name, String description, ObjectId productCategory, Date timestamp, String manufacturer, List<ObjectId> reviews, List<ObjectId> ratings, boolean fake) {
+        this._id = _id;
+        this.price = price;
+        this.name = name;
+        this.description = description;
+        this.productCategory = productCategory;
+        this.timestamp = timestamp;
+        this.manufacturer = manufacturer;
+        this.reviews = reviews;
+        this.ratings = ratings;
+        this.fake = fake;
     }
 
     public Product(double price, String name, String description, String manufacturer, ObjectId productCategory) {
@@ -146,5 +160,13 @@ public class Product {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public boolean isFake() {
+        return fake;
+    }
+
+    public void setFake(boolean fake) {
+        this.fake = fake;
     }
 }

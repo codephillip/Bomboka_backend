@@ -39,19 +39,8 @@ public class VendorController extends Controller{
     }
 
     public Result viewProducts() {
-//        Logger.debug("viewProducts#");
-//        List<Product> allProducts = productManager.allProducts();
-//        Logger.debug("viewProducts#" + allProducts);
-//        return ok(Json.toJson(allProducts));
-
-        //debug purposes
         Logger.debug("viewProducts#");
         List<Product> allProducts = productManager.allProducts();
-        // debug purposes
-        for (Product allProduct : allProducts) {
-            Logger.debug("viewProducts#" + allProduct.get_id().toString());
-        }
-        Logger.debug("viewProducts#" + allProducts);
         return ok(Json.toJson(allProducts));
     }
 
@@ -128,6 +117,10 @@ public class VendorController extends Controller{
     public Result viewAllVendors(){
         // tested and passed
         List<Vendor> allVendors = vendorManager.allVendors();
+        // debug purposes
+        for (Vendor vendor : allVendors) {
+            Logger.debug("viewVendors#" + vendor.get_id().toString());
+        }
         return ok(Json.toJson(allVendors));
     }
 
@@ -138,8 +131,36 @@ public class VendorController extends Controller{
     }
 
     public Result editVendorDetails(String vendorID){
-        // TODO: 11/27/16  
-        return ok(vendorID);
+        Logger.debug("editVendor# "+ vendorID);
+        Form<Vendor> vendorForm = formFactory.form(Vendor.class).bindFromRequest();
+        Vendor obj = vendorForm.get();
+        Vendor dbVendor = vendorManager.getVendorByID(vendorID);
+
+        Logger.debug("editVendor# " + dbVendor.getCompanyName() + dbVendor.isApproved());
+
+        Map<String, String> data = vendorForm.data();
+
+        if (!Objects.equals(dbVendor.getCompanyName(), obj.getCompanyName()) && obj.getCompanyName() != null) {
+            dbVendor.setCompanyName(obj.getCompanyName());
+        }
+        if (!Objects.equals(dbVendor.getWebsite(), obj.getWebsite()) && obj.getWebsite() != null){
+            dbVendor.setWebsite(obj.getWebsite());
+        }
+        if (!Objects.equals(String.valueOf(dbVendor.isVerified()), data.get("verified")) && data.get("verified") != null){
+            Logger.debug("editvendor " + data.get("verified"));
+            dbVendor.setVerified(!dbVendor.isVerified());
+        }
+        if (!Objects.equals(String.valueOf(dbVendor.isBlocked()), data.get("blocked")) && data.get("blocked") != null){
+            Logger.debug("editvendor " + data.get("blocked"));
+            dbVendor.setBlocked(!dbVendor.isBlocked());
+        }
+        if (!Objects.equals(String.valueOf(dbVendor.isApproved()), data.get("approved")) && data.get("approved") != null){
+            Logger.debug("editvendor " + data.get("approved"));
+            dbVendor.setApproved(!dbVendor.isApproved());
+        }
+
+        vendorManager.updateVendor(dbVendor);
+        return ok(Json.toJson(dbVendor));
     }
 
     public Result deleteVendor(String vendorID){
@@ -400,5 +421,4 @@ public class VendorController extends Controller{
         couponManager.updateCoupon(coupon);
         return ok(Json.toJson(coupon));
     }
-
 }

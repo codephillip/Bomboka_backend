@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 //import views.html.vendor.viewAllVendors;
 
@@ -235,8 +236,27 @@ public class VendorController extends Controller{
         Logger.debug("editProduct# "+ productID);
         Form<Product> newProduct = formFactory.form(Product.class).bindFromRequest();
         Product obj = newProduct.get();
-        obj.set_id(new ObjectId(productID));
-        productManager.updateProduct(obj);
+        Product dbProduct = productManager.getProductByID(productID);
+
+        Logger.debug("editProduct# " + dbProduct.getName() + dbProduct.getPrice());
+
+        if (dbProduct.getPrice() != obj.getPrice() && obj.getPrice() != 0) {
+            dbProduct.setPrice(obj.getPrice());
+        }
+        if (!Objects.equals(dbProduct.getName(), obj.getName()) && obj.getName() != null){
+            dbProduct.setName(obj.getName());
+        }
+        if (!Objects.equals(dbProduct.getDescription(), obj.getDescription()) && obj.getName() != null){
+            dbProduct.setDescription(obj.getDescription());
+        }
+        if (dbProduct.getProductCategory() != obj.getProductCategory()){
+            dbProduct.setProductCategory(obj.getProductCategory());
+        }
+        if (!Objects.equals(dbProduct.getManufacturer(), obj.getManufacturer())){
+            dbProduct.setManufacturer(obj.getManufacturer());
+        }
+
+        productManager.updateProduct(dbProduct);
         return ok(Json.toJson(obj));
     }
 

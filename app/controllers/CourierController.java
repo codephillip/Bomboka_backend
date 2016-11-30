@@ -164,16 +164,38 @@ public class CourierController extends Controller{
         Form<Rating> ratingForm = formFactory.form(Rating.class).bindFromRequest();
         Map<String, String> data = ratingForm.data();
         
-        double rating = Double.parseDouble(data.get("stars"));
-        if (rating > 5){
-            rating = 5;
-        } else if (rating < 0){
-            rating = 0;
+        double stars = Double.parseDouble(data.get("stars"));
+        if (stars > 5){
+            stars = 5;
+        } else if (stars < 0){
+            stars = 0;
+        }
+        
+        ObjectId userObject = new ObjectId(data.get("user"));
+        Logger.debug("viewRatings# USERID" + userObject.toString());
+
+        // checks if user already has a rating
+        List<Rating> allRatings = ratingManager.allRatings();
+        for (Rating rating : allRatings) {
+            Logger.debug("viewRatings# " + "updating rating");
+            Logger.debug("viewRatings#" + rating.getUser().toString());
+//            if (rating.getUser() == userObject) {
+            if (rating.getUser().toString().equals(userObject.toString())) {
+                Logger.debug("viewRatings# " + "finding userObject");
+                rating.setStars(stars);
+                ratingManager.updateRating(rating);
+
+                Courier courier = courierManager.getCourierByID(courierID);
+                courier.addRating(rating);
+                courierManager.updateCourier(courier);
+                return ok(Json.toJson(rating));
+            }
         }
 
+        //creates new rating
         Rating newRating = new Rating();
-        newRating.setStars(rating);
-        newRating.setUser(new ObjectId(data.get("user")));
+        newRating.setStars(stars);
+        newRating.setUser(userObject);
         Logger.debug("addCourierRating# " + newRating.getStars());
         ratingManager.saveRating(newRating);
 

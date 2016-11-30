@@ -212,6 +212,10 @@ public class DatabaseUtils {
         this.collection.save(coupon);
     }
 
+    public void updateRating(Rating rating) {
+        this.collection.save(rating);
+    }
+
 
     public List<Shop> findVendorShops(String vendorID) {
         MongoCursor<Shop> cursor = this.collection.find("{vendor: #}", new ObjectId(vendorID)).as(Shop.class);

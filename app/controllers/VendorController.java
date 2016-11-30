@@ -383,6 +383,7 @@ public class VendorController extends Controller{
         Form<Shop> dataForm = formFactory.form(Shop.class).bindFromRequest();
         Shop obj = shopManager.getVendorShopDetails(shopID);
         Map<String, String> data = dataForm.data();
+        //todo handle casting exception
         double latitude = Double.parseDouble(data.get("latitude"));
         String address = data.get("address");
         if (address != null){

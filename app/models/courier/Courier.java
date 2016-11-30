@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by codephillip on 30/11/16.
@@ -24,6 +25,26 @@ public class Courier {
     private boolean deleted;
     private boolean approved;
     private boolean blocked;
+    private List<ObjectId> reviews;
+    private List<ObjectId> ratings;
+
+    public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone, boolean deleted, boolean approved, boolean blocked, List<ObjectId> reviews, List<ObjectId> ratings) {
+        this._id = _id;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.createdAt = createdAt;
+        this.modificationTimeStamp = modificationTimeStamp;
+        this.tombStone = tombStone;
+        this.deleted = deleted;
+        this.approved = approved;
+        this.blocked = blocked;
+        this.reviews = reviews;
+        this.ratings = ratings;
+    }
 
     public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone, boolean deleted) {
         this._id = _id;
@@ -197,5 +218,21 @@ public class Courier {
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    public List<ObjectId> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ObjectId> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<ObjectId> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<ObjectId> ratings) {
+        this.ratings = ratings;
     }
 }

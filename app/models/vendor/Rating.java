@@ -11,9 +11,9 @@ public class Rating {
     @MongoObjectId
     private ObjectId _id;
     private double stars;
-    private String user; // should be an object of the user model TODO
+    private ObjectId user; // should be an object of the user model TODO
 
-    public Rating(double stars, String user) {
+    public Rating(double stars, ObjectId user) {
         this.stars = stars;
         this.user = user;
     }
@@ -37,11 +37,11 @@ public class Rating {
         this.stars = stars;
     }
 
-    public String getUser() {
+    public ObjectId getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(ObjectId user) {
         this.user = user;
     }
 

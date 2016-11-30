@@ -177,6 +177,16 @@ public class DatabaseUtils {
         return ratings;
     }
 
+    public List<User> allUsers() {
+        MongoCursor<User> cursor = collection.find().as(User.class);
+        List<User> users = new ArrayList<User>();
+        while (cursor.hasNext()) {
+            User user = cursor.next();
+            users.add(user);
+        }
+        return users;
+    }
+
     // TODO: 11/19/16 create update method
     public void updateVendor(Vendor vendor) {
         this.collection.save(vendor);

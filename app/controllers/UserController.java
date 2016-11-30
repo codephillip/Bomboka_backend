@@ -3,6 +3,7 @@ package controllers;
 import Utils.DatabaseUtils;
 import Utils.Password;
 import models.User.User;
+import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.libs.Json;
@@ -10,6 +11,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,9 +28,10 @@ public class UserController extends Controller {
     }
     public Result signUp() throws Exception {
         Form<User> newUser = formFactory.form(User.class).bindFromRequest();
-        User obj = newUser.get();
+        User obj = newUser.get(); 
         obj.setPassword(Password.getSaltedHash(obj.getPassword()));
-        userManager.registerUser(obj);
+        //todo check first if the user is already registered before saving to prevent having duplicate accounts
+        userManager.registerUser(obj); 
         return ok(Json.toJson(obj));
     }
 
@@ -99,5 +102,16 @@ public class UserController extends Controller {
         Map<String, String> data = dataForm.data();
 
         return ok();
+    }
+
+    public Result viewUsers() {
+        Logger.debug("viewUsers#");
+        List<User> allUsers = userManager.allUsers();
+        //todo remove on release
+        for (User user : allUsers) {
+            Logger.debug("viewUsers# " + user.get_id().toString());
+        }
+        //
+        return ok(Json.toJson(allUsers));
     }
 }

@@ -68,6 +68,15 @@ public class CourierController extends Controller{
         if (!Objects.equals(dbCourier.getPhoneNumber(), data.get("phoneNumber")) && data.get("phoneNumber") != null) {
             dbCourier.setPhoneNumber(data.get("phoneNumber"));
         }
+        if (!Objects.equals(String.valueOf(dbCourier.isBlocked()), data.get("blocked")) && data.get("blocked") != null){
+            dbCourier.setBlocked(!dbCourier.isBlocked());
+        }
+        if (!Objects.equals(String.valueOf(dbCourier.isApproved()), data.get("approved")) && data.get("approved") != null){
+            dbCourier.setApproved(!dbCourier.isApproved());
+        }
+        if (!Objects.equals(String.valueOf(dbCourier.isDeleted()), data.get("deleted")) && data.get("deleted") != null){
+            dbCourier.setDeleted(!dbCourier.isDeleted());
+        }
 
         try {
             Double latitude = Double.parseDouble(data.get("latitude"));
@@ -96,7 +105,7 @@ public class CourierController extends Controller{
     public Result deleteCourier(String courierID){
         Courier dbCourier = courierManager.getCourierByID(courierID);
         dbCourier.setTombStone(new Date());
-        dbCourier.setActive(false);
+        dbCourier.setDeleted(true);
         courierManager.updateCourier(dbCourier);
         return ok();
     }

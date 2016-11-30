@@ -21,9 +21,11 @@ public class Courier {
     private Date createdAt;
     private Date modificationTimeStamp;
     private Date tombStone;
-    private boolean active;
+    private boolean deleted;
+    private boolean approved;
+    private boolean blocked;
 
-    public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone, boolean active) {
+    public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone, boolean deleted) {
         this._id = _id;
         this.name = name;
         this.address = address;
@@ -34,7 +36,9 @@ public class Courier {
         this.createdAt = createdAt;
         this.modificationTimeStamp = modificationTimeStamp;
         this.tombStone = tombStone;
-        this.active = active;
+        this.deleted = false;
+        this.blocked = false;
+        this.approved = true;
     }
 
     public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone) {
@@ -48,6 +52,9 @@ public class Courier {
         this.createdAt = createdAt;
         this.modificationTimeStamp = modificationTimeStamp;
         this.tombStone = tombStone;
+        this.deleted = false;
+        this.blocked = false;
+        this.approved = true;
     }
 
     public Courier(String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone) {
@@ -60,6 +67,9 @@ public class Courier {
         this.createdAt = new Date();
         this.modificationTimeStamp = new Date();
         this.tombStone = tombStone;
+        this.deleted = false;
+        this.blocked = false;
+        this.approved = true;
     }
 
     public Courier(String name, String address, String email, String phoneNumber, double latitude, double longitude, Date tombStone) {
@@ -72,12 +82,17 @@ public class Courier {
         this.tombStone = tombStone;
         this.createdAt = new Date();
         this.modificationTimeStamp = new Date();
+        this.deleted = false;
+        this.blocked = false;
+        this.approved = true;
     }
 
     public Courier() {
         this.createdAt = new Date();
         this.modificationTimeStamp = new Date();
-        this.active = true;
+        this.deleted = false;
+        this.blocked = false;
+        this.approved = true;
     }
 
     public String getName() {
@@ -160,11 +175,27 @@ public class Courier {
         this._id = _id;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 }

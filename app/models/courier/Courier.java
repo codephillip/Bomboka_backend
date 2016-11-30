@@ -24,8 +24,8 @@ public class Courier {
         this.phoneNumber = phoneNumber;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.createdAt = createdAt;
-        this.modificationTimeStamp = modificationTimeStamp;
+        this.createdAt = new Date();
+        this.modificationTimeStamp = new Date();
         this.tombStone = tombStone;
     }
 
@@ -37,6 +37,11 @@ public class Courier {
         this.latitude = latitude;
         this.longitude = longitude;
         this.tombStone = tombStone;
+        this.createdAt = new Date();
+        this.modificationTimeStamp = new Date();
+    }
+
+    public Courier() {
     }
 
     public String getName() {

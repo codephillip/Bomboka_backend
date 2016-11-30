@@ -3,6 +3,7 @@ package Utils;
 import com.mongodb.DB;
 import com.mongodb.Mongo;
 import models.User.User;
+import models.courier.Courier;
 import models.vendor.*;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
@@ -48,6 +49,10 @@ public class DatabaseUtils {
 
     public void saveProduct(Product product) {
         this.collection.insert(product);
+    }
+
+    public void saveCourier(Courier courier) {
+        this.collection.insert(courier);
     }
 
     public void saveProductCategory(ProductCategory productCategory) {
@@ -143,6 +148,16 @@ public class DatabaseUtils {
             products.add(product);
         }
         return products;
+    }
+
+    public List<Courier> allCouriers() {
+        MongoCursor<Courier> cursor = collection.find().as(Courier.class);
+        List<Courier> couriers = new ArrayList<Courier>();
+        while (cursor.hasNext()) {
+            Courier courier = cursor.next();
+            couriers.add(courier);
+        }
+        return couriers;
     }
 
     // TODO: 11/19/16 create update method

@@ -13,11 +13,6 @@ import java.util.List;
  */
 
 public class Vendor {
-//    public static PlayJongo jongo = Play.current().injector().instanceOf(PlayJongo.class);
-//
-//    public static MongoCollection vendor() {
-//        return jongo.getCollection("vendor");
-//    }
     @MongoObjectId
     private ObjectId _id;
     private String companyName;

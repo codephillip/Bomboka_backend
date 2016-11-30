@@ -109,4 +109,39 @@ public class CourierController extends Controller{
         courierManager.updateCourier(dbCourier);
         return ok();
     }
+
+    public Result undeleteCourier(String courierID){
+        Courier courier = courierManager.getCourierByID(courierID);
+        courier.setDeleted(false);
+        courierManager.updateCourier(courier);
+        return ok(Json.toJson(courier));
+    }
+
+    public Result approveCourier(String courierID){
+        Courier courier = courierManager.getCourierByID(courierID);
+        courier.setApproved(true);
+        courierManager.updateCourier(courier);
+        return ok(Json.toJson(courier));
+    }
+
+    public Result disapproveCourier(String courierID){
+        Courier courier = courierManager.getCourierByID(courierID);
+        courier.setApproved(false);
+        courierManager.updateCourier(courier);
+        return ok(Json.toJson(courier));
+    }
+
+    public Result blockCourier(String courierID){
+        Courier courier = courierManager.getCourierByID(courierID);
+        courier.setBlocked(true);
+        courierManager.updateCourier(courier);
+        return ok(Json.toJson(courier));
+    }
+
+    public Result unblockCourier(String courierID){
+        Courier courier = courierManager.getCourierByID(courierID);
+        courier.setBlocked(false);
+        courierManager.updateCourier(courier);
+        return ok(Json.toJson(courier));
+    }
 }

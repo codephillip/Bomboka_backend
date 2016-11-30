@@ -11,7 +11,7 @@ public class Rating {
     @MongoObjectId
     private ObjectId _id;
     private double stars;
-    private ObjectId user; // should be an object of the user model TODO
+    private ObjectId user;
 
     public Rating(double stars, ObjectId user) {
         this.stars = stars;

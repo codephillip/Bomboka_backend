@@ -4,6 +4,7 @@ import Utils.DatabaseUtils;
 import models.courier.Courier;
 import models.vendor.Rating;
 import models.vendor.Review;
+import org.bson.types.ObjectId;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
@@ -160,23 +161,26 @@ public class CourierController extends Controller{
     }
 
     public Result addCourierRating(String courierID){
-        Form<Rating> newRating = formFactory.form(Rating.class).bindFromRequest();
-        Rating obj = newRating.get();
-        double rating = obj.getStars();
+        Form<Rating> ratingForm = formFactory.form(Rating.class).bindFromRequest();
+        Map<String, String> data = ratingForm.data();
+        
+        double rating = Double.parseDouble(data.get("stars"));
         if (rating > 5){
             rating = 5;
         } else if (rating < 0){
             rating = 0;
         }
-        obj.setStars(rating);
-        Logger.debug("addCourierRating# " + obj.getStars());
 
-        ratingManager.saveRating(obj);
+        Rating newRating = new Rating();
+        newRating.setStars(rating);
+        newRating.setUser(new ObjectId(data.get("user")));
+        Logger.debug("addCourierRating# " + newRating.getStars());
+        ratingManager.saveRating(newRating);
 
         Courier courier = courierManager.getCourierByID(courierID);
-        courier.addRating(obj);
+        courier.addRating(newRating);
         courierManager.updateCourier(courier);
-        return ok(Json.toJson(obj));
+        return ok(Json.toJson(newRating));
     }
 
     public Result viewRatings() {

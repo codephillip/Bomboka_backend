@@ -1,11 +1,16 @@
 package models.courier;
 
+import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.MongoObjectId;
+
 import java.util.Date;
 
 /**
  * Created by codephillip on 30/11/16.
  */
 public class Courier {
+    @MongoObjectId
+    private ObjectId _id;
     private String name;
     private String address;
     private String email;
@@ -16,6 +21,19 @@ public class Courier {
     private Date createdAt;
     private Date modificationTimeStamp;
     private Date tombStone;
+
+    public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone) {
+        this._id = _id;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.createdAt = createdAt;
+        this.modificationTimeStamp = modificationTimeStamp;
+        this.tombStone = tombStone;
+    }
 
     public Courier(String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone) {
         this.name = name;
@@ -42,6 +60,8 @@ public class Courier {
     }
 
     public Courier() {
+        this.createdAt = new Date();
+        this.modificationTimeStamp = new Date();
     }
 
     public String getName() {
@@ -114,5 +134,13 @@ public class Courier {
 
     public void setTombStone(Date tombStone) {
         this.tombStone = tombStone;
+    }
+
+    public ObjectId get_id() {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id) {
+        this._id = _id;
     }
 }

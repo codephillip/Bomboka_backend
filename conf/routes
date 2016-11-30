@@ -93,14 +93,14 @@ POST  /api/product/add                                  controllers.VendorContro
 
 GET  /api/products                                      controllers.VendorController.viewProducts
 
-POST  /api/product/edit/:productID                     controllers.VendorController.editProduct(productID: String)
+POST  /api/product/edit/:productID                      controllers.VendorController.editProduct(productID: String)
 
 
 POST  /api/courier/add                                  controllers.CourierController.addCourier
 
 GET  /api/couriers                                      controllers.CourierController.viewCouriers
 
-#POST  /api/product/edit/:productID                     controllers.VendorController.editProduct(productID: String)
+POST  /api/courier/edit/:courierID                      controllers.CourierController.editCourier(courierID: String)
 
 
 # Map static resources from the /public folder to the /assets URL path

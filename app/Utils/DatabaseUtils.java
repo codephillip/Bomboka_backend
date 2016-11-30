@@ -87,6 +87,11 @@ public class DatabaseUtils {
         return result;
     }
 
+    public Courier getCourierByID(String courierID) {
+        Courier result = this.collection.findOne(new ObjectId(courierID)).as(Courier.class);
+        return result;
+    }
+
     public ProductCategory getProductCategoryByID(String productCategoryID) {
         ProductCategory result = this.collection.findOne(new ObjectId(productCategoryID)).as(ProductCategory.class);
         return result;
@@ -167,6 +172,10 @@ public class DatabaseUtils {
 
     public void updateProduct(Product product) {
         this.collection.save(product);
+    }
+
+    public void updateCourier(Courier courier) {
+        this.collection.save(courier);
     }
 
     public void updateProductCategory(ProductCategory productCategory) {

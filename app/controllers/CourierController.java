@@ -93,10 +93,11 @@ public class CourierController extends Controller{
         return ok(Json.toJson(dbCourier));
     }
 
-//    public Result deleteVendor(String vendorID){
-//        // testing passed
-//        vendorManager.deleteVendor(vendorID);
-//        return ok();
-//    }
-//
+    public Result deleteCourier(String courierID){
+        Courier dbCourier = courierManager.getCourierByID(courierID);
+        dbCourier.setTombStone(new Date());
+        dbCourier.setActive(false);
+        courierManager.updateCourier(dbCourier);
+        return ok();
+    }
 }

@@ -21,6 +21,21 @@ public class Courier {
     private Date createdAt;
     private Date modificationTimeStamp;
     private Date tombStone;
+    private boolean active;
+
+    public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone, boolean active) {
+        this._id = _id;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.createdAt = createdAt;
+        this.modificationTimeStamp = modificationTimeStamp;
+        this.tombStone = tombStone;
+        this.active = active;
+    }
 
     public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone) {
         this._id = _id;
@@ -62,6 +77,7 @@ public class Courier {
     public Courier() {
         this.createdAt = new Date();
         this.modificationTimeStamp = new Date();
+        this.active = true;
     }
 
     public String getName() {
@@ -142,5 +158,13 @@ public class Courier {
 
     public void set_id(ObjectId _id) {
         this._id = _id;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

@@ -2,6 +2,8 @@ package controllers;
 
 import Utils.DatabaseUtils;
 import models.courier.Courier;
+import models.vendor.Rating;
+import models.vendor.Review;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
@@ -21,6 +23,8 @@ import java.util.Objects;
 public class CourierController extends Controller{
 
     private DatabaseUtils courierManager = new DatabaseUtils("courier");
+    private DatabaseUtils reviewManager = new DatabaseUtils("reviews");
+    private DatabaseUtils ratingManager = new DatabaseUtils("ratings");
 
     private final FormFactory formFactory;
 
@@ -143,5 +147,45 @@ public class CourierController extends Controller{
         courier.setBlocked(false);
         courierManager.updateCourier(courier);
         return ok(Json.toJson(courier));
+    }
+
+    public Result writeCourierReview(String courierID){
+        Form<Review> newReview = formFactory.form(Review.class).bindFromRequest();
+        Review obj = newReview.get();
+        Courier courier = courierManager.getCourierByID(courierID);
+        reviewManager.saveReview(obj);
+        courier.addReview(obj);
+        courierManager.saveCourier(courier);
+        return ok(Json.toJson(courier));
+    }
+
+    public Result addCourierRating(String courierID){
+        Form<Rating> newRating = formFactory.form(Rating.class).bindFromRequest();
+        Rating obj = newRating.get();
+        double rating = obj.getStars();
+        if (rating > 5){
+            rating = 5;
+        } else if (rating < 0){
+            rating = 0;
+        }
+        obj.setStars(rating);
+        Logger.debug("addCourierRating# " + obj.getStars());
+
+        ratingManager.saveRating(obj);
+
+        Courier courier = courierManager.getCourierByID(courierID);
+        courier.addRating(obj);
+        courierManager.updateCourier(courier);
+        return ok(Json.toJson(obj));
+    }
+
+    public Result viewRatings() {
+        Logger.debug("viewRatings#");
+        List<Rating> allRatings = ratingManager.allRatings();
+        //todo remove on release
+        for (Rating rating : allRatings) {
+            Logger.debug("viewRatings# " + rating.get_id().toString());
+        }
+        return ok(Json.toJson(allRatings));
     }
 }

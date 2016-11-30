@@ -31,6 +31,8 @@ public class DatabaseUtils {
         this.collection = jongo.getCollection(collectionName);
     }
 
+    //save is for first time creation of object
+    //update is for updating an existing object
     public void saveVendor(Vendor vendor) {
         this.collection.insert(vendor);
     }
@@ -163,6 +165,16 @@ public class DatabaseUtils {
             couriers.add(courier);
         }
         return couriers;
+    }
+
+    public List<Rating> allRatings() {
+        MongoCursor<Rating> cursor = collection.find().as(Rating.class);
+        List<Rating> ratings = new ArrayList<Rating>();
+        while (cursor.hasNext()) {
+            Rating rating = cursor.next();
+            ratings.add(rating);
+        }
+        return ratings;
     }
 
     // TODO: 11/19/16 create update method

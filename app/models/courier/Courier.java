@@ -1,8 +1,11 @@
 package models.courier;
 
+import models.vendor.Rating;
+import models.vendor.Review;
 import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,8 +45,8 @@ public class Courier {
         this.deleted = deleted;
         this.approved = approved;
         this.blocked = blocked;
-        this.reviews = reviews;
-        this.ratings = ratings;
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
     }
 
     public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone, boolean deleted) {
@@ -114,6 +117,8 @@ public class Courier {
         this.deleted = false;
         this.blocked = false;
         this.approved = true;
+        this.ratings = new ArrayList<ObjectId>();
+        this.reviews = new ArrayList<ObjectId>();
     }
 
     public String getName() {
@@ -234,5 +239,13 @@ public class Courier {
 
     public void setRatings(List<ObjectId> ratings) {
         this.ratings = ratings;
+    }
+
+    public void addReview(Review review){
+        this.reviews.add(review.get_id());
+    }
+
+    public void addRating(Rating rating){
+        this.ratings.add(rating.get_id());
     }
 }

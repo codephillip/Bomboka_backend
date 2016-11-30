@@ -10,9 +10,9 @@ public class Review {
     @MongoObjectId
     private ObjectId _id;
     private String text;
-    private String User; // should be an object of the user model TODO
+    private ObjectId User; // should be an object of the user model TODO
 
-    public Review(String text, String user) {
+    public Review(String text, ObjectId user) {
         this.text = text;
         User = user;
     }
@@ -40,11 +40,11 @@ public class Review {
         this.text = text;
     }
 
-    public String getUser() {
+    public ObjectId getUser() {
         return User;
     }
 
-    public void setUser(String user) {
+    public void setUser(ObjectId user) {
         User = user;
     }
 }

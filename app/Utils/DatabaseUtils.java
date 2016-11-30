@@ -177,6 +177,16 @@ public class DatabaseUtils {
         return ratings;
     }
 
+    public List<Review> allReviews() {
+        MongoCursor<Review> cursor = collection.find().as(Review.class);
+        List<Review> reviews = new ArrayList<Review>();
+        while (cursor.hasNext()) {
+            Review review = cursor.next();
+            reviews.add(review);
+        }
+        return reviews;
+    }
+
     public List<User> allUsers() {
         MongoCursor<User> cursor = collection.find().as(User.class);
         List<User> users = new ArrayList<User>();
@@ -214,6 +224,10 @@ public class DatabaseUtils {
 
     public void updateRating(Rating rating) {
         this.collection.save(rating);
+    }
+
+    public void updateReview(Review review) {
+        this.collection.save(review);
     }
 
 

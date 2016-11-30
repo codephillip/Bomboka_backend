@@ -61,25 +61,25 @@ public class CourierController extends Controller{
 
         Map<String, String> data = courierForm.data();
 
-        if (!Objects.equals(dbCourier.getName(), data.get("name")) && data.get("name") != null) {
+        if (!Objects.equals(dbCourier.getName(), data.get("name")) && !data.get("name").isEmpty()) {
             dbCourier.setName(data.get("name"));
         }
-        if (!Objects.equals(dbCourier.getAddress(), data.get("address")) && data.get("address") != null) {
+        if (!Objects.equals(dbCourier.getAddress(), data.get("address")) && !data.get("address").isEmpty()) {
             dbCourier.setName(data.get("address"));
         }
-        if (!Objects.equals(dbCourier.getEmail(), data.get("email")) && data.get("email") != null) {
+        if (!Objects.equals(dbCourier.getEmail(), data.get("email")) && !data.get("email").isEmpty()) {
             dbCourier.setEmail(data.get("email"));
         }
-        if (!Objects.equals(dbCourier.getPhoneNumber(), data.get("phoneNumber")) && data.get("phoneNumber") != null) {
+        if (!Objects.equals(dbCourier.getPhoneNumber(), data.get("phoneNumber")) && !data.get("phoneNumber").isEmpty()) {
             dbCourier.setPhoneNumber(data.get("phoneNumber"));
         }
-        if (!Objects.equals(String.valueOf(dbCourier.isBlocked()), data.get("blocked")) && data.get("blocked") != null){
+        if (!Objects.equals(String.valueOf(dbCourier.isBlocked()), data.get("blocked")) && !data.get("blocked").isEmpty()){
             dbCourier.setBlocked(!dbCourier.isBlocked());
         }
-        if (!Objects.equals(String.valueOf(dbCourier.isApproved()), data.get("approved")) && data.get("approved") != null){
+        if (!Objects.equals(String.valueOf(dbCourier.isApproved()), data.get("approved")) && !data.get("approved").isEmpty()){
             dbCourier.setApproved(!dbCourier.isApproved());
         }
-        if (!Objects.equals(String.valueOf(dbCourier.isDeleted()), data.get("deleted")) && data.get("deleted") != null){
+        if (!Objects.equals(String.valueOf(dbCourier.isDeleted()), data.get("deleted")) && !data.get("deleted").isEmpty()){
             dbCourier.setDeleted(!dbCourier.isDeleted());
         }
 
@@ -157,12 +157,6 @@ public class CourierController extends Controller{
 
         ObjectId userObject = new ObjectId(data.get("user"));
         Logger.debug("viewRatings# USERID" + userObject.toString());
-        
-//        Courier courier = courierManager.getCourierByID(courierID);
-//        reviewManager.saveReview(obj);
-//        courier.addReview(obj);
-//        courierManager.saveCourier(courier);
-//        return ok(Json.toJson(courier));
 
         // checks if user already has a review
         List<Review> allReviews = reviewManager.allReviews();
@@ -241,7 +235,6 @@ public class CourierController extends Controller{
     public Result viewRatings() {
         Logger.debug("viewRatings#");
         List<Rating> allRatings = ratingManager.allRatings();
-        //todo remove on release
         for (Rating rating : allRatings) {
             Logger.debug("viewRatings# " + rating.get_id().toString());
         }
@@ -251,7 +244,6 @@ public class CourierController extends Controller{
     public Result viewReviews() {
         Logger.debug("viewReviews#");
         List<Review> allReviews = reviewManager.allReviews();
-        //todo remove on release
         for (Review review : allReviews) {
             Logger.debug("viewReviews# " + review.get_id().toString());
         }

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-//import views.html.vendor.viewAllVendors;
 
 /**
  * Created by Ahereza on 11/15/16.
@@ -137,21 +136,21 @@ public class VendorController extends Controller{
         Logger.debug("editVendor# " + dbVendor.getCompanyName() + dbVendor.isApproved());
 
         Map<String, String> data = vendorForm.data();
-        if (!Objects.equals(dbVendor.getCompanyName(), data.get("companyName")) && data.get("companyName") != null) {
+        if (!Objects.equals(dbVendor.getCompanyName(), data.get("companyName")) && !data.get("companyName").isEmpty()) {
             dbVendor.setCompanyName(data.get("companyName"));
         }
-        if (!Objects.equals(dbVendor.getWebsite(), data.get("website")) && data.get("website") != null){
+        if (!Objects.equals(dbVendor.getWebsite(), data.get("website")) && !data.get("website").isEmpty()){
             dbVendor.setWebsite(data.get("website"));
         }
-        if (!Objects.equals(String.valueOf(dbVendor.isVerified()), data.get("verified")) && data.get("verified") != null){
+        if (!Objects.equals(String.valueOf(dbVendor.isVerified()), data.get("verified")) && !data.get("verified").isEmpty()){
             Logger.debug("editvendor " + data.get("verified"));
             dbVendor.setVerified(!dbVendor.isVerified());
         }
-        if (!Objects.equals(String.valueOf(dbVendor.isBlocked()), data.get("blocked")) && data.get("blocked") != null){
+        if (!Objects.equals(String.valueOf(dbVendor.isBlocked()), data.get("blocked")) && !data.get("blocked").isEmpty()){
             Logger.debug("editvendor " + data.get("blocked"));
             dbVendor.setBlocked(!dbVendor.isBlocked());
         }
-        if (!Objects.equals(String.valueOf(dbVendor.isApproved()), data.get("approved")) && data.get("approved") != null){
+        if (!Objects.equals(String.valueOf(dbVendor.isApproved()), data.get("approved")) && !data.get("approved").isEmpty()){
             Logger.debug("editvendor " + data.get("approved"));
             dbVendor.setApproved(!dbVendor.isApproved());
         }
@@ -263,10 +262,10 @@ public class VendorController extends Controller{
         if (dbProduct.getPrice() != obj.getPrice() && obj.getPrice() != 0) {
             dbProduct.setPrice(obj.getPrice());
         }
-        if (!Objects.equals(dbProduct.getName(), obj.getName()) && obj.getName() != null){
+        if (!Objects.equals(dbProduct.getName(), obj.getName()) && !obj.getName().isEmpty()){
             dbProduct.setName(obj.getName());
         }
-        if (!Objects.equals(dbProduct.getDescription(), obj.getDescription()) && obj.getName() != null){
+        if (!Objects.equals(dbProduct.getDescription(), obj.getDescription()) && !obj.getName().isEmpty()){
             dbProduct.setDescription(obj.getDescription());
         }
         if (dbProduct.getProductCategory() != obj.getProductCategory()){
@@ -275,7 +274,7 @@ public class VendorController extends Controller{
         if (!Objects.equals(dbProduct.getManufacturer(), obj.getManufacturer())){
             dbProduct.setManufacturer(obj.getManufacturer());
         }
-        if (!Objects.equals(String.valueOf(dbProduct.isFake()), data.get("fake")) && data.get("fake") != null){
+        if (!Objects.equals(String.valueOf(dbProduct.isFake()), data.get("fake")) && !data.get("fake").isEmpty()){
             Logger.debug("editproduct " + data.get("fake"));
             dbProduct.setFake(!dbProduct.isFake());
         }
@@ -368,10 +367,10 @@ public class VendorController extends Controller{
         Vendor vendor = vendorManager.getVendorByID(vendorID);
 
         Map<String, String> data = dataForm.data();
-        if(data.get("companyName") != null){
+        if(!data.get("companyName").isEmpty()){
             vendor.setCompanyName(data.get("companyName"));
         }
-        if (data.get("website") != null){
+        if (!data.get("website").isEmpty()){
             vendor.setWebsite(data.get("website"));
         }
         vendorManager.updateVendor(vendor);
@@ -386,13 +385,13 @@ public class VendorController extends Controller{
         //todo handle casting exception
         double latitude = Double.parseDouble(data.get("latitude"));
         String address = data.get("address");
-        if (address != null){
+        if (!address.isEmpty()){
             obj.setAddress(address);
         }
-        if (data.get("longitude") != null){
+        if (!data.get("longitude").isEmpty()){
             obj.setLongitude(Double.parseDouble(data.get("longitude")));
         }
-        if (data.get("latitude") != null){
+        if (!data.get("latitude").isEmpty()){
             obj.setLatitude(Double.parseDouble(data.get("latitude")));
         }
         return ok(Json.toJson(data));

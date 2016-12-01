@@ -1,6 +1,7 @@
 package models.vendor;
 
 
+import models.courier.Courier;
 import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
@@ -22,6 +23,7 @@ public class Vendor {
     private boolean approved;
     private List<ObjectId> reviews;
     private List<ObjectId> ratings;
+    private List<ObjectId> couriers;
     private boolean blocked;
 
     public boolean isApproved() {
@@ -37,6 +39,7 @@ public class Vendor {
         this.createdAt = new Date();
         this.ratings = new ArrayList<ObjectId>();
         this.reviews = new ArrayList<ObjectId>();
+        this.couriers = new ArrayList<ObjectId>();
     }
 
     public Vendor(String companyName, String website, boolean verified) {
@@ -46,6 +49,7 @@ public class Vendor {
         this.verified = verified;
         this.ratings = new ArrayList<ObjectId>();
         this.reviews = new ArrayList<ObjectId>();
+        this.couriers = new ArrayList<ObjectId>();
     }
 
     public Vendor(String companyName) {
@@ -54,6 +58,7 @@ public class Vendor {
         this.blocked = false;
         this.ratings = new ArrayList<ObjectId>();
         this.reviews = new ArrayList<ObjectId>();
+        this.couriers = new ArrayList<ObjectId>();
     }
 
     public void set_id(ObjectId _id) {
@@ -71,6 +76,7 @@ public class Vendor {
         this.blocked = false;
         this.ratings = new ArrayList<ObjectId>();
         this.reviews = new ArrayList<ObjectId>();
+        this.couriers = new ArrayList<ObjectId>();
     }
 
     public String getCompanyName() {
@@ -132,6 +138,22 @@ public class Vendor {
 
     public void addRating(Rating rating){
         ratings.add(rating.get_id());
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public List<ObjectId> getCouriers() {
+        return couriers;
+    }
+
+    public void setCouriers(List<ObjectId> couriers) {
+        this.couriers = couriers;
+    }
+
+    public void addCourier(Courier courier){
+        couriers.add(courier.get_id());
     }
 }
 

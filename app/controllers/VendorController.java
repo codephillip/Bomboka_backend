@@ -2,6 +2,7 @@ package controllers;
 
 import Utils.DatabaseUtils;
 import Utils.Utility;
+import models.courier.Courier;
 import models.vendor.*;
 import org.bson.types.ObjectId;
 import play.Logger;
@@ -30,6 +31,7 @@ public class VendorController extends Controller{
     private DatabaseUtils reviewManager = new DatabaseUtils("reviews");
     private DatabaseUtils couponManager = new DatabaseUtils("coupons");
     private DatabaseUtils productCategoryManager = new DatabaseUtils("productCategory");
+    private DatabaseUtils courierManager = new DatabaseUtils("courier");
 
     private final FormFactory formFactory;
 
@@ -424,5 +426,20 @@ public class VendorController extends Controller{
         coupon.setInvalid();
         couponManager.updateCoupon(coupon);
         return ok(Json.toJson(coupon));
+    }
+
+    public Result addCourierToVendor(String vendorID) {
+        Form<Vendor> dataForm = formFactory.form(Vendor.class).bindFromRequest();
+        Map<String, String> data = dataForm.data();
+
+        Vendor vendor = vendorManager.getVendorByID(vendorID);
+        if (Utility.isNotEmpty(data.get("courier"))) {
+            Courier courier = courierManager.getCourierByID(data.get("courier"));
+            Logger.debug("addCourierToVendor# " + courier.getName());
+            vendor.addCourier(courier);
+            vendorManager.updateVendor(vendor);
+            return ok(Json.toJson(vendor));
+        }
+        return ok("Failed to add Courier");
     }
 }

@@ -2,6 +2,7 @@ package controllers;
 
 import Utils.DatabaseUtils;
 import models.courier.Courier;
+import models.courier.CourierProfile;
 import models.vendor.Rating;
 import models.vendor.Review;
 import org.bson.types.ObjectId;
@@ -41,7 +42,6 @@ public class CourierController extends Controller{
         for (Courier courier : allCouriers) {
             Logger.debug("viewCouriers# " + courier.get_id().toString());
         }
-        //
         return ok(Json.toJson(allCouriers));
     }
 
@@ -248,5 +248,19 @@ public class CourierController extends Controller{
             Logger.debug("viewReviews# " + review.get_id().toString());
         }
         return ok(Json.toJson(allReviews));
+    }
+
+    public Result viewCourierProfile(String courierID){
+        Courier result = courierManager.getCourierByID(courierID);
+        CourierProfile courierProfile = new CourierProfile();
+        courierProfile.set_id(result.get_id());
+        courierProfile.setName(result.getName());
+        courierProfile.setAddress(result.getAddress());
+        courierProfile.setEmail(result.getEmail());
+        courierProfile.setPhoneNumber(result.getPhoneNumber());
+        courierProfile.setApproved(result.isApproved());
+        courierProfile.setReviews(result.getReviews());
+        courierProfile.setRatings(result.getRatings());
+        return ok(Json.toJson(courierProfile));
     }
 }

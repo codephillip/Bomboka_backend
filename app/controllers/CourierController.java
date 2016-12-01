@@ -1,6 +1,7 @@
 package controllers;
 
 import Utils.DatabaseUtils;
+import Utils.Utility;
 import models.courier.Courier;
 import models.courier.CourierProfile;
 import models.vendor.Rating;
@@ -61,26 +62,26 @@ public class CourierController extends Controller{
 
         Map<String, String> data = courierForm.data();
 
-        if (!Objects.equals(dbCourier.getName(), data.get("name")) && !data.get("name").isEmpty()) {
+        if (!Objects.equals(dbCourier.getName(), data.get("name")) && Utility.isNotEmpty(data.get("name"))) {
             dbCourier.setName(data.get("name"));
         }
-        if (!Objects.equals(dbCourier.getAddress(), data.get("address")) && !data.get("address").isEmpty()) {
-            dbCourier.setName(data.get("address"));
+        if (!Objects.equals(dbCourier.getAddress(), data.get("address")) && Utility.isNotEmpty(data.get("address"))) {
+            dbCourier.setAddress(data.get("address"));
         }
-        if (!Objects.equals(dbCourier.getEmail(), data.get("email")) && !data.get("email").isEmpty()) {
+        if (!Objects.equals(dbCourier.getEmail(), data.get("email")) && Utility.isNotEmpty(data.get("email"))) {
             dbCourier.setEmail(data.get("email"));
         }
-        if (!Objects.equals(dbCourier.getPhoneNumber(), data.get("phoneNumber")) && !data.get("phoneNumber").isEmpty()) {
+        if (!Objects.equals(dbCourier.getPhoneNumber(), data.get("phoneNumber")) && Utility.isNotEmpty(data.get("phoneNumber"))) {
             dbCourier.setPhoneNumber(data.get("phoneNumber"));
         }
-        if (!Objects.equals(String.valueOf(dbCourier.isBlocked()), data.get("blocked")) && !data.get("blocked").isEmpty()){
+        if (!Objects.equals(String.valueOf(dbCourier.isDeleted()), data.get("deleted")) && Utility.isNotEmpty(data.get("deleted"))) {
+            dbCourier.setDeleted(!dbCourier.isDeleted());
+        }
+        if (!Objects.equals(String.valueOf(dbCourier.isBlocked()), data.get("blocked")) && Utility.isNotEmpty(data.get("blocked"))) {
             dbCourier.setBlocked(!dbCourier.isBlocked());
         }
-        if (!Objects.equals(String.valueOf(dbCourier.isApproved()), data.get("approved")) && !data.get("approved").isEmpty()){
+        if (!Objects.equals(String.valueOf(dbCourier.isApproved()), data.get("approved")) && Utility.isNotEmpty(data.get("approved"))) {
             dbCourier.setApproved(!dbCourier.isApproved());
-        }
-        if (!Objects.equals(String.valueOf(dbCourier.isDeleted()), data.get("deleted")) && !data.get("deleted").isEmpty()){
-            dbCourier.setDeleted(!dbCourier.isDeleted());
         }
 
         try {
@@ -262,5 +263,36 @@ public class CourierController extends Controller{
         courierProfile.setReviews(result.getReviews());
         courierProfile.setRatings(result.getRatings());
         return ok(Json.toJson(courierProfile));
+    }
+
+    public Result editCourierProfile(String courierID){
+        Logger.debug("editCourier# "+ courierID);
+        Form<Courier> courierForm = formFactory.form(Courier.class).bindFromRequest();
+        Courier dbCourier = courierManager.getCourierByID(courierID);
+
+        Logger.debug("editCourier# " + dbCourier.getName() + dbCourier.getEmail());
+
+        Map<String, String> data = courierForm.data();
+
+        if (!Objects.equals(dbCourier.getName(), data.get("name")) && Utility.isNotEmpty(data.get("name"))) {
+            dbCourier.setName(data.get("name"));
+        }
+        if (!Objects.equals(dbCourier.getAddress(), data.get("address")) && Utility.isNotEmpty(data.get("address"))) {
+            dbCourier.setAddress(data.get("address"));
+        }
+        if (!Objects.equals(dbCourier.getEmail(), data.get("email")) && Utility.isNotEmpty(data.get("email"))) {
+            dbCourier.setEmail(data.get("email"));
+        }
+        if (!Objects.equals(dbCourier.getPhoneNumber(), data.get("phoneNumber")) && Utility.isNotEmpty(data.get("phoneNumber"))) {
+            dbCourier.setPhoneNumber(data.get("phoneNumber"));
+        }
+        if (!Objects.equals(String.valueOf(dbCourier.isDeleted()), data.get("deleted")) && Utility.isNotEmpty(data.get("deleted"))) {
+            dbCourier.setDeleted(!dbCourier.isDeleted());
+        }
+
+        dbCourier.setModificationTimeStamp(new Date());
+
+        courierManager.updateCourier(dbCourier);
+        return ok(Json.toJson(dbCourier));
     }
 }

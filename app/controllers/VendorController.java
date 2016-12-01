@@ -1,6 +1,7 @@
 package controllers;
 
 import Utils.DatabaseUtils;
+import Utils.Utility;
 import models.vendor.*;
 import org.bson.types.ObjectId;
 import play.Logger;
@@ -136,21 +137,21 @@ public class VendorController extends Controller{
         Logger.debug("editVendor# " + dbVendor.getCompanyName() + dbVendor.isApproved());
 
         Map<String, String> data = vendorForm.data();
-        if (!Objects.equals(dbVendor.getCompanyName(), data.get("companyName")) && !data.get("companyName").isEmpty()) {
+        if (!Objects.equals(dbVendor.getCompanyName(), data.get("companyName")) && Utility.isNotEmpty(data.get("companyName"))) {
             dbVendor.setCompanyName(data.get("companyName"));
         }
-        if (!Objects.equals(dbVendor.getWebsite(), data.get("website")) && !data.get("website").isEmpty()){
+        if (!Objects.equals(dbVendor.getWebsite(), data.get("website")) && Utility.isNotEmpty(data.get("website"))) {
             dbVendor.setWebsite(data.get("website"));
         }
-        if (!Objects.equals(String.valueOf(dbVendor.isVerified()), data.get("verified")) && !data.get("verified").isEmpty()){
+        if (!Objects.equals(String.valueOf(dbVendor.isVerified()), data.get("verified")) && Utility.isNotEmpty(data.get("verified"))) {
             Logger.debug("editvendor " + data.get("verified"));
             dbVendor.setVerified(!dbVendor.isVerified());
         }
-        if (!Objects.equals(String.valueOf(dbVendor.isBlocked()), data.get("blocked")) && !data.get("blocked").isEmpty()){
+        if (!Objects.equals(String.valueOf(dbVendor.isBlocked()), data.get("blocked")) && Utility.isNotEmpty(data.get("blocked"))) {
             Logger.debug("editvendor " + data.get("blocked"));
             dbVendor.setBlocked(!dbVendor.isBlocked());
         }
-        if (!Objects.equals(String.valueOf(dbVendor.isApproved()), data.get("approved")) && !data.get("approved").isEmpty()){
+        if (!Objects.equals(String.valueOf(dbVendor.isApproved()), data.get("approved")) && Utility.isNotEmpty(data.get("approved"))) {
             Logger.debug("editvendor " + data.get("approved"));
             dbVendor.setApproved(!dbVendor.isApproved());
         }
@@ -274,7 +275,7 @@ public class VendorController extends Controller{
         if (!Objects.equals(dbProduct.getManufacturer(), obj.getManufacturer())){
             dbProduct.setManufacturer(obj.getManufacturer());
         }
-        if (!Objects.equals(String.valueOf(dbProduct.isFake()), data.get("fake")) && !data.get("fake").isEmpty()){
+        if (!Objects.equals(String.valueOf(dbProduct.isFake()), data.get("fake")) && Utility.isNotEmpty(data.get("fake"))) {
             Logger.debug("editproduct " + data.get("fake"));
             dbProduct.setFake(!dbProduct.isFake());
         }
@@ -367,10 +368,10 @@ public class VendorController extends Controller{
         Vendor vendor = vendorManager.getVendorByID(vendorID);
 
         Map<String, String> data = dataForm.data();
-        if(!data.get("companyName").isEmpty()){
+        if(Utility.isNotEmpty(data.get("companyName"))) {
             vendor.setCompanyName(data.get("companyName"));
         }
-        if (!data.get("website").isEmpty()){
+        if (Utility.isNotEmpty(data.get("website"))) {
             vendor.setWebsite(data.get("website"));
         }
         vendorManager.updateVendor(vendor);
@@ -388,10 +389,10 @@ public class VendorController extends Controller{
         if (!address.isEmpty()){
             obj.setAddress(address);
         }
-        if (!data.get("longitude").isEmpty()){
+        if (Utility.isNotEmpty(data.get("longitutude"))) {
             obj.setLongitude(Double.parseDouble(data.get("longitude")));
         }
-        if (!data.get("latitude").isEmpty()){
+        if (Utility.isNotEmpty(data.get("latitude"))) {
             obj.setLatitude(Double.parseDouble(data.get("latitude")));
         }
         return ok(Json.toJson(data));

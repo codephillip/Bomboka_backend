@@ -436,9 +436,11 @@ public class VendorController extends Controller{
         if (Utility.isNotEmpty(data.get("courier"))) {
             Courier courier = courierManager.getCourierByID(data.get("courier"));
             Logger.debug("addCourierToVendor# " + courier.getName());
-            vendor.addCourier(courier);
-            vendorManager.updateVendor(vendor);
-            return ok(Json.toJson(vendor));
+            if (!vendor.getCouriers().contains(courier.get_id())) {
+                vendor.addCourier(courier);
+                vendorManager.updateVendor(vendor);
+                return ok(Json.toJson(vendor));
+            }
         }
         return ok("Failed to add Courier");
     }

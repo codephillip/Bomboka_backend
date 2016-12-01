@@ -59,6 +59,8 @@ POST    /api/vendor/edit/:vendorID                      controllers.VendorContro
 
 POST    /api/vendor/addCourierToVendor/:vendorID        controllers.VendorController.addCourierToVendor(vendorID: String)
 
+POST    /api/vendor/removeCourierFromVendor/:vendorID   controllers.VendorController.removeCourierFromVendor(vendorID: String)
+
 POST    /api/shop/coupon/add                            controllers.VendorController.addCoupon
 
 GET     /api/shop/coupons/                              controllers.VendorController.showCoupons

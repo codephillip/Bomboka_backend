@@ -442,4 +442,19 @@ public class VendorController extends Controller{
         }
         return ok("Failed to add Courier");
     }
+
+    public Result removeCourierFromVendor(String vendorID) {
+        Form<Vendor> dataForm = formFactory.form(Vendor.class).bindFromRequest();
+        Map<String, String> data = dataForm.data();
+
+        Vendor vendor = vendorManager.getVendorByID(vendorID);
+        if (Utility.isNotEmpty(data.get("courier"))) {
+//            Courier courier = courierManager.getCourierByID(data.get("courier"));
+//            Logger.debug("addCourierToVendor# " + courier.getName());
+            vendor.removeCourier(new ObjectId(data.get("courier")));
+            vendorManager.updateVendor(vendor);
+            return ok(Json.toJson(vendor));
+        }
+        return ok("Failed to add Courier");
+    }
 }

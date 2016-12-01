@@ -155,5 +155,9 @@ public class Vendor {
     public void addCourier(Courier courier){
         couriers.add(courier.get_id());
     }
+
+    public void removeCourier(ObjectId courier){
+        couriers.remove(courier);
+    }
 }
 

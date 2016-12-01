@@ -231,6 +231,7 @@ public class DatabaseUtils {
     }
 
 
+
     public List<Shop> findVendorShops(String vendorID) {
         MongoCursor<Shop> cursor = this.collection.find("{vendor: #}", new ObjectId(vendorID)).as(Shop.class);
         List<Shop> shops = new ArrayList<Shop>();

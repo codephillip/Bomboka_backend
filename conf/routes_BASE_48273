@@ -1,0 +1,71 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET     /                           controllers.HomeController.index
+# An example controller showing how to use dependency injection
+GET     /count                      controllers.CountController.count
+# An example controller showing how to write asynchronous code
+GET     /message                    controllers.AsyncController.message
+
+POST     /api/vendor/new             controllers.VendorController.addVendor
+
+GET     /api/vendor/:vendorID       controllers.VendorController.viewVendorDetails(vendorID: String)
+
+GET     /api/shop/:vendorID  controllers.VendorController.viewVendorShops(vendorID: String)
+
+POST    /api/shop/new/:vendorID        controllers.VendorController.addVendorShop(vendorID: String)
+
+GET    /api/shop/details/:shopID     controllers.VendorController.viewShopDetails(shopID: String)
+
+GET    /api/vendor                 controllers.VendorController.viewAllVendors
+
+POST    /api/shop/edit/:shopID                 controllers.VendorController.editShopDetails(shopID: String)
+
+POST    /api/vendor/approve/:vendorID    controllers.VendorController.approveVendor(vendorID: String)
+
+POST    /api/vendor/disapprove/:vendorID    controllers.VendorController.disapproveVendor(vendorID: String)
+
+DELETE    /api/vendor/delete/:vendorID    controllers.VendorController.deleteVendor(vendorID: String)
+
+DELETE    /api/shop/delete/:shopID    controllers.VendorController.deleteVendor(shopID: String)
+
+DELETE    /api/shop/product/delete/:productID    controllers.VendorController.deleteVendor(productID: String)
+
+POST      /api/shop/product/add/:shopID    controllers.VendorController.addProductToShop(shopID: String)
+
+POST      /api/vendor/block/:vendorID      controllers.VendorController.blockVendor(vendorID: String)
+
+POST      /api/vendor/unblock/:vendorID      controllers.VendorController.unBlockVendor(vendorID: String)
+
+POST     /api/vendor/rating/add/:vendorID     controllers.VendorController.addRatingToVendor(vendorID: String)
+
+POST     /api/shop/rating/add/:shopID     controllers.VendorController.addRatingToShop(shopID: String)
+
+POST     /api/product/rating/add/:productID     controllers.VendorController.addRatingToProduct(productID: String)
+
+POST     /api/vendor/review/add/:vendorID     controllers.VendorController.addReviewToVendor(vendorID: String)
+
+POST     /api/shop/review/add/:shopID     controllers.VendorController.addReviewToShop(shopID: String)
+
+POST     /api/product/review/add/:productID     controllers.VendorController.addReviewToProduct(productID: String)
+
+GET     /api/shop/products/:shopID          controllers.VendorController.viewShopProducts(shopID: String)
+
+POST    /api/vendor/edit/:vendorID          controllers.VendorController.editVendor(vendorID: String)
+
+POST    /api/shop/coupon/add                controllers.VendorController.addCoupon
+
+GET     /api/shop/coupons/                  controllers.VendorController.showCoupons
+
+DELETE  /api/shop/coupons/delete/:couponID            controllers.VendorController.deleteCoupon(couponID: String)
+
+POST  /api/shop/coupons/validate/:couponID            controllers.VendorController.validateCoupon(couponID: String)
+
+POST  /api/shop/coupons/invalidate/:couponID            controllers.VendorController.invalidateCoupon(couponID: String)
+
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

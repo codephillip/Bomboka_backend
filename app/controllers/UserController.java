@@ -14,6 +14,8 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
+import static Utils.Utility.isNotEmpty;
+
 /**
  * Created by Ahereza on 11/25/16.
  */
@@ -99,10 +101,34 @@ public class UserController extends Controller {
 
     public Result editUser(String userID){
         Form<User> dataForm = formFactory.form(User.class).bindFromRequest();
+        User dbUser = userManager.getUserByID(userID);
         Map<String, String> data = dataForm.data();
+        for(String key: data.keySet()){
+            if (key.equals("fullnames") && isNotEmpty(data.get(key))){
+                dbUser.setFullnames(data.get(key));
+            } else if (key.equals("username") && isNotEmpty(data.get(key))){
+                dbUser.setUsername(data.get(key));
+            } else if (key.equals("email") && isNotEmpty(data.get(key))){
+                dbUser.setEmail(data.get(key));
+            } else if (key.equals("address") && isNotEmpty(data.get(key))){
+                dbUser.setAddress(data.get(key));
+            } else if (key.equals("country") && isNotEmpty(data.get(key))){
+                dbUser.setCountry(data.get(key));
+            } else if (key.equals("age") && isNotEmpty(data.get(key))){
+                try{
+                    dbUser.setAge(Integer.parseInt(data.get(key)));
+                }
+                catch (NumberFormatException e){
+                    continue;
+                }
+            } else if (key.equals("phoneNumber") && isNotEmpty(data.get(key))){
+                dbUser.setPhoneNumber(data.get(key));
+            }
+        }
+        userManager.updateUser(dbUser);
+        return ok(Json.toJson(userManager.getUserByID(userID)));
+        }
 
-        return ok();
-    }
 
     public Result viewUsers() {
         Logger.debug("viewUsers#");

@@ -87,6 +87,8 @@ POST /api/users/role/:userID                            controllers.UserControll
 
 GET /api/users/role/:userID                             controllers.UserController.getRole(userID: String)
 
+POST /api/users/edit/:userID                            controllers.UserController.editUser(userID: String)
+
 GET /api/users                                          controllers.UserController.viewUsers
 
 GET  /api/productCategorys                              controllers.VendorController.viewProductCategorys

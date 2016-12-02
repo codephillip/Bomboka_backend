@@ -14,9 +14,21 @@ public class Order {
     private ObjectId user;
     private ObjectId vendor;
     private ObjectId courier;
+    private ObjectId product;
     private Date createdAt;
     private boolean valid;
-    private Date deliveryTime;
+    private Date deliveryTime; //todo calculate delivery time, basing on distance and courier
+
+    public Order(ObjectId _id, ObjectId user, ObjectId vendor, ObjectId courier, ObjectId product, Date createdAt, boolean valid, Date deliveryTime) {
+        this._id = _id;
+        this.user = user;
+        this.vendor = vendor;
+        this.courier = courier;
+        this.product = product;
+        this.createdAt = new Date();
+        this.valid = true;
+        this.deliveryTime = new Date();
+    }
 
     public Order(ObjectId _id, ObjectId user, ObjectId vendor, ObjectId courier, Date createdAt, boolean valid, Date deliveryTime) {
         this._id = _id;
@@ -88,5 +100,13 @@ public class Order {
 
     public void setDeliveryTime(Date deliveryTime) {
         this.deliveryTime = deliveryTime;
+    }
+
+    public ObjectId getProduct() {
+        return product;
+    }
+
+    public void setProduct(ObjectId product) {
+        this.product = product;
     }
 }

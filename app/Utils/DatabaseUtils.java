@@ -2,8 +2,9 @@ package Utils;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
-import models.user.User;
 import models.courier.Courier;
+import models.order.Order;
+import models.user.User;
 import models.vendor.*;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
@@ -55,6 +56,10 @@ public class DatabaseUtils {
 
     public void saveCourier(Courier courier) {
         this.collection.insert(courier);
+    }
+
+    public void saveOrder(Order order) {
+        this.collection.insert(order);
     }
 
     public void saveProductCategory(ProductCategory productCategory) {
@@ -167,6 +172,16 @@ public class DatabaseUtils {
             couriers.add(courier);
         }
         return couriers;
+    }
+
+    public List<Order> allOrders() {
+        MongoCursor<Order> cursor = collection.find().as(Order.class);
+        List<Order> orders = new ArrayList<Order>();
+        while (cursor.hasNext()) {
+            Order order = cursor.next();
+            orders.add(order);
+        }
+        return orders;
     }
 
     public List<Rating> allRatings() {

@@ -201,37 +201,39 @@ public class CourierController extends Controller{
         }
         
         ObjectId userObject = new ObjectId(data.get("user"));
-        Logger.debug("viewRatings# USERID" + userObject.toString());
-
-        // checks if user already has a rating
-        List<Rating> allRatings = ratingManager.allRatings();
-        for (Rating rating : allRatings) {
-            Logger.debug("viewRatings# " + "updating rating");
-            Logger.debug("viewRatings#" + rating.getUser().toString());
-            if (rating.getUser().toString().equals(userObject.toString())) {
-                Logger.debug("viewRatings# " + "finding userObject");
-                rating.setStars(stars);
-                ratingManager.updateRating(rating);
-
-                Courier courier = courierManager.getCourierByID(courierID);
-                courier.addRating(rating);
-                courierManager.updateCourier(courier);
-                return ok(Json.toJson(rating));
-            }
-        }
-
-        //creates new rating
-        Rating newRating = new Rating();
-        newRating.setStars(stars);
-        newRating.setUser(userObject);
-        Logger.debug("addCourierRating# " + newRating.getStars());
-        ratingManager.saveRating(newRating);
+        Logger.debug("viewRatings# USERID " + userObject.toString());
 
         Courier courier = courierManager.getCourierByID(courierID);
+        List<ObjectId> courierRatings = courier.getRatings();
+        Logger.debug("LIST " + courierRatings.isEmpty());
+        if (!courierRatings.isEmpty()) {
+            // update old user review
+            for (ObjectId courierRatingId : courierRatings) {
+                Logger.debug("courierRating" + courierRatingId.toString());
+                Rating rating = ratingManager.getRatingByID(courierRatingId.toString());
+                if (rating.getUser().toString().equals(data.get("user"))) {
+                    Logger.debug("MATCH FOUND");
+                    rating.setStars(stars);
+                    ratingManager.updateRating(rating);
+                    return ok("Updated");
+                }
+            }
+            createRatingForNewUser(stars, userObject, courier);
+            return ok("Created New");
+        } else {
+            createRatingForNewUser(stars, userObject, courier);
+        }
+        return ok("Finished");
+    }
+
+    private void createRatingForNewUser(double stars, ObjectId userObject, Courier courier) {
+        Logger.debug("creating new rating for User");
+        Rating newRating = new Rating(stars, userObject);
+        ratingManager.saveRating(newRating);
         courier.addRating(newRating);
         courierManager.updateCourier(courier);
-        return ok(Json.toJson(newRating));
     }
+
 
     public Result viewRatings() {
         Logger.debug("viewRatings#");

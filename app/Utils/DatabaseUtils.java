@@ -80,33 +80,31 @@ public class DatabaseUtils {
     }
 
     public Vendor getVendorByID(String vendorID) {
-        Vendor result = this.collection.findOne(new ObjectId(vendorID)).as(Vendor.class);
-        return result;
+        return this.collection.findOne(new ObjectId(vendorID)).as(Vendor.class);
     }
 
     public Product getProductByID(String productID) {
-        Product result = this.collection.findOne(new ObjectId(productID)).as(Product.class);
-        return result;
+        return this.collection.findOne(new ObjectId(productID)).as(Product.class);
     }
 
     public Courier getCourierByID(String courierID) {
-        Courier result = this.collection.findOne(new ObjectId(courierID)).as(Courier.class);
-        return result;
+        return this.collection.findOne(new ObjectId(courierID)).as(Courier.class);
+    }
+
+    public Rating getRatingByID(String ratingID) {
+        return this.collection.findOne(new ObjectId(ratingID)).as(Rating.class);
     }
 
     public ProductCategory getProductCategoryByID(String productCategoryID) {
-        ProductCategory result = this.collection.findOne(new ObjectId(productCategoryID)).as(ProductCategory.class);
-        return result;
+        return this.collection.findOne(new ObjectId(productCategoryID)).as(ProductCategory.class);
     }
 
     public Coupon getCouponByID(String couponID) {
-        Coupon result = this.collection.findOne(new ObjectId(couponID)).as(Coupon.class);
-        return result;
+        return this.collection.findOne(new ObjectId(couponID)).as(Coupon.class);
     }
 
     public Shop getVendorShopDetails(String shopID) {
-        Shop shop = this.collection.findOne(new ObjectId(shopID)).as(Shop.class);
-        return shop;
+        return this.collection.findOne(new ObjectId(shopID)).as(Shop.class);
     }
 
     public void deleteVendor(String vendorID) {

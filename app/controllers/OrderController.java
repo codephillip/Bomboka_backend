@@ -1,7 +1,9 @@
 package controllers;
 
 import Utils.DatabaseUtils;
+import Utils.Utility;
 import models.order.Order;
+import org.bson.types.ObjectId;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
@@ -11,9 +13,10 @@ import play.mvc.Result;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Ahereza on 11/25/16.
+ * Created by Codephillip on 12/02/16.
  */
 public class OrderController extends Controller {
     private DatabaseUtils orderManager = new DatabaseUtils("order");
@@ -22,6 +25,20 @@ public class OrderController extends Controller {
     @Inject
     public OrderController(FormFactory formFactory) {
         this.formFactory = formFactory;
+    }
+
+    public Result changeCourier(String orderID) {
+        Form<Order> orderForm = formFactory.form(Order.class).bindFromRequest();
+        Map<String, String> data = orderForm.data();
+        Order order = orderManager.getOrderByID(orderID);
+        Logger.debug("CHANGE ID1-" + order.getCourier().toString());
+        Logger.debug("CHANGE ID2-" + data.get("courier"));
+        if (Utility.isNotEmpty(data.get("courier"))) {
+            order.setCourier(new ObjectId(data.get("courier")));
+            orderManager.updateOrder(order);
+            return ok("Changed Courier");
+        }
+        return ok("Failed to change courier");
     }
 
     public Result cancelOrder(String orderID) {

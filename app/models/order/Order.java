@@ -17,7 +17,20 @@ public class Order {
     private ObjectId product;
     private Date createdAt;
     private boolean valid;
+    private boolean received;
     private Date deliveryTime; //todo calculate delivery time, basing on distance and courier
+
+    public Order(ObjectId _id, ObjectId user, ObjectId vendor, ObjectId courier, ObjectId product, Date createdAt, boolean valid, boolean received, Date deliveryTime) {
+        this._id = _id;
+        this.user = user;
+        this.vendor = vendor;
+        this.courier = courier;
+        this.product = product;
+        this.createdAt = new Date();
+        this.valid = true;
+        this.received = false;
+        this.deliveryTime = new Date();
+    }
 
     public Order(ObjectId _id, ObjectId user, ObjectId vendor, ObjectId courier, ObjectId product, Date createdAt, boolean valid, Date deliveryTime) {
         this._id = _id;
@@ -43,6 +56,7 @@ public class Order {
     public Order() {
         this.createdAt = new Date();
         this.valid = true;
+        this.received = false;
         this.deliveryTime = new Date();
     }
 
@@ -108,5 +122,13 @@ public class Order {
 
     public void setProduct(ObjectId product) {
         this.product = product;
+    }
+
+    public boolean isReceived() {
+        return received;
+    }
+
+    public void setReceived(boolean received) {
+        this.received = received;
     }
 }

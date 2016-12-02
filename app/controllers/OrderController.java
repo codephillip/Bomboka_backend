@@ -66,4 +66,14 @@ public class OrderController extends Controller {
         }
         return ok(Json.toJson(orders));
     }
+
+    public Result receivedOrder(String orderID) {
+        Order order = orderManager.getOrderByID(orderID);
+        if (!order.isReceived() && order.isValid()){
+            order.setReceived(true);
+            orderManager.updateOrder(order);
+            return ok(Json.toJson(order));
+        }
+        return ok("Order not delivered or was already delivered");
+    }
 }

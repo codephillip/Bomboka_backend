@@ -112,6 +112,10 @@ public class DatabaseUtils {
         return this.collection.findOne(new ObjectId(couponID)).as(Coupon.class);
     }
 
+    public Order getOrderByID(String orderID) {
+        return this.collection.findOne(new ObjectId(orderID)).as(Order.class);
+    }
+
     public Shop getVendorShopDetails(String shopID) {
         return this.collection.findOne(new ObjectId(shopID)).as(Shop.class);
     }
@@ -225,6 +229,10 @@ public class DatabaseUtils {
 
     public void updateCourier(Courier courier) {
         this.collection.save(courier);
+    }
+
+    public void updateOrder(Order order) {
+        this.collection.save(order);
     }
 
     public void updateProductCategory(ProductCategory productCategory) {

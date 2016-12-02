@@ -24,6 +24,16 @@ public class OrderController extends Controller {
         this.formFactory = formFactory;
     }
 
+    public Result cancelOrder(String orderID) {
+        Order order = orderManager.getOrderByID(orderID);
+        if (order.isValid()) {
+            order.setValid(false);
+            orderManager.updateOrder(order);
+            return ok(Json.toJson(order));
+        }
+        return ok("Failed to cancel");
+    }
+
     public Result addOrder() {
         Form<Order> order = formFactory.form(Order.class).bindFromRequest();
         Order obj = order.get();
@@ -35,7 +45,7 @@ public class OrderController extends Controller {
         Logger.debug("viewOrders#");
         List<Order> orders = orderManager.allOrders();
         for (Order order : orders) {
-            Logger.debug(order.getCourier().toString());
+            Logger.debug("viewOrders ID" + order.get_id().toString());
         }
         return ok(Json.toJson(orders));
     }

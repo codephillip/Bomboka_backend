@@ -95,6 +95,10 @@ public class DatabaseUtils {
         return this.collection.findOne(new ObjectId(ratingID)).as(Rating.class);
     }
 
+    public Review getReviewByID(String reviewID) {
+        return this.collection.findOne(new ObjectId(reviewID)).as(Review.class);
+    }
+
     public ProductCategory getProductCategoryByID(String productCategoryID) {
         return this.collection.findOne(new ObjectId(productCategoryID)).as(ProductCategory.class);
     }

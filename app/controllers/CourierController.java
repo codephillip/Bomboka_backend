@@ -157,36 +157,39 @@ public class CourierController extends Controller{
         Map<String, String> data = reviewForm.data();
 
         ObjectId userObject = new ObjectId(data.get("user"));
-        Logger.debug("viewRatings# USERID" + userObject.toString());
+        Logger.debug("viewRatings# USERID " + userObject.toString());
 
-        // checks if user already has a review
-        List<Review> allReviews = reviewManager.allReviews();
-        for (Review review : allReviews) {
-            Logger.debug("viewReviews# " + "updating review");
-            Logger.debug("viewReviews#" + review.getUser().toString());
-            if (review.getUser().toString().equals(userObject.toString())) {
-                Logger.debug("viewReviews# " + "finding userObject");
-                review.setText(data.get("text"));
-                reviewManager.updateReview(review);
-
-                Courier courier = courierManager.getCourierByID(courierID);
-                courier.addReview(review);
-                courierManager.updateCourier(courier);
-                return ok(Json.toJson(review));
-            }
-        }
-
-        //creates new review
-        Review newReview = new Review();
-        newReview.setText(data.get("text"));
-        newReview.setUser(userObject);
-        Logger.debug("addCourierReview# " + newReview.getText());
-        reviewManager.saveReview(newReview);
+        String text = data.get("text");
 
         Courier courier = courierManager.getCourierByID(courierID);
+        List<ObjectId> courierReviews = courier.getReviews();
+        Logger.debug("LIST " + courierReviews.isEmpty());
+        if (!courierReviews.isEmpty()) {
+            // update old user review
+            for (ObjectId courierReviewId : courierReviews) {
+                Logger.debug("courierReview" + courierReviewId.toString());
+                Review review = reviewManager.getReviewByID(courierReviewId.toString());
+                if (review.getUser().toString().equals(data.get("user"))) {
+                    Logger.debug("MATCH FOUND");
+                    review.setText(text);
+                    reviewManager.updateReview(review);
+                    return ok("Updated");
+                }
+            }
+            createReviewForNewUser(text, userObject, courier);
+            return ok("Created New");
+        } else {
+            createReviewForNewUser(text, userObject, courier);
+        }
+        return ok("Finished");
+    }
+
+    private void createReviewForNewUser(String text, ObjectId userObject, Courier courier) {
+        Logger.debug("creating new review for User");
+        Review newReview = new Review(text, userObject);
+        reviewManager.saveReview(newReview);
         courier.addReview(newReview);
         courierManager.updateCourier(courier);
-        return ok(Json.toJson(newReview));
     }
 
     public Result addCourierRating(String courierID){

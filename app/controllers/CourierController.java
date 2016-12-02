@@ -185,7 +185,7 @@ public class CourierController extends Controller{
     }
 
     private void createReviewForNewUser(String text, ObjectId userObject, Courier courier) {
-        Logger.debug("creating new review for User");
+        Logger.debug("creating new review for user");
         Review newReview = new Review(text, userObject);
         reviewManager.saveReview(newReview);
         courier.addReview(newReview);
@@ -230,7 +230,7 @@ public class CourierController extends Controller{
     }
 
     private void createRatingForNewUser(double stars, ObjectId userObject, Courier courier) {
-        Logger.debug("creating new rating for User");
+        Logger.debug("creating new rating for user");
         Rating newRating = new Rating(stars, userObject);
         ratingManager.saveRating(newRating);
         courier.addRating(newRating);

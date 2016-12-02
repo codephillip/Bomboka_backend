@@ -1,4 +1,4 @@
-package models.User;
+package models.user;
 
 import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;

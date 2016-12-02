@@ -2,7 +2,7 @@ package Utils;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
-import models.User.User;
+import models.user.User;
 import models.courier.Courier;
 import models.vendor.*;
 import org.bson.types.ObjectId;

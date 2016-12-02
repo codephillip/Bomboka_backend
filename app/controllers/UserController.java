@@ -2,7 +2,7 @@ package controllers;
 
 import Utils.DatabaseUtils;
 import Utils.Password;
-import models.User.User;
+import models.user.User;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;

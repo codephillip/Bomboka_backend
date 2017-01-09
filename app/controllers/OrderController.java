@@ -55,7 +55,7 @@ public class OrderController extends Controller {
         Form<Order> order = formFactory.form(Order.class).bindFromRequest();
         Order obj = order.get();
         orderManager.saveOrder(obj);
-        return ok(Json.toJson(obj)) ;
+        return ok(Json.toJson(obj));
     }
 
     public Result viewOrders() {
@@ -75,5 +75,10 @@ public class OrderController extends Controller {
             return ok(Json.toJson(order));
         }
         return ok("Order not delivered or was already delivered");
+    }
+
+    public Result getCartItems(String userID) {
+        List<Order> order = orderManager.getUserOrders(userID);
+        return ok(Json.toJson(order));
     }
 }

@@ -142,5 +142,7 @@ POST  /api/order/changeCourier/:orderID                 controllers.OrderControl
 POST  /api/order/received/:orderID                      controllers.OrderController.receivedOrder(orderID: String)
 
 GET  /api/orders                                        controllers.OrderController.viewOrders
+
+GET  /api/order/cartItems/:userID                       controllers.OrderController.getCartItems(userID: String)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                                   controllers.Assets.versioned(path="/public", file: Asset)

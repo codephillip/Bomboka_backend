@@ -15,6 +15,7 @@ import play.Logger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Ahereza on 11/16/16.
@@ -184,6 +185,17 @@ public class DatabaseUtils {
         while (cursor.hasNext()) {
             Order order = cursor.next();
             orders.add(order);
+        }
+        return orders;
+    }
+
+    public List<Order> getUserOrders(String userID) {
+        MongoCursor<Order> cursor = collection.find().as(Order.class);
+        List<Order> orders = new ArrayList<Order>();
+        while (cursor.hasNext()) {
+            Order order = cursor.next();
+            if (Objects.equals(order.getUser().toString(), userID))
+                orders.add(order);
         }
         return orders;
     }

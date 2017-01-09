@@ -52,6 +52,7 @@ public class VendorController extends Controller{
 
         Map<String, String> hold = product.data();
         Logger.debug("addProduct#" + hold);
+        Logger.debug("productCategoryID#" + hold.get("category"));
         ProductCategory parentProductCategory = productCategoryManager.getProductCategoryByName(hold.get("category"));
 
         obj.setProductCategory(parentProductCategory.get_id());
@@ -60,6 +61,10 @@ public class VendorController extends Controller{
     }
 
     public Result viewProductCategorys() {
+        List<ProductCategory> productCategorys= productCategoryManager.allProductCategorys();
+        for (ProductCategory productCategory : productCategorys) {
+            Logger.debug("PC id# " + productCategory.get_id().toString());
+        }
         return ok(Json.toJson(productCategoryManager.allProductCategorys()));
     }
 

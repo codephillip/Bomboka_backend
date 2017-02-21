@@ -10,7 +10,8 @@ public class Review {
     @MongoObjectId
     private ObjectId _id;
     private String text;
-    private ObjectId User; // should be an object of the user model TODO
+    //todo place mapping of product,vendor, shop
+    private ObjectId User; //todo should be an object of the user model
 
     public Review(String text, ObjectId user) {
         this.text = text;

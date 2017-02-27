@@ -40,6 +40,17 @@ public class VendorController extends Controller{
         this.formFactory = formFactory;
     }
 
+    public Result searchProduct() {
+        Logger.debug("searching product#");
+        Form<Product> product = formFactory.form(Product.class).bindFromRequest();
+        Map<String, String> data = product.data();
+        Logger.debug("wait...");
+        Logger.debug(String.valueOf(data));
+        List<Product> allProducts = productManager.searchProducts(data.get("keyword"));
+        Logger.debug(String.valueOf(allProducts));
+        return ok(Json.toJson(allProducts));
+    }
+
     public Result viewProducts() {
         Logger.debug("viewProducts#");
         List<Product> allProducts = productManager.allProducts();

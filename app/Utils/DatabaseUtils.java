@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Created by Ahereza on 11/16/16.
@@ -161,6 +162,16 @@ public class DatabaseUtils {
 
     public List<Product> allProducts() {
         MongoCursor<Product> cursor = collection.find().as(Product.class);
+        List<Product> products = new ArrayList<Product>();
+        while (cursor.hasNext()) {
+            Product product = cursor.next();
+            products.add(product);
+        }
+        return products;
+    }
+
+    public List<Product> searchProducts(String keyword) {
+        MongoCursor<Product> cursor = collection.find("{name:#}", Pattern.compile(keyword + ".*")).as(Product.class);
         List<Product> products = new ArrayList<Product>();
         while (cursor.hasNext()) {
             Product product = cursor.next();

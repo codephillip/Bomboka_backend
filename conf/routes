@@ -103,6 +103,8 @@ GET  /api/products                                      controllers.VendorContro
 
 POST  /api/product/edit/:productID                      controllers.VendorController.editProduct(productID: String)
 
+POST  /api/product/search                               controllers.VendorController.searchProduct()
+
 POST  /api/courier/add                                  controllers.CourierController.addCourier
 
 GET  /api/couriers                                      controllers.CourierController.viewCouriers

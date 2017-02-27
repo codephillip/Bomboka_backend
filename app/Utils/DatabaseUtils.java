@@ -171,7 +171,8 @@ public class DatabaseUtils {
     }
 
     public List<Product> searchProducts(String keyword) {
-        MongoCursor<Product> cursor = collection.find("{name:#}", Pattern.compile(keyword + ".*")).as(Product.class);
+        String capkeyword = keyword.substring(0, 1).toUpperCase() + keyword.substring(1);
+        MongoCursor<Product> cursor = collection.find("{name:{$in:[#, #]}}", Pattern.compile(keyword + ".*"), Pattern.compile(capkeyword + ".*")).as(Product.class);
         List<Product> products = new ArrayList<Product>();
         while (cursor.hasNext()) {
             Product product = cursor.next();

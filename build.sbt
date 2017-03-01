@@ -1,4 +1,6 @@
-import play.sbt.PlayImport.PlayKeys._
+import play.sbt.PlayJava
+import play.twirl.sbt.Import.TwirlKeys
+
 name := """Bomboka"""
 
 version := "1.0-SNAPSHOT"
@@ -17,8 +19,13 @@ libraryDependencies ++= Seq(
 
 libraryDependencies += filters
 
-val main = Project("test", file(".")).enablePlugins(play.sbt.PlayJava).settings(
+val main = Project("Bomboka", file(".")).enablePlugins(play.sbt.PlayJava).settings(
   routesImport += "se.radley.plugin.salat.Binders._",
     TwirlKeys.templateImports += "org.bson.types.ObjectId"
 )
 
+
+
+
+
+fork in run := true

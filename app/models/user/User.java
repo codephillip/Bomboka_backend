@@ -14,6 +14,7 @@ public class User {
     private ObjectId _id;
     private String fullnames;
     private String username;
+    private String image;
     private String email;
     private String password;
     private String address;
@@ -230,5 +231,21 @@ public class User {
 
     public void setTombStone(Date tombStone) {
         this.tombStone = tombStone;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

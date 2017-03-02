@@ -17,6 +17,7 @@ public class Vendor {
     @MongoObjectId
     private ObjectId _id;
     private String companyName;
+    private String image;
     private String website;
     private boolean verified;
     private Date createdAt;
@@ -159,5 +160,14 @@ public class Vendor {
     public void removeCourier(ObjectId courier){
         couriers.remove(courier);
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
 }
 

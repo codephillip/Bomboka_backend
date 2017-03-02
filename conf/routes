@@ -11,6 +11,8 @@ GET     /message                                        controllers.AsyncControl
 
 POST     /api/vendor/new                                controllers.VendorController.addVendor
 
+POST     /api/vendor/addimage/:vendorID                 controllers.VendorController.addOrReplaceVendorImage(vendorID: String)
+
 GET     /api/vendor/:vendorID                           controllers.VendorController.viewVendorDetails(vendorID: String)
 
 GET     /api/shop/:vendorID                             controllers.VendorController.viewVendorShops(vendorID: String)

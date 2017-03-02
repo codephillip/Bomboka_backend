@@ -16,6 +16,7 @@ public class Courier {
     @MongoObjectId
     private ObjectId _id;
     private String name;
+    private String image;
     private String address;
     private String email;
     private String phoneNumber;
@@ -247,5 +248,13 @@ public class Courier {
 
     public void addRating(Rating rating){
         this.ratings.add(rating.get_id());
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -118,7 +118,7 @@ public class VendorController extends Controller {
             e.printStackTrace();
         }
         Logger.debug(String.valueOf(Json.toJson(x)));
-        return newFileName;
+        return newFileName.replace(' ', '-');
     }
 
     private void deleteOldImage(String path) {
@@ -167,11 +167,21 @@ public class VendorController extends Controller {
     }
 
     public Result addVendor() {
-        // tested and passed
         Form<Vendor> vendor = formFactory.form(Vendor.class).bindFromRequest();
         Vendor obj = vendor.get();
         vendorManager.saveVendor(obj);
         return ok(Json.toJson(obj));
+    }
+
+    public Result addOrReplaceVendorImage(String VendorID) {
+        Vendor vendor = vendorManager.getVendorByID(VendorID);
+        String path = System.getProperty("user.dir") + "/uploads/" + Utility.PROFILE_IMAGE + "/" + VendorID;
+        Logger.debug("File upload#" + path);
+        deleteOldImage(path);
+        ArrayList<String> imageNames =  uploadImage(path, 1);
+        vendor.setImage(imageNames.get(0));
+        vendorManager.updateVendor(vendor);
+        return ok(Json.toJson(vendor));
     }
 
     public Result viewVendorDetails(String vendorID) {

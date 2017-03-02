@@ -20,9 +20,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import play.mvc.Http;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -30,7 +32,7 @@ import org.apache.commons.io.IOUtils;
 /**
  * Created by Ahereza on 11/15/16.
  */
-public class VendorController extends Controller{
+public class VendorController extends Controller {
 
     private DatabaseUtils vendorManager = new DatabaseUtils("vendors");
     private DatabaseUtils shopManager = new DatabaseUtils("shops");
@@ -76,47 +78,26 @@ public class VendorController extends Controller{
 
         obj.setProductCategory(parentProductCategory.get_id());
         productManager.saveProduct(obj); // saves to Product table
-        return ok(Json.toJson(obj)) ;
+        return ok(Json.toJson(obj));
     }
 
-//    public Result uploadProductImage(String imageCategory){
-//        String path = System.getProperty("user.dir")+"/uploads/" + imageCategory;
-//        Logger.debug("File upload#" + path);
-//
-//        deleteOldImage(path);
-//
-//        Http.MultipartFormData body = request().body().asMultipartFormData();
-//        Http.MultipartFormData.FilePart uploadFile = body.getFile("upload");
-//        String file_name = uploadFile.getFilename();
-//
-//        File uploadF = (File) uploadFile.getFile();
-//        String newFileName =  System.currentTimeMillis()+"-"+file_name;
-//        File openFile = new File(path +"/"+ newFileName);
-//        String [] x = new String[]{newFileName, uploadFile.getContentType()};
-//        InputStream isFile1 = null;
-//
-//        try {
-//            isFile1 = new FileInputStream(uploadF);
-//            byte[] byteFile1 = IOUtils.toByteArray(isFile1);
-//
-//            FileUtils.writeByteArrayToFile(openFile, byteFile1);
-//            isFile1.close();
-//
-//        } catch (IOException  e) {
-//            e.printStackTrace();
-//        }
-//        return ok(Json.toJson(x));
-//    }
-
-    private String[] uploadImage(String path){
+    private String[] uploadImage(String path, int numberOfImages) {
         Http.MultipartFormData body = request().body().asMultipartFormData();
-        Http.MultipartFormData.FilePart uploadFile = body.getFile("upload");
+        String imageNames[] = new String[numberOfImages + 1];
+        for (int i = 1; i < numberOfImages + 1; i++) {
+            Http.MultipartFormData.FilePart uploadFile = body.getFile("image" + i);
+            imageNames[i] = saveImageToDisk(uploadFile, path);
+        }
+        return imageNames;
+    }
+
+    private String saveImageToDisk(Http.MultipartFormData.FilePart uploadFile, String path) {
         String file_name = uploadFile.getFilename();
 
         File uploadF = (File) uploadFile.getFile();
-        String newFileName =  System.currentTimeMillis()+"-"+file_name;
-        File openFile = new File(path +"/"+ newFileName);
-        String [] x = new String[]{newFileName, uploadFile.getContentType()};
+        String newFileName = System.currentTimeMillis() + "-" + file_name;
+        File openFile = new File(path + "/" + newFileName);
+        String[] x = new String[]{newFileName, uploadFile.getContentType()};
         InputStream isFile1 = null;
 
         try {
@@ -126,11 +107,11 @@ public class VendorController extends Controller{
             FileUtils.writeByteArrayToFile(openFile, byteFile1);
             isFile1.close();
 
-        } catch (IOException  e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         Logger.debug(String.valueOf(Json.toJson(x)));
-        return x;
+        return newFileName;
     }
 
 
@@ -138,7 +119,7 @@ public class VendorController extends Controller{
         Logger.debug("Delete old image");
         File f_d;
         f_d = new File(path);
-        if(f_d.isDirectory()){
+        if (f_d.isDirectory()) {
             for (String x : f_d.list()) {
                 new File(f_d, x).delete();
 
@@ -147,7 +128,7 @@ public class VendorController extends Controller{
     }
 
     public Result viewProductCategorys() {
-        List<ProductCategory> productCategorys= productCategoryManager.allProductCategorys();
+        List<ProductCategory> productCategorys = productCategoryManager.allProductCategorys();
         for (ProductCategory productCategory : productCategorys) {
             Logger.debug("PC id# " + productCategory.get_id().toString());
         }
@@ -168,7 +149,7 @@ public class VendorController extends Controller{
             ProductCategory parentProductCategory = productCategoryManager.getProductCategoryByName(hold.get("parent"));
             code = parentProductCategory.getAncestorCode(); // retrieves the arraylist(code) of the parent
             code.add(hold.get("name")); // appends name of the child to the end of the arraylist
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             code.add(hold.get("name"));
         }
@@ -179,26 +160,26 @@ public class VendorController extends Controller{
         return ok(Json.toJson(obj));
     }
 
-    public Result addVendor(){
+    public Result addVendor() {
         // tested and passed
         Form<Vendor> vendor = formFactory.form(Vendor.class).bindFromRequest();
         Vendor obj = vendor.get();
         vendorManager.saveVendor(obj);
-        return ok(Json.toJson(obj)) ;
+        return ok(Json.toJson(obj));
     }
 
-    public Result viewVendorDetails(String vendorID){
+    public Result viewVendorDetails(String vendorID) {
         // tested passed
         Vendor result = vendorManager.getVendorByID(vendorID);
         return ok(Json.toJson(result));
     }
 
-    public Result viewVendorShops(String vendorID){
+    public Result viewVendorShops(String vendorID) {
         //tested passed
         return ok(Json.toJson(shopManager.findVendorShops(vendorID)));
     }
 
-    public Result addVendorShop(String vendorID){
+    public Result addVendorShop(String vendorID) {
         // tested passed
         Form<Shop> shop = formFactory.form(Shop.class).bindFromRequest();
         Shop obj = shop.get();
@@ -207,7 +188,7 @@ public class VendorController extends Controller{
         return ok();
     }
 
-    public Result viewAllVendors(){
+    public Result viewAllVendors() {
         // tested and passed
         List<Vendor> allVendors = vendorManager.allVendors();
         // debug purposes
@@ -217,14 +198,14 @@ public class VendorController extends Controller{
         return ok(Json.toJson(allVendors));
     }
 
-    public Result viewShopDetails(String shopID){
+    public Result viewShopDetails(String shopID) {
         // tested passed
         Shop shop = shopManager.getVendorShopDetails(shopID);
         return ok(Json.toJson(shop));
     }
 
-    public Result editVendorDetails(String vendorID){
-        Logger.debug("editVendor# "+ vendorID);
+    public Result editVendorDetails(String vendorID) {
+        Logger.debug("editVendor# " + vendorID);
         Form<Vendor> vendorForm = formFactory.form(Vendor.class).bindFromRequest();
         Vendor dbVendor = vendorManager.getVendorByID(vendorID);
         Logger.debug("editVendor# " + dbVendor.getCompanyName() + dbVendor.isApproved());
@@ -253,19 +234,19 @@ public class VendorController extends Controller{
         return ok(Json.toJson(dbVendor));
     }
 
-    public Result deleteVendor(String vendorID){
+    public Result deleteVendor(String vendorID) {
         // testing passed
         vendorManager.deleteVendor(vendorID);
         return ok();
     }
 
-    public Result deleteShop(String shopID){
+    public Result deleteShop(String shopID) {
         // tested passed
         shopManager.deleteShop(shopID);
         return ok();
     }
 
-    public Result approveVendor(String vendorID){
+    public Result approveVendor(String vendorID) {
         // tested passed
         Vendor vendor = vendorManager.getVendorByID(vendorID);
         vendor.setApproved(true);
@@ -273,7 +254,7 @@ public class VendorController extends Controller{
         return ok(Json.toJson(vendor));
     }
 
-    public Result disapproveVendor(String vendorID){
+    public Result disapproveVendor(String vendorID) {
         // tested and passed
         Vendor vendor = vendorManager.getVendorByID(vendorID);
         vendor.setApproved(false);
@@ -281,7 +262,7 @@ public class VendorController extends Controller{
         return ok(Json.toJson(vendor));
     }
 
-    public Result writeVendorReview(String reviewText, String vendorID){
+    public Result writeVendorReview(String reviewText, String vendorID) {
         Vendor vendor = vendorManager.getVendorByID(vendorID);
         Review review = new Review(reviewText);
         vendor.addReview(review);
@@ -290,10 +271,10 @@ public class VendorController extends Controller{
         return ok(Json.toJson(vendor));
     }
 
-    public Result addVendorRating(double rating, String vendorID){
-        if (rating > 5){
+    public Result addVendorRating(double rating, String vendorID) {
+        if (rating > 5) {
             rating = 5;
-        } else if (rating < 0){
+        } else if (rating < 0) {
             rating = 0;
         }
         Vendor vendor = vendorManager.getVendorByID(vendorID);
@@ -304,7 +285,7 @@ public class VendorController extends Controller{
         return ok(Json.toJson(vendor));
     }
 
-    public Result writeShopReview(String reviewText, String shopID){
+    public Result writeShopReview(String reviewText, String shopID) {
         Shop shop = shopManager.getVendorShopDetails(shopID);
         Review review = new Review(reviewText);
         shop.addReview(review);
@@ -313,10 +294,10 @@ public class VendorController extends Controller{
         return ok(Json.toJson(shop));
     }
 
-    public Result addShopRating(double rating, String shopID){
-        if (rating > 5){
+    public Result addShopRating(double rating, String shopID) {
+        if (rating > 5) {
             rating = 5;
-        } else if (rating < 0){
+        } else if (rating < 0) {
             rating = 0;
         }
         Shop shop = shopManager.getVendorShopDetails(shopID);
@@ -327,10 +308,10 @@ public class VendorController extends Controller{
         return ok(Json.toJson(shop));
     }
 
-    public Result addProductToShop(String shopID){
-        String path = System.getProperty("user.dir")+"/uploads/" + Utility.PRODUCT_IMAGE;
+    public Result addProductToShop(String shopID) {
+        String path = System.getProperty("user.dir") + "/uploads/" + Utility.PRODUCT_IMAGE;
         Logger.debug("File upload#" + path);
-        String imageName = uploadImage(path)[0];
+        String imageName = uploadImage(path, 4)[0];
         ArrayList<String> images = new ArrayList<String>();
         images.add(imageName);
 
@@ -344,13 +325,13 @@ public class VendorController extends Controller{
         return ok(Json.toJson(shop));
     }
 
-    public Result deleteProductFromShop(String productID){
+    public Result deleteProductFromShop(String productID) {
         productManager.deleteProduct(productID);
         return ok();
     }
 
-    public Result editProduct(String productID){
-        Logger.debug("editProduct# "+ productID);
+    public Result editProduct(String productID) {
+        Logger.debug("editProduct# " + productID);
         Form<Product> productForm = formFactory.form(Product.class).bindFromRequest();
         Product obj = productForm.get();
         Product dbProduct = productManager.getProductByID(productID);
@@ -362,16 +343,16 @@ public class VendorController extends Controller{
         if (dbProduct.getPrice() != obj.getPrice() && obj.getPrice() != 0) {
             dbProduct.setPrice(obj.getPrice());
         }
-        if (!Objects.equals(dbProduct.getName(), obj.getName()) && !obj.getName().isEmpty()){
+        if (!Objects.equals(dbProduct.getName(), obj.getName()) && !obj.getName().isEmpty()) {
             dbProduct.setName(obj.getName());
         }
-        if (!Objects.equals(dbProduct.getDescription(), obj.getDescription()) && !obj.getName().isEmpty()){
+        if (!Objects.equals(dbProduct.getDescription(), obj.getDescription()) && !obj.getName().isEmpty()) {
             dbProduct.setDescription(obj.getDescription());
         }
-        if (dbProduct.getProductCategory() != obj.getProductCategory()){
+        if (dbProduct.getProductCategory() != obj.getProductCategory()) {
             dbProduct.setProductCategory(obj.getProductCategory());
         }
-        if (!Objects.equals(dbProduct.getManufacturer(), obj.getManufacturer())){
+        if (!Objects.equals(dbProduct.getManufacturer(), obj.getManufacturer())) {
             dbProduct.setManufacturer(obj.getManufacturer());
         }
         if (!Objects.equals(String.valueOf(dbProduct.isFake()), data.get("fake")) && Utility.isNotEmpty(data.get("fake"))) {
@@ -383,21 +364,21 @@ public class VendorController extends Controller{
         return ok(Json.toJson(obj));
     }
 
-    public Result blockVendor(String vendorID){
+    public Result blockVendor(String vendorID) {
         Vendor vendor = vendorManager.getVendorByID(vendorID);
         vendor.setBlocked(true);
         vendorManager.updateVendor(vendor);
         return ok(Json.toJson(vendor));
     }
 
-    public Result unBlockVendor(String vendorID){
+    public Result unBlockVendor(String vendorID) {
         Vendor vendor = vendorManager.getVendorByID(vendorID);
         vendor.setBlocked(false);
         vendorManager.updateVendor(vendor);
         return ok(Json.toJson(vendor));
     }
 
-    public Result addRatingToVendor(String vendorID){
+    public Result addRatingToVendor(String vendorID) {
         Form<Rating> newRating = formFactory.form(Rating.class).bindFromRequest();
         Rating obj = newRating.get();
         ratingManager.saveRating(obj);
@@ -407,7 +388,7 @@ public class VendorController extends Controller{
         return ok(Json.toJson(vendor));
     }
 
-    public Result addRatingToShop(String shopID){
+    public Result addRatingToShop(String shopID) {
         Form<Rating> newRating = formFactory.form(Rating.class).bindFromRequest();
         Rating obj = newRating.get();
         ratingManager.saveRating(obj);
@@ -417,7 +398,7 @@ public class VendorController extends Controller{
         return ok(Json.toJson(shop));
     }
 
-    public Result addRatingToProduct(String productID){
+    public Result addRatingToProduct(String productID) {
         Form<Rating> newRating = formFactory.form(Rating.class).bindFromRequest();
         Rating obj = newRating.get();
         ratingManager.saveRating(obj);
@@ -427,7 +408,7 @@ public class VendorController extends Controller{
         return ok(Json.toJson(product));
     }
 
-    public Result addReviewToVendor(String vendorID){
+    public Result addReviewToVendor(String vendorID) {
         Form<Review> newReview = formFactory.form(Review.class).bindFromRequest();
         Review obj = newReview.get();
         reviewManager.saveReview(obj);
@@ -437,7 +418,7 @@ public class VendorController extends Controller{
         return ok(Json.toJson(vendor));
     }
 
-    public Result addReviewToShop(String shopID){
+    public Result addReviewToShop(String shopID) {
         Form<Review> newReview = formFactory.form(Review.class).bindFromRequest();
         Review obj = newReview.get();
         reviewManager.saveReview(obj);
@@ -447,7 +428,7 @@ public class VendorController extends Controller{
         return ok(Json.toJson(shop));
     }
 
-    public Result addReviewToProduct(String productID){
+    public Result addReviewToProduct(String productID) {
         Form<Review> newReview = formFactory.form(Review.class).bindFromRequest();
         Review obj = newReview.get();
         reviewManager.saveReview(obj);
@@ -457,17 +438,18 @@ public class VendorController extends Controller{
         return ok(Json.toJson(product));
     }
 
-    public Result viewShopProducts(String shopID){
+    public Result viewShopProducts(String shopID) {
         Shop shop = shopManager.getVendorShopDetails(shopID);
         List<Product> productList = productManager.shopProducts(shop);
         return ok(Json.toJson(productList));
     }
-    public Result editVendor(String vendorID){
+
+    public Result editVendor(String vendorID) {
         Form<Vendor> dataForm = formFactory.form(Vendor.class).bindFromRequest();
         Vendor vendor = vendorManager.getVendorByID(vendorID);
 
         Map<String, String> data = dataForm.data();
-        if(Utility.isNotEmpty(data.get("companyName"))) {
+        if (Utility.isNotEmpty(data.get("companyName"))) {
             vendor.setCompanyName(data.get("companyName"));
         }
         if (Utility.isNotEmpty(data.get("website"))) {
@@ -478,14 +460,14 @@ public class VendorController extends Controller{
         return ok(Json.toJson(vendor));
     }
 
-    public Result editShopDetails(String shopID){
+    public Result editShopDetails(String shopID) {
         Form<Shop> dataForm = formFactory.form(Shop.class).bindFromRequest();
         Shop obj = shopManager.getVendorShopDetails(shopID);
         Map<String, String> data = dataForm.data();
         //todo handle casting exception
         double latitude = Double.parseDouble(data.get("latitude"));
         String address = data.get("address");
-        if (!address.isEmpty()){
+        if (!address.isEmpty()) {
             obj.setAddress(address);
         }
         if (Utility.isNotEmpty(data.get("longitutude"))) {
@@ -497,28 +479,31 @@ public class VendorController extends Controller{
         return ok(Json.toJson(data));
     }
 
-    public Result addCoupon(){
+    public Result addCoupon() {
         Form<Coupon> newCoupon = formFactory.form(Coupon.class).bindFromRequest();
         Coupon obj = newCoupon.get();
         couponManager.saveCoupon(obj);
         return ok();
     }
-    public Result showCoupons(){
+
+    public Result showCoupons() {
         List<Coupon> coupons = couponManager.showCoupons();
         return ok(Json.toJson(coupons));
     }
-    public Result deleteCoupon(String couponID){
+
+    public Result deleteCoupon(String couponID) {
         couponManager.deleteCoupon(couponID);
         return ok();
     }
 
-    public Result validateCoupon(String couponID){
+    public Result validateCoupon(String couponID) {
         Coupon coupon = couponManager.getCouponByID(couponID);
         coupon.setValid();
         couponManager.updateCoupon(coupon);
         return ok(Json.toJson(coupon));
     }
-    public Result invalidateCoupon(String couponID){
+
+    public Result invalidateCoupon(String couponID) {
         Coupon coupon = couponManager.getCouponByID(couponID);
         coupon.setInvalid();
         couponManager.updateCoupon(coupon);

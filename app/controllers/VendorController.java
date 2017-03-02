@@ -81,12 +81,13 @@ public class VendorController extends Controller {
         return ok(Json.toJson(obj));
     }
 
-    private String[] uploadImage(String path, int numberOfImages) {
+    private ArrayList<String> uploadImage(String path, int numberOfImages) {
+        //numberOfImages count starts from 1
         Http.MultipartFormData body = request().body().asMultipartFormData();
-        String imageNames[] = new String[numberOfImages + 1];
+        ArrayList<String> imageNames = new ArrayList<String>();
         for (int i = 1; i < numberOfImages + 1; i++) {
             Http.MultipartFormData.FilePart uploadFile = body.getFile("image" + i);
-            imageNames[i] = saveImageToDisk(uploadFile, path);
+            imageNames.add(saveImageToDisk(uploadFile, path));
         }
         return imageNames;
     }
@@ -311,14 +312,13 @@ public class VendorController extends Controller {
     public Result addProductToShop(String shopID) {
         String path = System.getProperty("user.dir") + "/uploads/" + Utility.PRODUCT_IMAGE;
         Logger.debug("File upload#" + path);
-        String imageName = uploadImage(path, 4)[0];
-        ArrayList<String> images = new ArrayList<String>();
-        images.add(imageName);
+        ArrayList<String> imageNames =  uploadImage(path, 4);
 
         Form<Product> newProduct = formFactory.form(Product.class).bindFromRequest();
         Product product = newProduct.get();
-        product.setImages(images);
+        product.setImages(imageNames);
         productManager.saveProduct(product);
+
         Shop shop = shopManager.getVendorShopDetails(shopID);
         shop.addToProductsList(product);
         shopManager.updateShop(shop);

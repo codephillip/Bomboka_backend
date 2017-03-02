@@ -50,6 +50,8 @@ public class VendorController extends Controller {
         this.formFactory = formFactory;
     }
 
+
+
     public Result searchProduct() {
         Logger.debug("searching product#");
         Form<Product> product = formFactory.form(Product.class).bindFromRequest();
@@ -79,6 +81,10 @@ public class VendorController extends Controller {
         obj.setProductCategory(parentProductCategory.get_id());
         productManager.saveProduct(obj); // saves to Product table
         return ok(Json.toJson(obj));
+    }
+
+    public Result FetchImageUpload(String link){
+        return ok(new java.io.File(System.getProperty("user.dir")+"/uploads/"+link));
     }
 
     private ArrayList<String> uploadImage(String path, int numberOfImages) {
@@ -114,7 +120,6 @@ public class VendorController extends Controller {
         Logger.debug(String.valueOf(Json.toJson(x)));
         return newFileName;
     }
-
 
     private void deleteOldImage(String path) {
         Logger.debug("Delete old image");

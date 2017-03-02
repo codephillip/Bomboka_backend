@@ -105,8 +105,6 @@ POST  /api/product/edit/:productID                      controllers.VendorContro
 
 POST  /api/product/search                               controllers.VendorController.searchProduct()
 
-POST  /api/product/addimage                              controllers.VendorController.uploadProductImage()
-
 POST  /api/courier/add                                  controllers.CourierController.addCourier
 
 GET  /api/couriers                                      controllers.CourierController.viewCouriers

@@ -16,6 +16,7 @@ public class Product {
     private double price;
     private String name;
     private String description;
+    private List<String> images;
     private ObjectId productCategory;
     private Date timestamp;
     private String manufacturer;
@@ -84,6 +85,21 @@ public class Product {
         this.timestamp = new Date();
         this.ratings = new ArrayList<ObjectId>();
         this.reviews = new ArrayList<ObjectId>();
+    }
+
+    public Product(ObjectId _id, double price, String name, String description, List<String> images, ObjectId productCategory, Date timestamp, String manufacturer, List<ObjectId> reviews, List<ObjectId> ratings, boolean fake) {
+        this._id = _id;
+        this.price = price;
+        this.name = name;
+        this.description = description;
+        this.images = images;
+        this.timestamp = new Date();
+        this.productCategory = productCategory;
+        this.timestamp = timestamp;
+        this.manufacturer = manufacturer;
+        this.reviews = reviews;
+        this.ratings = ratings;
+        this.fake = fake;
     }
 
     public void set_id(ObjectId _id) {
@@ -168,5 +184,13 @@ public class Product {
 
     public void setFake(boolean fake) {
         this.fake = fake;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 }

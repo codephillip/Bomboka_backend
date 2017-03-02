@@ -13,8 +13,6 @@ POST     /api/vendor/new                                controllers.VendorContro
 
 POST     /api/vendor/addimage/:vendorID                 controllers.VendorController.addOrReplaceVendorImage(vendorID: String)
 
-POST     /api/user/addimage/:userID                     controllers.UserController.addOrReplaceUserImage(userID: String)
-
 GET     /api/vendor/:vendorID                           controllers.VendorController.viewVendorDetails(vendorID: String)
 
 GET     /api/shop/:vendorID                             controllers.VendorController.viewVendorShops(vendorID: String)
@@ -77,6 +75,16 @@ POST  /api/shop/coupons/invalidate/:couponID            controllers.VendorContro
 
 POST  /api/productCategory/add                          controllers.VendorController.addProductCategory
 
+GET  /api/productCategorys                              controllers.VendorController.viewProductCategorys
+
+POST  /api/product/add                                  controllers.VendorController.addProduct
+
+GET  /api/products                                      controllers.VendorController.viewProducts
+
+POST  /api/product/edit/:productID                      controllers.VendorController.editProduct(productID: String)
+
+POST  /api/product/search                               controllers.VendorController.searchProduct()
+
 POST /api/users/signup                                  controllers.UserController.signUp
 
 POST /api/users/signin                                  controllers.UserController.signIn
@@ -99,15 +107,7 @@ POST /api/users/edit/:userID                            controllers.UserControll
 
 GET /api/users                                          controllers.UserController.viewUsers
 
-GET  /api/productCategorys                              controllers.VendorController.viewProductCategorys
-
-POST  /api/product/add                                  controllers.VendorController.addProduct
-
-GET  /api/products                                      controllers.VendorController.viewProducts
-
-POST  /api/product/edit/:productID                      controllers.VendorController.editProduct(productID: String)
-
-POST  /api/product/search                               controllers.VendorController.searchProduct()
+POST     /api/user/addimage/:userID                     controllers.UserController.addOrReplaceUserImage(userID: String)
 
 POST  /api/courier/add                                  controllers.CourierController.addCourier
 
@@ -138,6 +138,8 @@ GET  /api/reviews                                       controllers.CourierContr
 GET  /api/courierProfile/:courierID                     controllers.CourierController.viewCourierProfile(courierID: String)
 
 POST  /api/courierProfile/edit/:courierID               controllers.CourierController.editCourierProfile(courierID: String)
+
+POST  /api/courier/addimage/:courierID               controllers.CourierController.addOrReplaceCourierImage(courierID: String)
 
 POST  /api/order/add                                    controllers.OrderController.addOrder
 

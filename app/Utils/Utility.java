@@ -55,7 +55,7 @@ public class Utility {
         return imageNames;
     }
 
-    public String saveImageToDisk(Http.MultipartFormData.FilePart uploadFile, String path) {
+    private String saveImageToDisk(Http.MultipartFormData.FilePart uploadFile, String path) {
         String file_name = uploadFile.getFilename();
 
         File uploadF = (File) uploadFile.getFile();

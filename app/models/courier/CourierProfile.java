@@ -15,17 +15,19 @@ public class CourierProfile {
     private ObjectId _id;
     private String name;
     private String address;
+    private String image;
     private String email;
     private String phoneNumber;
     private boolean approved;
     private List<ObjectId> reviews;
     private List<ObjectId> ratings;
 
-    public CourierProfile(ObjectId _id, String name, String address, String email, String phoneNumber, boolean approved, List<ObjectId> reviews, List<ObjectId> ratings) {
+    public CourierProfile(ObjectId _id, String name, String address, String image,String email, String phoneNumber, boolean approved, List<ObjectId> reviews, List<ObjectId> ratings) {
         this._id = _id;
         this.name = name;
         this.address = address;
         this.email = email;
+        this.image = image;
         this.phoneNumber = phoneNumber;
         this.approved = approved;
         this.reviews = reviews;
@@ -105,5 +107,13 @@ public class CourierProfile {
 
     public void addRating(Rating rating){
         this.ratings.add(rating.get_id());
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -4,6 +4,7 @@ import Utils.DatabaseUtils;
 import Utils.Utility;
 import models.courier.Courier;
 import models.courier.CourierProfile;
+import models.user.User;
 import models.vendor.Rating;
 import models.vendor.Review;
 import org.bson.types.ObjectId;
@@ -15,10 +16,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by Codephillip on 11/30/16.
@@ -30,10 +28,12 @@ public class CourierController extends Controller{
     private DatabaseUtils ratingManager = new DatabaseUtils("ratings");
 
     private final FormFactory formFactory;
+    private final Utility utility;
 
     @Inject
-    public CourierController(FormFactory formFactory) {
+    public CourierController(FormFactory formFactory, Utility utility) {
         this.formFactory = formFactory;
+        this.utility = utility;
     }
 
     public Result viewCouriers() {
@@ -258,15 +258,7 @@ public class CourierController extends Controller{
 
     public Result viewCourierProfile(String courierID){
         Courier result = courierManager.getCourierByID(courierID);
-        CourierProfile courierProfile = new CourierProfile();
-        courierProfile.set_id(result.get_id());
-        courierProfile.setName(result.getName());
-        courierProfile.setAddress(result.getAddress());
-        courierProfile.setEmail(result.getEmail());
-        courierProfile.setPhoneNumber(result.getPhoneNumber());
-        courierProfile.setApproved(result.isApproved());
-        courierProfile.setReviews(result.getReviews());
-        courierProfile.setRatings(result.getRatings());
+        CourierProfile courierProfile = new CourierProfile(result.get_id(), result.getName(), result.getAddress(), result.getImage(), result.getEmail(), result.getPhoneNumber(), result.isApproved(), result.getReviews(), result.getRatings());
         return ok(Json.toJson(courierProfile));
     }
 
@@ -299,5 +291,16 @@ public class CourierController extends Controller{
 
         courierManager.updateCourier(dbCourier);
         return ok(Json.toJson(dbCourier));
+    }
+
+    public Result addOrReplaceCourierImage(String courierID) {
+        Courier courier = courierManager.getCourierByID(courierID);
+        String path = System.getProperty("user.dir") + "/uploads/" + Utility.PROFILE_IMAGE + "/" + courierID;
+        Logger.debug("File upload#" + path);
+        utility.deleteOldImage(path);
+        ArrayList<String> imageNames =  utility.uploadImage(path, 1);
+        courier.setImage(imageNames.get(0));
+        courierManager.updateCourier(courier);
+        return ok(Json.toJson(courier));
     }
 }

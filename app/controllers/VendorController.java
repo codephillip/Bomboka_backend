@@ -131,12 +131,12 @@ public class VendorController extends Controller{
     public Result uploadProductImage(){
 
         //text data
-//        Form<Product> product = formFactory.form(Product.class).bindFromRequest();
-//        Product obj = product.get(); // returns ProductCategory object from clean form
-//
-//        Map<String, String> hold = product.data();
-//        Logger.debug("insertProductCategory add#" + hold);
-//        Logger.debug("insertProductCategory add2#" + hold.get("name"));
+        Form<Product> product = formFactory.form(Product.class).bindFromRequest();
+        Product obj = product.get(); // returns ProductCategory object from clean form
+
+        Map<String, String> hold = product.data();
+        Logger.debug("insertProductCategory add#" + hold);
+        Logger.debug("insertProductCategory add2#" + hold.get("name"));
 
 //        String path = System.getProperty("user.dir")+"/uploads/" + key;
         String path = System.getProperty("user.dir")+"/uploads/" + "123";

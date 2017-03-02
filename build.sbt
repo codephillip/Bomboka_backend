@@ -14,6 +14,7 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   "uk.co.panaxiom" %% "play-jongo" % "2.0.0-jongo1.3",
+  "commons-io" % "commons-io" % "2.4",
   "net.cloudinsights" %% "play-plugins-salat" % "1.5.9"
 )
 

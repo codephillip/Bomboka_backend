@@ -1,0 +1,19 @@
+New log file opened at Thu Mar 02 12:03:25 EAT 2017 by 5121@codepc
+Taking next connection to: 45531
+New client attempting to connect on port: 53268-45531
+  Address = /127.0.1.1:45531
+This client on port 53268 has uuid 7cf36dfe-d6bd-4b2d-811b-ac5e7b3bad3f configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-7cf36dfe-d6bd-4b2d-811b-ac5e7b3bad3f
+Taking next connection to: 45531
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 45531
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 45531
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 45531
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 45531

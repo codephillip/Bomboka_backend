@@ -13,10 +13,18 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import play.mvc.Http;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 
 /**
@@ -69,6 +77,113 @@ public class VendorController extends Controller{
         obj.setProductCategory(parentProductCategory.get_id());
         productManager.saveProduct(obj); // saves to Product table
         return ok(Json.toJson(obj)) ;
+    }
+
+//    public Result uploadProductImage() {
+//        File file = request().body().asRaw().asFile();
+//        return ok("File uploaded");
+//    }
+
+    //key - user key
+//    private String[] uploadProductImage(){
+//
+////        String path = System.getProperty("user.dir")+"/uploads/" + key;
+//        String path = System.getProperty("user.dir")+"/uploads/" + "123";
+//
+//        //code deletes old image. ensures only one image
+//        File f_d;
+//        f_d = new File(path);
+//        if(f_d.isDirectory()){
+//            for (String x : f_d.list()) {
+//                new File(f_d, x).delete();
+//
+//            }
+//        }
+//
+//
+//        File dir = new File(path);
+//        if (!dir.exists())
+//            dir.mkdir();
+//
+//        Http.MultipartFormData body = request().body().asMultipartFormData();
+//        Http.MultipartFormData.FilePart uploadFile = body.getFile("upload");
+//        String file_name = uploadFile.getFilename();
+//
+//        File uploadF = uploadFile.getFile();
+//        String newFileName =  System.currentTimeMillis()+"-"+file_name;
+//        File openFile = new File(path +"/"+ newFileName);
+//        String [] x = new String[]{newFileName, uploadFile.getContentType()};
+//        InputStream isFile1 = null;
+//        try {
+//            isFile1 = new FileInputStream(uploadF);
+//            byte[] byteFile1 = IOUtils.toByteArray(isFile1);
+//
+//            FileUtils.writeByteArrayToFile(openFile, byteFile1);
+//            isFile1.close();
+//
+//        } catch (IOException  e) {
+//            e.printStackTrace();
+//        }
+//        return x;
+//    }
+
+
+    public Result uploadProductImage(){
+
+        //text data
+//        Form<Product> product = formFactory.form(Product.class).bindFromRequest();
+//        Product obj = product.get(); // returns ProductCategory object from clean form
+//
+//        Map<String, String> hold = product.data();
+//        Logger.debug("insertProductCategory add#" + hold);
+//        Logger.debug("insertProductCategory add2#" + hold.get("name"));
+
+//        String path = System.getProperty("user.dir")+"/uploads/" + key;
+        String path = System.getProperty("user.dir")+"/uploads/" + "123";
+        Logger.debug("File upload#" + path);
+
+        //
+
+        //code deletes old image. ensures only one image
+        File f_d;
+        f_d = new File(path);
+        if(f_d.isDirectory()){
+            for (String x : f_d.list()) {
+                new File(f_d, x).delete();
+
+            }
+        }
+        Logger.debug("File upload#2");
+
+
+        File dir = new File(path);
+        if (!dir.exists())
+            dir.mkdir();
+
+        Http.MultipartFormData body = request().body().asMultipartFormData();
+        Http.MultipartFormData.FilePart uploadFile = body.getFile("upload");
+        String file_name = uploadFile.getFilename();
+        Logger.debug("File upload#3");
+
+        File uploadF = (File) uploadFile.getFile();
+        String newFileName =  System.currentTimeMillis()+"-"+file_name;
+        File openFile = new File(path +"/"+ newFileName);
+        String [] x = new String[]{newFileName, uploadFile.getContentType()};
+        InputStream isFile1 = null;
+
+        Logger.debug("File upload#4");
+
+        try {
+            isFile1 = new FileInputStream(uploadF);
+            byte[] byteFile1 = IOUtils.toByteArray(isFile1);
+
+            FileUtils.writeByteArrayToFile(openFile, byteFile1);
+            isFile1.close();
+
+        } catch (IOException  e) {
+            e.printStackTrace();
+        }
+        return ok(Json.toJson(x));
     }
 
     public Result viewProductCategorys() {

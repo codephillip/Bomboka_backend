@@ -2,7 +2,9 @@ package controllers;
 
 import Utils.DatabaseUtils;
 import Utils.Password;
+import Utils.Utility;
 import models.user.User;
+import models.vendor.Vendor;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
@@ -11,6 +13,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,12 +25,14 @@ import static Utils.Utility.isNotEmpty;
 public class UserController extends Controller {
     private DatabaseUtils userManager = new DatabaseUtils("users");
     private final FormFactory formFactory;
+    private final Utility utility;
 
     @Inject
-    public UserController(FormFactory formFactory) {
+    public UserController(FormFactory formFactory, Utility utility) {
         this.formFactory = formFactory;
-
+        this.utility = utility;
     }
+
     public Result signUp() throws Exception {
         Form<User> newUser = formFactory.form(User.class).bindFromRequest();
         User obj = newUser.get(); 
@@ -139,5 +144,16 @@ public class UserController extends Controller {
         }
         //
         return ok(Json.toJson(allUsers));
+    }
+
+    public Result addOrReplaceUserImage(String userID) {
+        User user = userManager.getUserByID(userID);
+        String path = System.getProperty("user.dir") + "/uploads/" + Utility.PROFILE_IMAGE + "/" + userID;
+        Logger.debug("File upload#" + path);
+        utility.deleteOldImage(path);
+        ArrayList<String> imageNames =  utility.uploadImage(path, 1);
+        user.setImage(imageNames.get(0));
+        userManager.updateUser(user);
+        return ok(Json.toJson(user));
     }
 }

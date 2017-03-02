@@ -13,6 +13,8 @@ POST     /api/vendor/new                                controllers.VendorContro
 
 POST     /api/vendor/addimage/:vendorID                 controllers.VendorController.addOrReplaceVendorImage(vendorID: String)
 
+POST     /api/user/addimage/:userID                     controllers.UserController.addOrReplaceUserImage(userID: String)
+
 GET     /api/vendor/:vendorID                           controllers.VendorController.viewVendorDetails(vendorID: String)
 
 GET     /api/shop/:vendorID                             controllers.VendorController.viewVendorShops(vendorID: String)

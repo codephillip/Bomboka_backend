@@ -44,13 +44,14 @@ public class VendorController extends Controller {
     private DatabaseUtils courierManager = new DatabaseUtils("courier");
 
     private final FormFactory formFactory;
+    private final Utility utility;
+
 
     @Inject
-    public VendorController(FormFactory formFactory) {
+    public VendorController(FormFactory formFactory, Utility utility) {
         this.formFactory = formFactory;
+        this.utility = utility;
     }
-
-
 
     public Result searchProduct() {
         Logger.debug("searching product#");
@@ -85,52 +86,6 @@ public class VendorController extends Controller {
 
     public Result FetchImageUpload(String link){
         return ok(new java.io.File(System.getProperty("user.dir")+"/uploads/"+link));
-    }
-
-    private ArrayList<String> uploadImage(String path, int numberOfImages) {
-        //numberOfImages count starts from 1
-        Http.MultipartFormData body = request().body().asMultipartFormData();
-        ArrayList<String> imageNames = new ArrayList<String>();
-        for (int i = 1; i < numberOfImages + 1; i++) {
-            Http.MultipartFormData.FilePart uploadFile = body.getFile("image" + i);
-            imageNames.add(saveImageToDisk(uploadFile, path));
-        }
-        return imageNames;
-    }
-
-    private String saveImageToDisk(Http.MultipartFormData.FilePart uploadFile, String path) {
-        String file_name = uploadFile.getFilename();
-
-        File uploadF = (File) uploadFile.getFile();
-        String newFileName = System.currentTimeMillis() + "-" + file_name;
-        File openFile = new File(path + "/" + newFileName);
-        String[] x = new String[]{newFileName, uploadFile.getContentType()};
-        InputStream isFile1 = null;
-
-        try {
-            isFile1 = new FileInputStream(uploadF);
-            byte[] byteFile1 = IOUtils.toByteArray(isFile1);
-
-            FileUtils.writeByteArrayToFile(openFile, byteFile1);
-            isFile1.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Logger.debug(String.valueOf(Json.toJson(x)));
-        return newFileName.replace(' ', '-');
-    }
-
-    private void deleteOldImage(String path) {
-        Logger.debug("Delete old image");
-        File f_d;
-        f_d = new File(path);
-        if (f_d.isDirectory()) {
-            for (String x : f_d.list()) {
-                new File(f_d, x).delete();
-
-            }
-        }
     }
 
     public Result viewProductCategorys() {
@@ -177,8 +132,8 @@ public class VendorController extends Controller {
         Vendor vendor = vendorManager.getVendorByID(VendorID);
         String path = System.getProperty("user.dir") + "/uploads/" + Utility.PROFILE_IMAGE + "/" + VendorID;
         Logger.debug("File upload#" + path);
-        deleteOldImage(path);
-        ArrayList<String> imageNames =  uploadImage(path, 1);
+        utility.deleteOldImage(path);
+        ArrayList<String> imageNames =  utility.uploadImage(path, 1);
         vendor.setImage(imageNames.get(0));
         vendorManager.updateVendor(vendor);
         return ok(Json.toJson(vendor));
@@ -327,7 +282,7 @@ public class VendorController extends Controller {
     public Result addProductToShop(String shopID) {
         String path = System.getProperty("user.dir") + "/uploads/" + Utility.PRODUCT_IMAGE;
         Logger.debug("File upload#" + path);
-        ArrayList<String> imageNames =  uploadImage(path, 4);
+        ArrayList<String> imageNames =  utility.uploadImage(path, 4);
 
         Form<Product> newProduct = formFactory.form(Product.class).bindFromRequest();
         Product product = newProduct.get();

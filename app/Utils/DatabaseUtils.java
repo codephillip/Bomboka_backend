@@ -165,6 +165,7 @@ public class DatabaseUtils {
         List<Product> products = new ArrayList<Product>();
         while (cursor.hasNext()) {
             Product product = cursor.next();
+            Logger.debug(product.toString());
             products.add(product);
         }
         return products;
@@ -202,11 +203,13 @@ public class DatabaseUtils {
     }
 
     public List<Order> getUserOrders(String userID) {
+        Logger.debug("getUserOrders");
         MongoCursor<Order> cursor = collection.find().as(Order.class);
         List<Order> orders = new ArrayList<Order>();
         while (cursor.hasNext()) {
             Order order = cursor.next();
-            if (Objects.equals(order.getUser().toString(), userID))
+            Logger.debug(order.getUser() + " # " + userID);
+            if (Objects.equals(order.getUser(), userID))
                 orders.add(order);
         }
         return orders;
@@ -280,7 +283,6 @@ public class DatabaseUtils {
     }
 
 
-
     public List<Shop> findVendorShops(String vendorID) {
         MongoCursor<Shop> cursor = this.collection.find("{vendor: #}", vendorID).as(Shop.class);
         List<Shop> shops = new ArrayList<Shop>();
@@ -295,50 +297,53 @@ public class DatabaseUtils {
     public List<Product> shopProducts(Shop shop) {
         List<String> objList = shop.getProducts();
         List<Product> productList = new ArrayList<>();
-        for (String objId : objList)
-            if (this.collection.findOne(objId).as(Product.class) != null) {
-                productList.add(this.collection.findOne(objId).as(Product.class));
+        for (String objId : objList){
+            Product product = this.collection.findOne(new ObjectId(objId)).as(Product.class);
+            if (product != null) {
+                productList.add(product);
             }
+        }
         return productList;
     }
 
     public ProductCategory getProductCategoryByName(String parent) {
-        ProductCategory result = this.collection.findOne("{name:\""+ parent +"\"}").as(ProductCategory.class);
+        ProductCategory result = this.collection.findOne("{name:\"" + parent + "\"}").as(ProductCategory.class);
         return result;
     }
 
-    public void registerUser(User user){
+    public void registerUser(User user) {
         this.collection.insert(user);
     }
 
-    public User getUserByUserName(String username){
+    public User getUserByUserName(String username) {
         User user = this.collection.findOne("{username:#}", username).as(User.class);
         return user;
     }
-    public User getUserByEmail(String email){
+
+    public User getUserByEmail(String email) {
         User user = this.collection.findOne("{email:#}", email).as(User.class);
         return user;
     }
 
-    public User getUserByID(String userID){
+    public User getUserByID(String userID) {
         User user = this.collection.findOne(userID).as(User.class);
         return user;
     }
 
-    public void deleteUser(String userID){
+    public void deleteUser(String userID) {
         User user = getUserByID(userID);
         user.setActive(false);
         user.setTombStone(new Date());
         this.collection.save(user);
     }
 
-    public void blockUser(String userID, boolean value){
+    public void blockUser(String userID, boolean value) {
         User user = getUserByID(userID);
         user.setBlocked(value);
         this.collection.save(user);
     }
 
-    public void updateUser(User user){
+    public void updateUser(User user) {
         this.collection.save(user);
     }
 

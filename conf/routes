@@ -57,6 +57,8 @@ POST     /api/product/review/add/:productID             controllers.VendorContro
 
 GET     /api/shop/products/:shopID                      controllers.VendorController.viewShopProducts(shopID: String)
 
+GET     /api/shop/all/products                          controllers.VendorController.viewAllProducts()
+
 POST    /api/vendor/edit/:vendorID                      controllers.VendorController.editVendor(vendorID: String)
 
 POST    /api/vendor/addCourierToVendor/:vendorID        controllers.VendorController.addCourierToVendor(vendorID: String)
@@ -139,7 +141,7 @@ GET  /api/courierProfile/:courierID                     controllers.CourierContr
 
 POST  /api/courierProfile/edit/:courierID               controllers.CourierController.editCourierProfile(courierID: String)
 
-POST  /api/courier/addimage/:courierID               controllers.CourierController.addOrReplaceCourierImage(courierID: String)
+POST  /api/courier/addimage/:courierID                  controllers.CourierController.addOrReplaceCourierImage(courierID: String)
 
 POST  /api/order/add                                    controllers.OrderController.addOrder
 

@@ -395,8 +395,15 @@ public class VendorController extends Controller {
     }
 
     public Result viewShopProducts(String shopID) {
+        Logger.debug("Viewshopproducts#");
         Shop shop = shopManager.getVendorShopDetails(shopID);
         List<Product> productList = productManager.shopProducts(shop);
+        return ok(Json.toJson(productList));
+    }
+
+    public Result viewAllProducts() {
+        Logger.debug("Viewallproducts#");
+        List<Product> productList = productManager.allProducts();
         return ok(Json.toJson(productList));
     }
 

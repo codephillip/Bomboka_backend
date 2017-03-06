@@ -13,7 +13,6 @@ public class Order {
     @MongoObjectId
     private String key;
     private String user;
-    private String vendor;
     private String courier;
     private String product;
     private Date createdAt;
@@ -21,36 +20,14 @@ public class Order {
     private boolean received;
     private Date deliveryTime; //todo calculate delivery time, basing on distance and courier
 
-    public Order(String key, String user, String vendor, String courier, String product, Date createdAt, boolean valid, boolean received, Date deliveryTime) {
+    public Order(String key, String user, String courier, String product, Date createdAt, boolean valid, boolean received, Date deliveryTime) {
         this.key = key;
         this.user = user;
-        this.vendor = vendor;
         this.courier = courier;
         this.product = product;
         this.createdAt = new Date();
         this.valid = true;
         this.received = false;
-        this.deliveryTime = new Date();
-    }
-
-    public Order(String key, String user, String vendor, String courier, String product, Date createdAt, boolean valid, Date deliveryTime) {
-        this.key = key;
-        this.user = user;
-        this.vendor = vendor;
-        this.courier = courier;
-        this.product = product;
-        this.createdAt = new Date();
-        this.valid = true;
-        this.deliveryTime = new Date();
-    }
-
-    public Order(String key, String user, String vendor, String courier, Date createdAt, boolean valid, Date deliveryTime) {
-        this.key = key;
-        this.user = user;
-        this.vendor = vendor;
-        this.courier = courier;
-        this.createdAt = new Date();
-        this.valid = true;
         this.deliveryTime = new Date();
     }
 
@@ -75,14 +52,6 @@ public class Order {
 
     public void setUser(String user) {
         this.user = user;
-    }
-
-    public String getVendor() {
-        return vendor;
-    }
-
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
     }
 
     public String getCourier() {

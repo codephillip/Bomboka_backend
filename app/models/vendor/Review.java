@@ -1,14 +1,16 @@
 package models.vendor;
 
 import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 /**
  * Created by Ahereza on 11/19/16.
  */
 public class Review {
+    @MongoId
     @MongoObjectId
-    private ObjectId _id;
+    private String key;
     private String text;
     //todo place mapping of product,vendor, shop
     private ObjectId User; //todo should be an object of the user model
@@ -25,12 +27,12 @@ public class Review {
     public Review() {
     }
 
-    public ObjectId get_id() {
-        return _id;
+    public String getKey() {
+        return key;
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getText() {

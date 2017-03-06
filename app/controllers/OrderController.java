@@ -31,10 +31,10 @@ public class OrderController extends Controller {
         Form<Order> orderForm = formFactory.form(Order.class).bindFromRequest();
         Map<String, String> data = orderForm.data();
         Order order = orderManager.getOrderByID(orderID);
-        Logger.debug("CHANGE ID1-" + order.getCourier().toString());
+        Logger.debug("CHANGE ID1-" + order.getCourier());
         Logger.debug("CHANGE ID2-" + data.get("courier"));
         if (Utility.isNotEmpty(data.get("courier"))) {
-            order.setCourier(new ObjectId(data.get("courier")));
+            order.setCourier(data.get("courier"));
             orderManager.updateOrder(order);
             return ok("Changed Courier");
         }
@@ -62,7 +62,7 @@ public class OrderController extends Controller {
         Logger.debug("viewOrders#");
         List<Order> orders = orderManager.allOrders();
         for (Order order : orders) {
-            Logger.debug("viewOrders ID" + order.get_id().toString());
+            Logger.debug("viewOrders ID" + order.getkey());
         }
         return ok(Json.toJson(orders));
     }

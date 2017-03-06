@@ -1,6 +1,7 @@
 package models.vendor;
 
 import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 /**
@@ -8,8 +9,9 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
  */
 public class Rating {
     // star rating system, maximum rating 5 stars, minimum 0 stars
+    @MongoId
     @MongoObjectId
-    private ObjectId _id;
+    private String key;
     private double stars;
     private ObjectId user;
 
@@ -18,8 +20,12 @@ public class Rating {
         this.user = user;
     }
 
-    public ObjectId get_id() {
-        return _id;
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Rating(double stars) {

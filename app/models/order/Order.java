@@ -1,6 +1,6 @@
 package models.order;
 
-import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 import java.util.Date;
@@ -9,19 +9,20 @@ import java.util.Date;
  * Created by codephillip on 02/12/16.
  */
 public class Order {
+    @MongoId
     @MongoObjectId
-    private ObjectId _id;
-    private ObjectId user;
-    private ObjectId vendor;
-    private ObjectId courier;
-    private ObjectId product;
+    private String key;
+    private String user;
+    private String vendor;
+    private String courier;
+    private String product;
     private Date createdAt;
     private boolean valid;
     private boolean received;
     private Date deliveryTime; //todo calculate delivery time, basing on distance and courier
 
-    public Order(ObjectId _id, ObjectId user, ObjectId vendor, ObjectId courier, ObjectId product, Date createdAt, boolean valid, boolean received, Date deliveryTime) {
-        this._id = _id;
+    public Order(String key, String user, String vendor, String courier, String product, Date createdAt, boolean valid, boolean received, Date deliveryTime) {
+        this.key = key;
         this.user = user;
         this.vendor = vendor;
         this.courier = courier;
@@ -32,8 +33,8 @@ public class Order {
         this.deliveryTime = new Date();
     }
 
-    public Order(ObjectId _id, ObjectId user, ObjectId vendor, ObjectId courier, ObjectId product, Date createdAt, boolean valid, Date deliveryTime) {
-        this._id = _id;
+    public Order(String key, String user, String vendor, String courier, String product, Date createdAt, boolean valid, Date deliveryTime) {
+        this.key = key;
         this.user = user;
         this.vendor = vendor;
         this.courier = courier;
@@ -43,8 +44,8 @@ public class Order {
         this.deliveryTime = new Date();
     }
 
-    public Order(ObjectId _id, ObjectId user, ObjectId vendor, ObjectId courier, Date createdAt, boolean valid, Date deliveryTime) {
-        this._id = _id;
+    public Order(String key, String user, String vendor, String courier, Date createdAt, boolean valid, Date deliveryTime) {
+        this.key = key;
         this.user = user;
         this.vendor = vendor;
         this.courier = courier;
@@ -60,35 +61,35 @@ public class Order {
         this.deliveryTime = new Date();
     }
 
-    public ObjectId get_id() {
-        return _id;
+    public String getkey() {
+        return key;
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public void setkey(String key) {
+        this.key = key;
     }
 
-    public ObjectId getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(ObjectId user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
-    public ObjectId getVendor() {
+    public String getVendor() {
         return vendor;
     }
 
-    public void setVendor(ObjectId vendor) {
+    public void setVendor(String vendor) {
         this.vendor = vendor;
     }
 
-    public ObjectId getCourier() {
+    public String getCourier() {
         return courier;
     }
 
-    public void setCourier(ObjectId courier) {
+    public void setCourier(String courier) {
         this.courier = courier;
     }
 
@@ -116,11 +117,11 @@ public class Order {
         this.deliveryTime = deliveryTime;
     }
 
-    public ObjectId getProduct() {
+    public String getProduct() {
         return product;
     }
 
-    public void setProduct(ObjectId product) {
+    public void setProduct(String product) {
         this.product = product;
     }
 

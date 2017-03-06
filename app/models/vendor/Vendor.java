@@ -2,7 +2,7 @@ package models.vendor;
 
 
 import models.courier.Courier;
-import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 import java.util.ArrayList;
@@ -14,17 +14,18 @@ import java.util.List;
  */
 
 public class Vendor {
+    @MongoId
     @MongoObjectId
-    private ObjectId _id;
+    private String key;
     private String companyName;
     private String image;
     private String website;
     private boolean verified;
     private Date createdAt;
     private boolean approved;
-    private List<ObjectId> reviews;
-    private List<ObjectId> ratings;
-    private List<ObjectId> couriers;
+    private List<String> reviews;
+    private List<String> ratings;
+    private List<String> couriers;
     private boolean blocked;
 
     public boolean isApproved() {
@@ -38,9 +39,9 @@ public class Vendor {
     public Vendor()
     {
         this.createdAt = new Date();
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
-        this.couriers = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
+        this.couriers = new ArrayList<String>();
     }
 
     public Vendor(String companyName, String website, boolean verified) {
@@ -48,26 +49,26 @@ public class Vendor {
         this.companyName = companyName;
         this.website = website;
         this.verified = verified;
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
-        this.couriers = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
+        this.couriers = new ArrayList<String>();
     }
 
     public Vendor(String companyName) {
         this.createdAt = new Date();
         this.companyName = companyName;
         this.blocked = false;
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
-        this.couriers = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
+        this.couriers = new ArrayList<String>();
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public String getKey() {
+        return key;
     }
 
-    public ObjectId get_id() {
-        return _id;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Vendor(String companyName, String website) {
@@ -75,9 +76,9 @@ public class Vendor {
         this.companyName = companyName;
         this.website = website;
         this.blocked = false;
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
-        this.couriers = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
+        this.couriers = new ArrayList<String>();
     }
 
     public String getCompanyName() {
@@ -116,48 +117,48 @@ public class Vendor {
         this.blocked = blocked;
     }
 
-    public List<ObjectId> getReviews() {
+    public List<String> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<ObjectId> reviews) {
+    public void setReviews(List<String> reviews) {
         this.reviews = reviews;
     }
 
-    public List<ObjectId> getRatings() {
+    public List<String> getRatings() {
         return ratings;
     }
 
-    public void setRatings(List<ObjectId> ratings) {
+    public void setRatings(List<String> ratings) {
         this.ratings = ratings;
     }
 
 
     public void addReview(Review review){
-        reviews.add(review.get_id());
+        reviews.add(review.getKey());
     }
 
     public void addRating(Rating rating){
-        ratings.add(rating.get_id());
+        ratings.add(rating.getKey());
     }
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public List<ObjectId> getCouriers() {
+    public List<String> getCouriers() {
         return couriers;
     }
 
-    public void setCouriers(List<ObjectId> couriers) {
+    public void setCouriers(List<String> couriers) {
         this.couriers = couriers;
     }
 
     public void addCourier(Courier courier){
-        couriers.add(courier.get_id());
+        couriers.add(courier.getkey());
     }
 
-    public void removeCourier(ObjectId courier){
+    public void removeCourier(String courier){
         couriers.remove(courier);
     }
 

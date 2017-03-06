@@ -1,6 +1,7 @@
 package models.vendor;
 
 import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 import play.data.format.Formats;
 
@@ -12,8 +13,9 @@ import java.util.List;
  * Created by Ahereza on 11/15/16.
  */
 public class Shop {
+    @MongoId
     @MongoObjectId
-    private ObjectId _id;
+    private String key;
     private double longitude;
     private double latitude;
     //products category
@@ -21,17 +23,17 @@ public class Shop {
     private Date modificationTimeStamp;
     private Date tombstone;
     private String address;
-    private ObjectId vendor;
-    private List<ObjectId> products;
-    private List<ObjectId> reviews;
-    private List<ObjectId> ratings;
+    private String vendor;
+    private List<String> products;
+    private List<String> reviews;
+    private List<String> ratings;
 
     public Shop(String address) {
         this.timestamp = new Date();
         this.address = address;
-        this.products = new ArrayList<ObjectId>();
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
+        this.products = new ArrayList<String>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
     }
 
     public Shop(double longitude, double latitude, String address) {
@@ -39,16 +41,16 @@ public class Shop {
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
-        this.products = new ArrayList<ObjectId>();
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
+        this.products = new ArrayList<String>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
     }
 
     public Shop() {
-        this.products = new ArrayList<ObjectId>();
+        this.products = new ArrayList<String>();
         this.timestamp = new Date();
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
     }
 
     public Date getTimestamp() {
@@ -99,51 +101,55 @@ public class Shop {
         this.latitude = latitude;
     }
 
-    public ObjectId get_id() {
-        return _id;
-    }
-
-    public List<ObjectId> getReviews() {
+    public List<String> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<ObjectId> reviews) {
+    public void setReviews(List<String> reviews) {
         this.reviews = reviews;
     }
 
 
-    public List<ObjectId> getRatings() {
+    public List<String> getRatings() {
         return ratings;
     }
 
-    public void setRatings(List<ObjectId> ratings) {
+    public void setRatings(List<String> ratings) {
         this.ratings = ratings;
     }
     public void addReview(Review review){
-        reviews.add(review.get_id());
+        reviews.add(review.getKey());
     }
 
     public void addRating(Rating rating){
-        ratings.add(rating.get_id());
+        ratings.add(rating.getKey());
     }
 
-    public List<ObjectId> getProducts() {
+    public List<String> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ObjectId> products) {
+    public void setProducts(List<String> products) {
         this.products = products;
     }
 
     public void addToProductsList(Product product){
-        products.add(product.get_id());
+        products.add(product.getKey());
     }
 
-    public ObjectId getVendor() {
+    public String getVendor() {
         return vendor;
     }
 
-    public void setVendor(ObjectId vendor) {
+    public void setVendor(String vendor) {
         this.vendor = vendor;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

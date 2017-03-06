@@ -50,7 +50,7 @@ public class UserController extends Controller {
         User user = userManager.getUserByUserName(username);
         if (user != null){
             if(user.getUsername().equals(username) && Password.check(password, user.getPassword())){
-                return ok("Log in successful");
+                return ok(Json.toJson(user));
             } else {
                 return ok("username or password is wrong");
             }
@@ -140,9 +140,8 @@ public class UserController extends Controller {
         List<User> allUsers = userManager.allUsers();
         //todo remove on release
         for (User user : allUsers) {
-            Logger.debug("viewUsers# " + user.get_id().toString());
+            Logger.debug("viewUsers# " + user.getKey());
         }
-        //
         return ok(Json.toJson(allUsers));
     }
 

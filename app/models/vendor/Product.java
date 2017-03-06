@@ -1,6 +1,6 @@
 package models.vendor;
 
-import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 import java.util.ArrayList;
@@ -11,25 +11,22 @@ import java.util.List;
  * Created by Ahereza on 11/19/16.
  */
 public class Product {
+    @MongoId
     @MongoObjectId
-    private ObjectId _id;
+    private String key;
     private double price;
     private String name;
     private String description;
     private List<String> images;
-    private ObjectId productCategory;
+    private String productCategory;
     private Date timestamp;
     private String manufacturer;
-    private List<ObjectId> reviews;
-    private List<ObjectId> ratings;
+    private List<String> reviews;
+    private List<String> ratings;
     private boolean fake;
 
-    public ObjectId get_id() {
-        return _id;
-    }
-
-    public Product(ObjectId _id, double price, String name, String description, ObjectId productCategory, Date timestamp, String manufacturer, List<ObjectId> reviews, List<ObjectId> ratings, boolean fake) {
-        this._id = _id;
+    public Product(String key, double price, String name, String description, String productCategory, Date timestamp, String manufacturer, List<String> reviews, List<String> ratings, boolean fake) {
+        this.key = key;
         this.price = price;
         this.name = name;
         this.description = description;
@@ -41,69 +38,48 @@ public class Product {
         this.fake = fake;
     }
 
-    public Product(double price, String name, String description, String manufacturer, ObjectId productCategory) {
+    public Product(double price, String name, String description, String manufacturer, String productCategory) {
         this.price = price;
         this.name = name;
         this.description = description;
         this.manufacturer = manufacturer;
         this.timestamp = new Date();
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
         this.productCategory = productCategory;
     }
 
-    public Product(double price, String name, String description, String manufacturer) {
-        this.price = price;
-        this.name = name;
-        this.description = description;
-        this.manufacturer = manufacturer;
-        this.timestamp = new Date();
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
-    }
-
-    public Product(double price, String name, String description, ObjectId productCategory) {
+    public Product(double price, String name, String description, String productCategory) {
         this.price = price;
         this.name = name;
         this.description = description;
         this.timestamp = new Date();
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
         this.productCategory = productCategory;
     }
 
-    public Product(String name, String price, ObjectId productCategory) {
+    public Product(String name, String price, String productCategory) {
         this.price = Double.parseDouble(price);
         this.name = name;
         this.timestamp = new Date();
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
         this.productCategory = productCategory;
     }
 
     public Product() {
         this.timestamp = new Date();
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
     }
 
-    public Product(ObjectId _id, double price, String name, String description, List<String> images, ObjectId productCategory, Date timestamp, String manufacturer, List<ObjectId> reviews, List<ObjectId> ratings, boolean fake) {
-        this._id = _id;
-        this.price = price;
-        this.name = name;
-        this.description = description;
-        this.images = images;
-        this.timestamp = new Date();
-        this.productCategory = productCategory;
-        this.timestamp = timestamp;
-        this.manufacturer = manufacturer;
-        this.reviews = reviews;
-        this.ratings = ratings;
-        this.fake = fake;
+    public String getKey() {
+        return key;
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public double getPrice() {
@@ -142,35 +118,35 @@ public class Product {
         this.manufacturer = manufacturer;
     }
 
-    public List<ObjectId> getReviews() {
+    public List<String> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<ObjectId> reviews) {
+    public void setReviews(List<String> reviews) {
         this.reviews = reviews;
     }
 
-    public List<ObjectId> getRatings() {
+    public List<String> getRatings() {
         return ratings;
     }
 
-    public void setRatings(List<ObjectId> ratings) {
+    public void setRatings(List<String> ratings) {
         this.ratings = ratings;
     }
 
     public void addRating(Rating rating) {
-        ratings.add(rating.get_id());
+        ratings.add(rating.getKey());
     }
 
     public void addReview(Review review) {
-        reviews.add(review.get_id());
+        reviews.add(review.getKey());
     }
 
-    public ObjectId getProductCategory() {
+    public String getProductCategory() {
         return productCategory;
     }
 
-    public void setProductCategory(ObjectId productCategory) {
+    public void setProductCategory(String productCategory) {
         this.productCategory = productCategory;
     }
 

@@ -79,7 +79,7 @@ public class VendorController extends Controller {
         Logger.debug("productCategoryID#" + hold.get("category"));
         ProductCategory parentProductCategory = productCategoryManager.getProductCategoryByName(hold.get("category"));
 
-        obj.setProductCategory(parentProductCategory.get_id());
+        obj.setProductCategory(parentProductCategory.getKey());
         productManager.saveProduct(obj); // saves to Product table
         return ok(Json.toJson(obj));
     }
@@ -91,7 +91,7 @@ public class VendorController extends Controller {
     public Result viewProductCategorys() {
         List<ProductCategory> productCategorys = productCategoryManager.allProductCategorys();
         for (ProductCategory productCategory : productCategorys) {
-            Logger.debug("PC id# " + productCategory.get_id().toString());
+            Logger.debug("PC id# " + productCategory.getKey());
         }
         return ok(Json.toJson(productCategoryManager.allProductCategorys()));
     }
@@ -154,7 +154,7 @@ public class VendorController extends Controller {
         // tested passed
         Form<Shop> shop = formFactory.form(Shop.class).bindFromRequest();
         Shop obj = shop.get();
-        obj.setVendor(new ObjectId(vendorID));
+        obj.setVendor(vendorID);
         shopManager.saveShop(obj);
         return ok();
     }
@@ -164,7 +164,7 @@ public class VendorController extends Controller {
         List<Vendor> allVendors = vendorManager.allVendors();
         // debug purposes
         for (Vendor vendor : allVendors) {
-            Logger.debug("viewVendors#" + vendor.get_id().toString());
+            Logger.debug("viewVendors#" + vendor.getKey());
         }
         return ok(Json.toJson(allVendors));
     }
@@ -488,7 +488,7 @@ public class VendorController extends Controller {
         if (Utility.isNotEmpty(data.get("courier"))) {
             Courier courier = courierManager.getCourierByID(data.get("courier"));
             Logger.debug("addCourierToVendor# " + courier.getName());
-            if (!vendor.getCouriers().contains(courier.get_id())) {
+            if (!vendor.getCouriers().contains(courier.getkey())) {
                 vendor.addCourier(courier);
                 vendorManager.updateVendor(vendor);
                 return ok(Json.toJson(vendor));
@@ -503,9 +503,7 @@ public class VendorController extends Controller {
 
         Vendor vendor = vendorManager.getVendorByID(vendorID);
         if (Utility.isNotEmpty(data.get("courier"))) {
-//            Courier courier = courierManager.getCourierByID(data.get("courier"));
-//            Logger.debug("addCourierToVendor# " + courier.getName());
-            vendor.removeCourier(new ObjectId(data.get("courier")));
+            vendor.removeCourier(data.get("courier"));
             vendorManager.updateVendor(vendor);
             return ok(Json.toJson(vendor));
         }

@@ -83,7 +83,7 @@ public class DatabaseUtils {
     }
 
     public void deleteCoupon(String couponID) {
-        this.collection.remove(new ObjectId(couponID));
+        this.collection.remove(couponID);
     }
 
     public Vendor getVendorByID(String vendorID) {
@@ -123,20 +123,20 @@ public class DatabaseUtils {
     }
 
     public void deleteVendor(String vendorID) {
-        this.collection.remove(new ObjectId(vendorID));
+        this.collection.remove(vendorID);
 
     }
 
     public void deleteShop(String shopID) {
-        this.collection.remove(new ObjectId(shopID));
+        this.collection.remove(shopID);
     }
 
     public void deleteProduct(String productID) {
-        this.collection.remove(new ObjectId(productID));
+        this.collection.remove(productID);
     }
 
     public void deleteProductCategory(String productCategoryID) {
-        this.collection.remove(new ObjectId(productCategoryID));
+        this.collection.remove(productCategoryID);
     }
 
 
@@ -282,7 +282,7 @@ public class DatabaseUtils {
 
 
     public List<Shop> findVendorShops(String vendorID) {
-        MongoCursor<Shop> cursor = this.collection.find("{vendor: #}", new ObjectId(vendorID)).as(Shop.class);
+        MongoCursor<Shop> cursor = this.collection.find("{vendor: #}", vendorID).as(Shop.class);
         List<Shop> shops = new ArrayList<Shop>();
         while (cursor.hasNext()) {
             Shop shop = cursor.next();
@@ -293,9 +293,9 @@ public class DatabaseUtils {
     }
 
     public List<Product> shopProducts(Shop shop) {
-        List<ObjectId> objList = shop.getProducts();
+        List<String> objList = shop.getProducts();
         List<Product> productList = new ArrayList<>();
-        for (ObjectId objId : objList)
+        for (String objId : objList)
             if (this.collection.findOne(objId).as(Product.class) != null) {
                 productList.add(this.collection.findOne(objId).as(Product.class));
             }
@@ -322,7 +322,7 @@ public class DatabaseUtils {
     }
 
     public User getUserByID(String userID){
-        User user = this.collection.findOne(new ObjectId(userID)).as(User.class);
+        User user = this.collection.findOne(userID).as(User.class);
         return user;
     }
 

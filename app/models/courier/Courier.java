@@ -2,7 +2,7 @@ package models.courier;
 
 import models.vendor.Rating;
 import models.vendor.Review;
-import org.bson.types.ObjectId;
+import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 import java.util.ArrayList;
@@ -13,8 +13,9 @@ import java.util.List;
  * Created by codephillip on 30/11/16.
  */
 public class Courier {
+    @MongoId
     @MongoObjectId
-    private ObjectId _id;
+    private String key;
     private String name;
     private String image;
     private String address;
@@ -29,11 +30,11 @@ public class Courier {
     private boolean deleted;
     private boolean approved;
     private boolean blocked;
-    private List<ObjectId> reviews;
-    private List<ObjectId> ratings;
+    private List<String> reviews;
+    private List<String> ratings;
 
-    public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone, boolean deleted, boolean approved, boolean blocked, List<ObjectId> reviews, List<ObjectId> ratings) {
-        this._id = _id;
+    public Courier(String key, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone, boolean deleted, boolean approved, boolean blocked, List<String> reviews, List<String> ratings) {
+        this.key = key;
         this.name = name;
         this.address = address;
         this.email = email;
@@ -46,12 +47,12 @@ public class Courier {
         this.deleted = deleted;
         this.approved = approved;
         this.blocked = blocked;
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
     }
 
-    public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone, boolean deleted) {
-        this._id = _id;
+    public Courier(String key, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone, boolean deleted) {
+        this.key = key;
         this.name = name;
         this.address = address;
         this.email = email;
@@ -66,8 +67,8 @@ public class Courier {
         this.approved = true;
     }
 
-    public Courier(ObjectId _id, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone) {
-        this._id = _id;
+    public Courier(String key, String name, String address, String email, String phoneNumber, double latitude, double longitude, Date createdAt, Date modificationTimeStamp, Date tombStone) {
+        this.key = key;
         this.name = name;
         this.address = address;
         this.email = email;
@@ -118,8 +119,8 @@ public class Courier {
         this.deleted = false;
         this.blocked = false;
         this.approved = true;
-        this.ratings = new ArrayList<ObjectId>();
-        this.reviews = new ArrayList<ObjectId>();
+        this.ratings = new ArrayList<String>();
+        this.reviews = new ArrayList<String>();
     }
 
     public String getName() {
@@ -194,12 +195,12 @@ public class Courier {
         this.tombStone = tombStone;
     }
 
-    public ObjectId get_id() {
-        return _id;
+    public String getkey() {
+        return key;
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public void setkey(String key) {
+        this.key = key;
     }
 
     public boolean isDeleted() {
@@ -226,28 +227,28 @@ public class Courier {
         this.blocked = blocked;
     }
 
-    public List<ObjectId> getReviews() {
+    public List<String> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<ObjectId> reviews) {
+    public void setReviews(List<String> reviews) {
         this.reviews = reviews;
     }
 
-    public List<ObjectId> getRatings() {
+    public List<String> getRatings() {
         return ratings;
     }
 
-    public void setRatings(List<ObjectId> ratings) {
+    public void setRatings(List<String> ratings) {
         this.ratings = ratings;
     }
 
     public void addReview(Review review){
-        this.reviews.add(review.get_id());
+        this.reviews.add(review.getKey());
     }
 
     public void addRating(Rating rating){
-        this.ratings.add(rating.get_id());
+        this.ratings.add(rating.getKey());
     }
 
     public String getImage() {

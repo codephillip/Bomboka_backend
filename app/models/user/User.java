@@ -1,7 +1,7 @@
 package models.user;
 
-import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
+import org.jongo.marshall.jackson.oid.MongoId;
 
 import java.util.Date;
 import Utils.Password;
@@ -10,8 +10,9 @@ import Utils.Password;
  * Created by Ahereza on 11/25/16.
  */
 public class User {
+    @MongoId
     @MongoObjectId
-    private ObjectId _id;
+    private String key;
     private String fullnames;
     private String username;
     private String image;
@@ -89,12 +90,12 @@ public class User {
         this.role = "normal";
     }
 
-    public ObjectId get_id() {
-        return _id;
+    public String getKey() {
+        return key;
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getFullnames() {

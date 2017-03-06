@@ -4,7 +4,6 @@ import Utils.DatabaseUtils;
 import Utils.Utility;
 import models.courier.Courier;
 import models.courier.CourierProfile;
-import models.user.User;
 import models.vendor.Rating;
 import models.vendor.Review;
 import org.bson.types.ObjectId;
@@ -41,7 +40,7 @@ public class CourierController extends Controller{
         List<Courier> allCouriers = courierManager.allCouriers();
         //todo remove on release
         for (Courier courier : allCouriers) {
-            Logger.debug("viewCouriers# " + courier.get_id().toString());
+            Logger.debug("viewCouriers# " + courier.getkey());
         }
         return ok(Json.toJson(allCouriers));
     }
@@ -157,19 +156,19 @@ public class CourierController extends Controller{
         Map<String, String> data = reviewForm.data();
 
         ObjectId userObject = new ObjectId(data.get("user"));
-        Logger.debug("viewRatings# USERID " + userObject.toString());
+        Logger.debug("viewRatings# USERID " + userObject);
 
         String text = data.get("text");
 
         Courier courier = courierManager.getCourierByID(courierID);
-        List<ObjectId> courierReviews = courier.getReviews();
+        List<String> courierReviews = courier.getReviews();
         Logger.debug("LIST " + courierReviews.isEmpty());
         if (!courierReviews.isEmpty()) {
             // update old user review
-            for (ObjectId courierReviewId : courierReviews) {
-                Logger.debug("courierReview" + courierReviewId.toString());
-                Review review = reviewManager.getReviewByID(courierReviewId.toString());
-                if (review.getUser().toString().equals(data.get("user"))) {
+            for (String courierReviewId : courierReviews) {
+                Logger.debug("courierReview" + courierReviewId);
+                Review review = reviewManager.getReviewByID(courierReviewId);
+                if (review.getUser().equals(data.get("user"))) {
                     Logger.debug("MATCH FOUND");
                     review.setText(text);
                     reviewManager.updateReview(review);
@@ -204,17 +203,17 @@ public class CourierController extends Controller{
         }
         
         ObjectId userObject = new ObjectId(data.get("user"));
-        Logger.debug("viewRatings# USERID " + userObject.toString());
+        Logger.debug("viewRatings# USERID " + userObject);
 
         Courier courier = courierManager.getCourierByID(courierID);
-        List<ObjectId> courierRatings = courier.getRatings();
+        List<String> courierRatings = courier.getRatings();
         Logger.debug("LIST " + courierRatings.isEmpty());
         if (!courierRatings.isEmpty()) {
             // update old user review
-            for (ObjectId courierRatingId : courierRatings) {
-                Logger.debug("courierRating" + courierRatingId.toString());
-                Rating rating = ratingManager.getRatingByID(courierRatingId.toString());
-                if (rating.getUser().toString().equals(data.get("user"))) {
+            for (String courierRatingId : courierRatings) {
+                Logger.debug("courierRating" + courierRatingId);
+                Rating rating = ratingManager.getRatingByID(courierRatingId);
+                if (Objects.equals(rating.getUser(), data.get("user"))) {
                     Logger.debug("MATCH FOUND");
                     rating.setStars(stars);
                     ratingManager.updateRating(rating);
@@ -242,7 +241,7 @@ public class CourierController extends Controller{
         Logger.debug("viewRatings#");
         List<Rating> allRatings = ratingManager.allRatings();
         for (Rating rating : allRatings) {
-            Logger.debug("viewRatings# " + rating.get_id().toString());
+            Logger.debug("viewRatings# " + rating.getKey());
         }
         return ok(Json.toJson(allRatings));
     }
@@ -251,14 +250,14 @@ public class CourierController extends Controller{
         Logger.debug("viewReviews#");
         List<Review> allReviews = reviewManager.allReviews();
         for (Review review : allReviews) {
-            Logger.debug("viewReviews# " + review.get_id().toString());
+            Logger.debug("viewReviews# " + review.getKey());
         }
         return ok(Json.toJson(allReviews));
     }
 
     public Result viewCourierProfile(String courierID){
         Courier result = courierManager.getCourierByID(courierID);
-        CourierProfile courierProfile = new CourierProfile(result.get_id(), result.getName(), result.getAddress(), result.getImage(), result.getEmail(), result.getPhoneNumber(), result.isApproved(), result.getReviews(), result.getRatings());
+        CourierProfile courierProfile = new CourierProfile(result.getkey(), result.getName(), result.getAddress(), result.getImage(), result.getEmail(), result.getPhoneNumber(), result.isApproved(), result.getReviews(), result.getRatings());
         return ok(Json.toJson(courierProfile));
     }
 

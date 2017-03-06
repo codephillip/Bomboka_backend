@@ -304,7 +304,6 @@ public class DatabaseUtils {
 
     public ProductCategory getProductCategoryByName(String parent) {
         ProductCategory result = this.collection.findOne("{name:\""+ parent +"\"}").as(ProductCategory.class);
-        Logger.debug("BYNAME#" + result.getAncestorCode().get(0));
         return result;
     }
 

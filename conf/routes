@@ -73,7 +73,7 @@ POST  /api/shop/coupons/validate/:couponID              controllers.VendorContro
 
 POST  /api/shop/coupons/invalidate/:couponID            controllers.VendorController.invalidateCoupon(couponID: String)
 
-POST  /api/productCategory/add                          controllers.VendorController.addProductCategory
+POST  /api/productCategory/add/:parentID                controllers.VendorController.addProductCategory(parentID: String)
 
 GET  /api/productCategorys                              controllers.VendorController.viewProductCategorys
 

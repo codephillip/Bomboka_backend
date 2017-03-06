@@ -96,28 +96,14 @@ public class VendorController extends Controller {
         return ok(Json.toJson(productCategoryManager.allProductCategorys()));
     }
 
-    public Result addProductCategory() {
+    public Result addProductCategory(String parentID) {
         Form<ProductCategory> productCategory = formFactory.form(ProductCategory.class).bindFromRequest();
-        ProductCategory obj = productCategory.get(); // returns ProductCategory object from clean form
-
-        Map<String, String> hold = productCategory.data();
-        Logger.debug("insertProductCategory add#" + hold);
-        Logger.debug("insertProductCategory add2#" + hold.get("name"));
-
-        ArrayList<String> code = new ArrayList<>();
-
-        try {
-            ProductCategory parentProductCategory = productCategoryManager.getProductCategoryByName(hold.get("parent"));
-            code = parentProductCategory.getAncestorCode(); // retrieves the arraylist(code) of the parent
-            code.add(hold.get("name")); // appends name of the child to the end of the arraylist
-        } catch (Exception e) {
-            e.printStackTrace();
-            code.add(hold.get("name"));
-        }
-
-        ProductCategory childProductCategory = new ProductCategory(hold.get("name"), code, hold.get("parent"));
-        Logger.debug("insertProductCategory " + childProductCategory);
-        productCategoryManager.saveProductCategory(childProductCategory);
+        ProductCategory obj = productCategory.get();
+        if (parentID == null)
+            obj.setParent("parent");
+        else
+            obj.setParent(parentID);
+        productCategoryManager.saveProductCategory(obj);
         return ok(Json.toJson(obj));
     }
 

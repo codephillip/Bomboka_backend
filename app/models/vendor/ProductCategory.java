@@ -1,10 +1,8 @@
 package models.vendor;
 
-import org.bson.types.ObjectId;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -14,7 +12,6 @@ public class ProductCategory {
     private String key;
     private String name;
     private Date timestamp;
-    private ArrayList<String> ancestorCode;
     private String parent;
     private Date modificationTimestamp;
     private boolean tombstone;
@@ -27,9 +24,8 @@ public class ProductCategory {
         this.tombstone = true;
     }
 
-    public ProductCategory(String name, ArrayList<String> code, String parent) {
+    public ProductCategory(String name, String parent) {
         this.name = name;
-        this.ancestorCode = code;
         this.parent = parent;
         this.timestamp = new Date();
         this.tombstone = true;
@@ -37,8 +33,6 @@ public class ProductCategory {
 
     public ProductCategory() {
     }
-
-
 
     public String getKey() {
         return key;
@@ -78,14 +72,6 @@ public class ProductCategory {
 
     public void setTombstone(boolean tombstone) {
         this.tombstone = tombstone;
-    }
-
-    public ArrayList<String> getAncestorCode() {
-        return ancestorCode;
-    }
-
-    public void setAncestorCode(ArrayList<String> ancestorCode) {
-        this.ancestorCode = ancestorCode;
     }
 
     public String getParent() {

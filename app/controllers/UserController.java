@@ -146,6 +146,11 @@ public class UserController extends Controller {
         return ok(Json.toJson(allUsers));
     }
 
+    public Result getUserProfile(String userID) {
+        User user = userManager.getUserByID(userID);
+        return ok(Json.toJson(user));
+    }
+
     public Result addOrReplaceUserImage(String userID) {
         User user = userManager.getUserByID(userID);
         String path = System.getProperty("user.dir") + "/uploads/" + Utility.PROFILE_IMAGE + "/" + userID;

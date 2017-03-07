@@ -109,7 +109,9 @@ POST /api/users/edit/:userID                            controllers.UserControll
 
 GET /api/users                                          controllers.UserController.viewUsers
 
-POST     /api/user/addimage/:userID                     controllers.UserController.addOrReplaceUserImage(userID: String)
+GET /api/user/:userID                                   controllers.UserController.getUserProfile(userID: String)
+
+POST     /api/users/addimage/:userID                    controllers.UserController.addOrReplaceUserImage(userID: String)
 
 POST  /api/courier/add                                  controllers.CourierController.addCourier
 

@@ -83,7 +83,7 @@ public class DatabaseUtils {
     }
 
     public void deleteCoupon(String couponID) {
-        this.collection.remove(couponID);
+        this.collection.remove(new ObjectId(couponID));
     }
 
     public Vendor getVendorByID(String vendorID) {
@@ -123,22 +123,21 @@ public class DatabaseUtils {
     }
 
     public void deleteVendor(String vendorID) {
-        this.collection.remove(vendorID);
+        this.collection.remove(new ObjectId(vendorID));
 
     }
 
     public void deleteShop(String shopID) {
-        this.collection.remove(shopID);
+        this.collection.remove(new ObjectId(shopID));
     }
 
     public void deleteProduct(String productID) {
-        this.collection.remove(productID);
+        this.collection.remove(new ObjectId(productID));
     }
 
     public void deleteProductCategory(String productCategoryID) {
-        this.collection.remove(productCategoryID);
+        this.collection.remove(new ObjectId(productCategoryID));
     }
-
 
     public List<Vendor> allVendors() {
         MongoCursor<Vendor> cursor = collection.find().as(Vendor.class);
@@ -326,7 +325,7 @@ public class DatabaseUtils {
     }
 
     public User getUserByID(String userID) {
-        User user = this.collection.findOne(userID).as(User.class);
+        User user = this.collection.findOne(new ObjectId(userID)).as(User.class);
         return user;
     }
 

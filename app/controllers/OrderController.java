@@ -12,6 +12,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +66,18 @@ public class OrderController extends Controller {
             Logger.debug("viewOrders ID" + order.getkey());
         }
         return ok(Json.toJson(orders));
+    }
+
+    public Result viewCourierOrders(String courierId) {
+        Logger.debug("viewOrders#");
+        List<Order> orders = orderManager.allOrders();
+        List<Order> courierOrders = new ArrayList<Order>();
+        for (Order order : orders) {
+            if (order.getCourier() == courierId)
+                courierOrders.add(order);
+            Logger.debug("viewCourierOrders ID" + order.getkey());
+        }
+        return ok(Json.toJson(courierOrders));
     }
 
     public Result receivedOrder(String orderID) {

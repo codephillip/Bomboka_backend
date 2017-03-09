@@ -12,7 +12,7 @@ public class Order {
     @MongoId
     @MongoObjectId
     private String key;
-    private String user;
+    private String buyer;
     private String courier;
     private String product;
     private Date createdAt;
@@ -20,9 +20,9 @@ public class Order {
     private boolean received;
     private Date deliveryTime; //todo calculate delivery time, basing on distance and courier
 
-    public Order(String key, String user, String courier, String product, Date createdAt, boolean valid, boolean received, Date deliveryTime) {
+    public Order(String key, String buyer, String courier, String product, Date createdAt, boolean valid, boolean received, Date deliveryTime) {
         this.key = key;
-        this.user = user;
+        this.buyer = buyer;
         this.courier = courier;
         this.product = product;
         this.createdAt = new Date();
@@ -46,12 +46,12 @@ public class Order {
         this.key = key;
     }
 
-    public String getUser() {
-        return user;
+    public String getBuyer() {
+        return buyer;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
     }
 
     public String getCourier() {

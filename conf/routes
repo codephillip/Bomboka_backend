@@ -155,6 +155,8 @@ POST  /api/order/received/:orderID                      controllers.OrderControl
 
 GET  /api/orders                                        controllers.OrderController.viewOrders
 
+GET  /api/orders/:courierID                              controllers.OrderController.viewCourierOrders(courierID: String)
+
 GET  /api/order/cartItems/:userID                       controllers.OrderController.getCartItems(userID: String)
 
 GET     /fetch_image_file/*link                         controllers.VendorController.FetchImageUpload(link : String)

@@ -15,6 +15,7 @@ import org.bson.types.ObjectId;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -114,6 +115,8 @@ public class UserController extends Controller {
                 dbUser.setFullnames(data.get(key));
             } else if (key.equals("username") && isNotEmpty(data.get(key))){
                 dbUser.setUsername(data.get(key));
+            } else if (key.equals("dob") && isNotEmpty(data.get(key))){
+                dbUser.setDob(data.get(key));
             } else if (key.equals("email") && isNotEmpty(data.get(key))){
                 dbUser.setEmail(data.get(key));
             } else if (key.equals("address") && isNotEmpty(data.get(key))){

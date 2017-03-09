@@ -19,9 +19,10 @@ public class User {
     private String email;
     private String password;
     private String address;
+    private String sex;
     private double latitude;
     private double longitude;
-    private Date dob;
+    private String dob;
     private Date createdAt;
     private Date modificationTimeStamp;
     private Date tombStone;
@@ -34,7 +35,7 @@ public class User {
     private boolean active;
 
     public User(String fullnames, String username, String email, String password, String address, double latitude,
-                double longitude, Date dob, int age, String country) throws Exception {
+                double longitude, String dob, int age, String country) throws Exception {
         this.fullnames = fullnames;
         this.username = username;
         this.email = email;
@@ -45,31 +46,6 @@ public class User {
         this.dob = dob;
         this.age = age;
         this.country = country;
-        this.role = "normal";
-        this.createdAt = new Date();
-        this.active = true;
-    }
-
-    public User(String fullnames, String username, String email, String password, String address, Date dob, int age, String country) throws Exception {
-        this.fullnames = fullnames;
-        this.username = username;
-        this.email = email;
-        this.password = Password.getSaltedHash(password);
-        this.address = address;
-        this.dob = dob;
-        this.age = age;
-        this.country = country;
-        this.role = "normal";
-        this.createdAt = new Date();
-        this.active = true;
-    }
-
-    public User(String fullnames, String username, String email, String password, Date dob) throws Exception {
-        this.fullnames = fullnames;
-        this.username = username;
-        this.email = email;
-        this.password = Password.getSaltedHash(password);;
-        this.dob = dob;
         this.role = "normal";
         this.createdAt = new Date();
         this.active = true;
@@ -154,11 +130,11 @@ public class User {
         this.longitude = longitude;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
@@ -248,5 +224,13 @@ public class User {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }

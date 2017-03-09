@@ -56,7 +56,13 @@ public class Utility {
     }
 
     private String saveImageToDisk(Http.MultipartFormData.FilePart uploadFile, String path) {
-        String file_name = uploadFile.getFilename();
+        String file_name = null;
+        try {
+            file_name = uploadFile.getFilename();
+        } catch (Exception e) {
+            e.printStackTrace();
+            file_name = "image.png";
+        }
 
         File uploadF = (File) uploadFile.getFile();
         String newFileName = System.currentTimeMillis() + "-" + file_name;

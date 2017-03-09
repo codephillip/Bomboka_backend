@@ -193,6 +193,7 @@ public class DatabaseUtils {
 
     public List<Order> allOrders() {
         MongoCursor<Order> cursor = collection.find().as(Order.class);
+        Logger.debug("cursor#", cursor);
         List<Order> orders = new ArrayList<Order>();
         while (cursor.hasNext()) {
             Order order = cursor.next();
@@ -325,7 +326,7 @@ public class DatabaseUtils {
     }
 
     public User getUserByID(String userID) {
-        User user = this.collection.findOne("{key:#}", userID).as(User.class);
+        User user = this.collection.findOne("{key:#}",userID).as(User.class);
         return user;
     }
 

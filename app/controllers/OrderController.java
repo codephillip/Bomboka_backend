@@ -15,10 +15,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Codephillip on 12/02/16.
@@ -86,10 +83,9 @@ public class OrderController extends Controller {
         List<Order> orders = orderManager.allOrders();
         List<Order> courierOrders = new ArrayList<Order>();
         for (Order order : orders) {
-            //todo compare objects
-            if (order.getCourier() == courierManager.getCourierByID(courierId))
+            if (Objects.equals(order.getCourier().getkey(), courierId))
                 courierOrders.add(order);
-            Logger.debug("viewCourierOrders ID" + order.getkey());
+            Logger.debug("viewCourierOrders courierID" + order.getCourier().getkey());
         }
         return ok(Json.toJson(courierOrders));
     }

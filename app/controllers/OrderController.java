@@ -2,7 +2,10 @@ package controllers;
 
 import Utils.DatabaseUtils;
 import Utils.Utility;
+import models.courier.Courier;
 import models.order.Order;
+import models.user.User;
+import models.vendor.Product;
 import org.bson.types.ObjectId;
 import play.Logger;
 import play.data.Form;
@@ -13,6 +16,7 @@ import play.mvc.Result;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +25,9 @@ import java.util.Map;
  */
 public class OrderController extends Controller {
     private DatabaseUtils orderManager = new DatabaseUtils("order");
+    private DatabaseUtils courierManager = new DatabaseUtils("courier");
+    private DatabaseUtils userManager = new DatabaseUtils("users");
+    private DatabaseUtils productManager = new DatabaseUtils("products");
     private final FormFactory formFactory;
 
     @Inject
@@ -35,7 +42,7 @@ public class OrderController extends Controller {
         Logger.debug("CHANGE ID1-" + order.getCourier());
         Logger.debug("CHANGE ID2-" + data.get("courier"));
         if (Utility.isNotEmpty(data.get("courier"))) {
-            order.setCourier(data.get("courier"));
+            order.setCourier(orderManager.getCourierByID(data.get("courier")));
             orderManager.updateOrder(order);
             return ok("Changed Courier");
         }
@@ -54,7 +61,13 @@ public class OrderController extends Controller {
 
     public Result addOrder() {
         Form<Order> order = formFactory.form(Order.class).bindFromRequest();
-        Order obj = order.get();
+        Map<String, String> data = order.data();
+        Order obj = new Order();
+        obj.setBuyer(userManager.getUserByID(data.get("buyerId")));
+        obj.setCourier(courierManager.getCourierByID(data.get("courierId")));
+        obj.setProduct(productManager.getProductByID(data.get("productId")));
+        //todo add delivery time
+//        obj.setDeliveryTime(new Date(data.get("deliveryTime")));
         orderManager.saveOrder(obj);
         return ok(Json.toJson(obj));
     }
@@ -73,7 +86,8 @@ public class OrderController extends Controller {
         List<Order> orders = orderManager.allOrders();
         List<Order> courierOrders = new ArrayList<Order>();
         for (Order order : orders) {
-            if (order.getCourier() == courierId)
+            //todo compare objects
+            if (order.getCourier() == courierManager.getCourierByID(courierId))
                 courierOrders.add(order);
             Logger.debug("viewCourierOrders ID" + order.getkey());
         }

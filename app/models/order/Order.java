@@ -1,5 +1,8 @@
 package models.order;
 
+import models.courier.Courier;
+import models.user.User;
+import models.vendor.Product;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
@@ -12,15 +15,15 @@ public class Order {
     @MongoId
     @MongoObjectId
     private String key;
-    private String buyer;
-    private String courier;
-    private String product;
+    private User buyer;
+    private Courier courier;
+    private Product product;
     private Date createdAt;
     private boolean valid;
     private boolean received;
     private Date deliveryTime; //todo calculate delivery time, basing on distance and courier
 
-    public Order(String key, String buyer, String courier, String product, Date createdAt, boolean valid, boolean received, Date deliveryTime) {
+    public Order(String key, User buyer, Courier courier, Product product, Date createdAt, boolean valid, boolean received, Date deliveryTime) {
         this.key = key;
         this.buyer = buyer;
         this.courier = courier;
@@ -46,19 +49,19 @@ public class Order {
         this.key = key;
     }
 
-    public String getBuyer() {
+    public User getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(String buyer) {
+    public void setBuyer(User buyer) {
         this.buyer = buyer;
     }
 
-    public String getCourier() {
+    public Courier getCourier() {
         return courier;
     }
 
-    public void setCourier(String courier) {
+    public void setCourier(Courier courier) {
         this.courier = courier;
     }
 
@@ -86,11 +89,11 @@ public class Order {
         this.deliveryTime = deliveryTime;
     }
 
-    public String getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(String product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 

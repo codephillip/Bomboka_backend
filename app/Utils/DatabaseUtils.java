@@ -207,8 +207,8 @@ public class DatabaseUtils {
         List<Order> orders = new ArrayList<Order>();
         while (cursor.hasNext()) {
             Order order = cursor.next();
-            Logger.debug(order.getUser() + " # " + userID);
-            if (Objects.equals(order.getUser(), userID))
+            Logger.debug(order.getBuyer() + " # " + userID);
+            if (Objects.equals(order.getBuyer(), userID))
                 orders.add(order);
         }
         return orders;
@@ -325,7 +325,7 @@ public class DatabaseUtils {
     }
 
     public User getUserByID(String userID) {
-        User user = this.collection.findOne(new ObjectId(userID)).as(User.class);
+        User user = this.collection.findOne("{key:#}", userID).as(User.class);
         return user;
     }
 

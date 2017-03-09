@@ -117,19 +117,20 @@ public class UserController extends Controller {
                 dbUser.setUsername(data.get(key));
             } else if (key.equals("dob") && isNotEmpty(data.get(key))){
                 dbUser.setDob(data.get(key));
+                try{
+                    int age = Integer.parseInt(new Date().toLocaleString().substring(7,11)) - Integer.parseInt(data.get("dob").substring(0,4));
+                    Logger.debug("Age#", age);
+                    dbUser.setAge(age);
+                }
+                catch (NumberFormatException e){
+                    continue;
+                }
             } else if (key.equals("email") && isNotEmpty(data.get(key))){
                 dbUser.setEmail(data.get(key));
             } else if (key.equals("address") && isNotEmpty(data.get(key))){
                 dbUser.setAddress(data.get(key));
             } else if (key.equals("country") && isNotEmpty(data.get(key))){
                 dbUser.setCountry(data.get(key));
-            } else if (key.equals("age") && isNotEmpty(data.get(key))){
-                try{
-                    dbUser.setAge(Integer.parseInt(data.get(key)));
-                }
-                catch (NumberFormatException e){
-                    continue;
-                }
             } else if (key.equals("phoneNumber") && isNotEmpty(data.get(key))){
                 dbUser.setPhoneNumber(data.get(key));
             }

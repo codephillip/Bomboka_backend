@@ -63,6 +63,8 @@ public class OrderController extends Controller {
         obj.setBuyer(userManager.getUserByID(data.get("buyerId")));
         obj.setCourier(courierManager.getCourierByID(data.get("courierId")));
         obj.setProduct(productManager.getProductByID(data.get("productId")));
+        //verification code is 6 digits long between 100000 to 999999
+        obj.setVerificationCode(Utility.randInt(100000, 999999));
         //todo add delivery time
 //        obj.setDeliveryTime(new Date(data.get("deliveryTime")));
         orderManager.saveOrder(obj);
@@ -73,7 +75,7 @@ public class OrderController extends Controller {
         Logger.debug("viewOrders#");
         List<Order> orders = orderManager.allOrders();
         for (Order order : orders) {
-            Logger.debug("viewOrders ID" + order.getkey());
+            Logger.debug("viewOrders ID" + order.getKey());
         }
         return ok(Json.toJson(orders));
     }
@@ -93,16 +95,15 @@ public class OrderController extends Controller {
     public Result receivedOrder(String orderID) {
         Form<Order> orderform = formFactory.form(Order.class).bindFromRequest();
         Map<String, String> data = orderform.data();
-        //todo autogenerate verification codes, then replace 111222
-        if (Integer.parseInt(data.get("verificationCode")) == 111222){
-            Order order = orderManager.getOrderByID(orderID);
+        Order order = orderManager.getOrderByID(orderID);
+        if (Integer.parseInt(data.get("verificationCode")) == order.getVerificationCode()){
             if (!order.isReceived() && order.isValid()){
                 order.setReceived(true);
                 orderManager.updateOrder(order);
-                return ok(Json.toJson(order));
+                return ok("Successfully delivered");
             }
         }
-        return ok("Order not delivered or was already delivered");
+        return ok("Wrong verification code");
     }
 
     public Result getCartItems(String userID) {

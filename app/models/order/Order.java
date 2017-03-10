@@ -19,6 +19,7 @@ public class Order {
     private Courier courier;
     private Product product;
     private Date createdAt;
+    private int verificationCode;
     private boolean valid;
     private boolean received;
     private Date deliveryTime; //todo calculate delivery time, basing on distance and courier
@@ -39,14 +40,6 @@ public class Order {
         this.valid = true;
         this.received = false;
         this.deliveryTime = new Date();
-    }
-
-    public String getkey() {
-        return key;
-    }
-
-    public void setkey(String key) {
-        this.key = key;
     }
 
     public User getBuyer() {
@@ -103,5 +96,21 @@ public class Order {
 
     public void setReceived(boolean received) {
         this.received = received;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public int getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(int verificationCode) {
+        this.verificationCode = verificationCode;
     }
 }

@@ -83,4 +83,10 @@ public class Utility {
         Logger.debug(String.valueOf(Json.toJson(x)));
         return newFileName.replace(' ', '-');
     }
+
+    public static int randInt(int min, int max) {
+        int randomNum = min + (int)(Math.random() * ((max - min) + 1));
+        Logger.debug("RANDOM", String.valueOf(randomNum));
+        return randomNum;
+    }
 }

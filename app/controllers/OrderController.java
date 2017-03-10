@@ -91,11 +91,16 @@ public class OrderController extends Controller {
     }
 
     public Result receivedOrder(String orderID) {
-        Order order = orderManager.getOrderByID(orderID);
-        if (!order.isReceived() && order.isValid()){
-            order.setReceived(true);
-            orderManager.updateOrder(order);
-            return ok(Json.toJson(order));
+        Form<Order> orderform = formFactory.form(Order.class).bindFromRequest();
+        Map<String, String> data = orderform.data();
+        //todo autogenerate verification codes, then replace 111222
+        if (Integer.parseInt(data.get("verificationCode")) == 111222){
+            Order order = orderManager.getOrderByID(orderID);
+            if (!order.isReceived() && order.isValid()){
+                order.setReceived(true);
+                orderManager.updateOrder(order);
+                return ok(Json.toJson(order));
+            }
         }
         return ok("Order not delivered or was already delivered");
     }

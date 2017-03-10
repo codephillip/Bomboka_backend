@@ -107,17 +107,15 @@ public class VendorController extends Controller {
     }
 
     public Result viewVendorShops(String vendorID) {
-        //tested passed
         return ok(Json.toJson(shopManager.findVendorShops(vendorID)));
     }
 
     public Result addVendorShop(String vendorID) {
-        // tested passed
-        Form<Shop> shop = formFactory.form(Shop.class).bindFromRequest();
-        Shop obj = shop.get();
-        obj.setVendor(vendorID);
-        shopManager.saveShop(obj);
-        return ok();
+        Form<Shop> shopForm = formFactory.form(Shop.class).bindFromRequest();
+        Map<String, String> data = shopForm.data();
+        Shop shop = new Shop(vendorManager.getVendorByID(vendorID), Double.parseDouble(data.get("latitude")), Double.parseDouble(data.get("longitude")), data.get("address"), data.get("name"));
+        shopManager.saveShop(shop);
+        return ok(Json.toJson(shop));
     }
 
     public Result viewAllVendors() {

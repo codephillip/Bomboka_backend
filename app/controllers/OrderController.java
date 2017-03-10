@@ -65,6 +65,10 @@ public class OrderController extends Controller {
         Order obj = new Order();
         obj.setBuyer(userManager.getUserByID(data.get("buyerId")));
         obj.setCourier(courierManager.getCourierByID(data.get("courierId")));
+        Logger.debug(String.valueOf(courierManager.getCourierByID(data.get("courierId"))));
+        Logger.debug("Product#");
+        Logger.debug(data.get("productId"));
+        Logger.debug(String.valueOf(productManager.getProductByID(data.get("productId"))));
         obj.setProduct(productManager.getProductByID(data.get("productId")));
         //verification code is 6 digits long between 100000 to 999999
         obj.setVerificationCode(Utility.randInt(100000, 999999));
@@ -95,18 +99,21 @@ public class OrderController extends Controller {
         return ok(Json.toJson(courierOrders));
     }
 
-    public Result viewCourierOrdersByParams(String courierID, String isDelivered) {
+    public Result viewCourierOrdersByParams(String courierID, String isDelivered, String vendorID) {
         List<Order> orders = orderManager.allOrders();
-        Logger.debug(String.valueOf(orders));
         List<Order> filteredOrders = new ArrayList<>();
 
         try {
             for (Order order : orders) {
                 Logger.debug(order.getCourier().getkey());
                 Logger.debug(courierID);
+                Logger.debug(order.getProduct().getVendor().getKey());
+                Logger.debug(vendorID);
                 Logger.debug(String.valueOf(order.isReceived()));
                 Logger.debug(isDelivered);
-                if (Objects.equals(order.getCourier().getkey(), courierID) && Objects.equals(String.valueOf(order.isReceived()), isDelivered)){
+                if (Objects.equals(order.getCourier().getkey(), courierID)
+                        && Objects.equals(String.valueOf(order.isReceived()), isDelivered)
+                        && Objects.equals(order.getProduct().getVendor().getKey(), vendorID)){
                     filteredOrders.add(order);
                 }
             }

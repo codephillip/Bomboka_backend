@@ -18,15 +18,24 @@ public class Shop {
     private String key;
     private double longitude;
     private double latitude;
+    private String name;
     //products category
     private Date timestamp;
     private Date modificationTimeStamp;
     private Date tombstone;
     private String address;
-    private String vendor;
+    private Vendor vendor;
     private List<String> products;
     private List<String> reviews;
     private List<String> ratings;
+
+    public Shop( Vendor vendor, double latitude, double longitude, String address,  String name) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.name = name;
+        this.address = address;
+        this.vendor = vendor;
+    }
 
     public Shop(String address) {
         this.timestamp = new Date();
@@ -137,11 +146,11 @@ public class Shop {
         products.add(product.getKey());
     }
 
-    public String getVendor() {
+    public Vendor getVendor() {
         return vendor;
     }
 
-    public void setVendor(String vendor) {
+    public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
 
@@ -151,5 +160,13 @@ public class Shop {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

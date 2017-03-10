@@ -326,7 +326,7 @@ public class DatabaseUtils {
     }
 
     public User getUserByID(String userID) {
-        User user = this.collection.findOne("{key:#}",userID).as(User.class);
+        User user = this.collection.findOne(new ObjectId(userID)).as(User.class);
         return user;
     }
 

@@ -18,60 +18,24 @@ public class Product {
     private String name;
     private String description;
     private List<String> images;
-    private String productCategory;
+    private ProductCategory productCategory;
+    private Vendor vendor;
     private Date timestamp;
     private String manufacturer;
     private List<String> reviews;
     private List<String> ratings;
     private boolean fake;
 
-    public Product(String key, double price, String name, String description, String productCategory, Date timestamp, String manufacturer, List<String> reviews, List<String> ratings, boolean fake) {
-        this.key = key;
-        this.price = price;
-        this.name = name;
-        this.description = description;
-        this.productCategory = productCategory;
-        this.timestamp = timestamp;
-        this.manufacturer = manufacturer;
-        this.reviews = reviews;
-        this.ratings = ratings;
-        this.fake = fake;
-    }
-
-    public Product(double price, String name, String description, String manufacturer, String productCategory) {
-        this.price = price;
-        this.name = name;
-        this.description = description;
-        this.manufacturer = manufacturer;
-        this.timestamp = new Date();
-        this.ratings = new ArrayList<String>();
-        this.reviews = new ArrayList<String>();
-        this.productCategory = productCategory;
-    }
-
-    public Product(double price, String name, String description, String productCategory) {
-        this.price = price;
-        this.name = name;
-        this.description = description;
-        this.timestamp = new Date();
-        this.ratings = new ArrayList<String>();
-        this.reviews = new ArrayList<String>();
-        this.productCategory = productCategory;
-    }
-
-    public Product(String name, String price, String productCategory) {
-        this.price = Double.parseDouble(price);
-        this.name = name;
-        this.timestamp = new Date();
-        this.ratings = new ArrayList<String>();
-        this.reviews = new ArrayList<String>();
-        this.productCategory = productCategory;
-    }
-
     public Product() {
         this.timestamp = new Date();
         this.ratings = new ArrayList<String>();
         this.reviews = new ArrayList<String>();
+    }
+
+    public Product(String name, String description, double price) {
+        this.price = price;
+        this.name = name;
+        this.description = description;
     }
 
     public String getKey() {
@@ -142,14 +106,6 @@ public class Product {
         reviews.add(review.getKey());
     }
 
-    public String getProductCategory() {
-        return productCategory;
-    }
-
-    public void setProductCategory(String productCategory) {
-        this.productCategory = productCategory;
-    }
-
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
@@ -162,11 +118,27 @@ public class Product {
         this.fake = fake;
     }
 
+    public ProductCategory getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(ProductCategory productCategory) {
+        this.productCategory = productCategory;
+    }
+
     public List<String> getImages() {
         return images;
     }
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 }

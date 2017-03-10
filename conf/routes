@@ -79,8 +79,6 @@ POST  /api/productCategory/add/:parentID                controllers.VendorContro
 
 GET  /api/productCategorys                              controllers.VendorController.viewProductCategorys
 
-POST  /api/product/add                                  controllers.VendorController.addProduct
-
 GET  /api/products                                      controllers.VendorController.viewProducts
 
 POST  /api/product/edit/:productID                      controllers.VendorController.editProduct(productID: String)

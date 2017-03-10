@@ -70,20 +70,6 @@ public class VendorController extends Controller {
         return ok(Json.toJson(allProducts));
     }
 
-    public Result addProduct() {
-        Form<Product> product = formFactory.form(Product.class).bindFromRequest();
-        Product obj = product.get();
-
-        Map<String, String> hold = product.data();
-        Logger.debug("addProduct#" + hold);
-        Logger.debug("productCategoryID#" + hold.get("category"));
-        ProductCategory parentProductCategory = productCategoryManager.getProductCategoryByName(hold.get("category"));
-
-        obj.setProductCategory(parentProductCategory.getKey());
-        productManager.saveProduct(obj); // saves to Product table
-        return ok(Json.toJson(obj));
-    }
-
     public Result FetchImageUpload(String link){
         return ok(new java.io.File(System.getProperty("user.dir")+"/uploads/"+link));
     }
@@ -266,15 +252,21 @@ public class VendorController extends Controller {
     }
 
     public Result addProductToShop(String shopID) {
+        //create image_url and upload images
         String path = System.getProperty("user.dir") + "/uploads/" + Utility.PRODUCT_IMAGE;
         Logger.debug("File upload#" + path);
         ArrayList<String> imageNames =  utility.uploadImage(path, 4);
 
-        Form<Product> newProduct = formFactory.form(Product.class).bindFromRequest();
-        Product product = newProduct.get();
+        //get form data and create product
+        Form<Product> productForm = formFactory.form(Product.class).bindFromRequest();
+        Map<String, String> data = productForm.data();
+        Product product = new Product(data.get("name"), data.get("description"), Double.parseDouble(data.get("price")));
+        product.setVendor(vendorManager.getVendorByID(data.get("vendor")));
+        product.setProductCategory(productCategoryManager.getProductCategoryByID(data.get("productCategory")));
         product.setImages(imageNames);
         productManager.saveProduct(product);
 
+        //add product to shop
         Shop shop = shopManager.getVendorShopDetails(shopID);
         shop.addToProductsList(product);
         shopManager.updateShop(shop);

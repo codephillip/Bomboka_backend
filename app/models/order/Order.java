@@ -21,6 +21,7 @@ public class Order {
     private Date createdAt;
     private int verificationCode;
     private boolean valid;
+    //todo change received to delivered
     private boolean received;
     private Date deliveryTime; //todo calculate delivery time, basing on distance and courier
 

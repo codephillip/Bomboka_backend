@@ -151,7 +151,9 @@ POST  /api/order/received/:orderID                      controllers.OrderControl
 
 GET  /api/orders                                        controllers.OrderController.viewOrders
 
-GET  /api/orders/:courierID                              controllers.OrderController.viewCourierOrders(courierID: String)
+GET  /api/orders/:courierID                             controllers.OrderController.viewCourierOrders(courierID: String)
+
+GET  /api/orders/courier/byParams                       controllers.OrderController.viewCourierOrdersByParams(courierID: String, isDelivered: String)
 
 GET  /api/order/cartItems/:userID                       controllers.OrderController.getCartItems(userID: String)
 

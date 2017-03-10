@@ -13,6 +13,7 @@ import play.data.FormFactory;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import scala.reflect.internal.Trees;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -31,6 +32,8 @@ public class OrderController extends Controller {
     public OrderController(FormFactory formFactory) {
         this.formFactory = formFactory;
     }
+
+
 
     public Result changeCourier(String orderID) {
         Form<Order> orderForm = formFactory.form(Order.class).bindFromRequest();
@@ -90,6 +93,30 @@ public class OrderController extends Controller {
             Logger.debug("viewCourierOrders courierID" + order.getCourier().getkey());
         }
         return ok(Json.toJson(courierOrders));
+    }
+
+    public Result viewCourierOrdersByParams(String courierID, String isDelivered) {
+        List<Order> orders = orderManager.allOrders();
+        Logger.debug(String.valueOf(orders));
+        List<Order> filteredOrders = new ArrayList<>();
+
+        try {
+            for (Order order : orders) {
+                Logger.debug(order.getCourier().getkey());
+                Logger.debug(courierID);
+                Logger.debug(String.valueOf(order.isReceived()));
+                Logger.debug(isDelivered);
+                if (Objects.equals(order.getCourier().getkey(), courierID) && Objects.equals(String.valueOf(order.isReceived()), isDelivered)){
+                    filteredOrders.add(order);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Logger.debug("viewCourierOrdersByParams");
+        Logger.debug(courierID + " # " + isDelivered);
+        return ok(Json.toJson(filteredOrders));
     }
 
     public Result receivedOrder(String orderID) {

@@ -17,7 +17,7 @@ public class Vendor {
     @MongoId
     @MongoObjectId
     private String key;
-    private String companyName;
+    private String name;
     private String image;
     private String website;
     private boolean verified;
@@ -46,7 +46,7 @@ public class Vendor {
 
     public Vendor(String companyName, String website, boolean verified) {
         this.createdAt = new Date();
-        this.companyName = companyName;
+        this.name = companyName;
         this.website = website;
         this.verified = verified;
         this.ratings = new ArrayList<String>();
@@ -56,7 +56,7 @@ public class Vendor {
 
     public Vendor(String companyName) {
         this.createdAt = new Date();
-        this.companyName = companyName;
+        this.name = companyName;
         this.blocked = false;
         this.ratings = new ArrayList<String>();
         this.reviews = new ArrayList<String>();
@@ -73,7 +73,7 @@ public class Vendor {
 
     public Vendor(String companyName, String website) {
         this.createdAt = new Date();
-        this.companyName = companyName;
+        this.name = companyName;
         this.website = website;
         this.blocked = false;
         this.ratings = new ArrayList<String>();
@@ -81,12 +81,12 @@ public class Vendor {
         this.couriers = new ArrayList<String>();
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getName() {
+        return name;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getWebsite() {

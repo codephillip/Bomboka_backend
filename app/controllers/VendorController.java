@@ -4,7 +4,6 @@ import Utils.DatabaseUtils;
 import Utils.Utility;
 import models.courier.Courier;
 import models.vendor.*;
-import org.bson.types.ObjectId;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
@@ -13,20 +12,10 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import play.mvc.Http;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 
 /**
@@ -145,36 +134,6 @@ public class VendorController extends Controller {
         // tested passed
         Shop shop = shopManager.getVendorShopDetails(shopID);
         return ok(Json.toJson(shop));
-    }
-
-    public Result editVendorDetails(String vendorID) {
-        Logger.debug("editVendor# " + vendorID);
-        Form<Vendor> vendorForm = formFactory.form(Vendor.class).bindFromRequest();
-        Vendor dbVendor = vendorManager.getVendorByID(vendorID);
-        Logger.debug("editVendor# " + dbVendor.getCompanyName() + dbVendor.isApproved());
-
-        Map<String, String> data = vendorForm.data();
-        if (!Objects.equals(dbVendor.getCompanyName(), data.get("companyName")) && Utility.isNotEmpty(data.get("companyName"))) {
-            dbVendor.setCompanyName(data.get("companyName"));
-        }
-        if (!Objects.equals(dbVendor.getWebsite(), data.get("website")) && Utility.isNotEmpty(data.get("website"))) {
-            dbVendor.setWebsite(data.get("website"));
-        }
-        if (!Objects.equals(String.valueOf(dbVendor.isVerified()), data.get("verified")) && Utility.isNotEmpty(data.get("verified"))) {
-            Logger.debug("editvendor " + data.get("verified"));
-            dbVendor.setVerified(!dbVendor.isVerified());
-        }
-        if (!Objects.equals(String.valueOf(dbVendor.isBlocked()), data.get("blocked")) && Utility.isNotEmpty(data.get("blocked"))) {
-            Logger.debug("editvendor " + data.get("blocked"));
-            dbVendor.setBlocked(!dbVendor.isBlocked());
-        }
-        if (!Objects.equals(String.valueOf(dbVendor.isApproved()), data.get("approved")) && Utility.isNotEmpty(data.get("approved"))) {
-            Logger.debug("editvendor " + data.get("approved"));
-            dbVendor.setApproved(!dbVendor.isApproved());
-        }
-
-        vendorManager.updateVendor(dbVendor);
-        return ok(Json.toJson(dbVendor));
     }
 
     public Result deleteVendor(String vendorID) {
@@ -401,18 +360,30 @@ public class VendorController extends Controller {
 
     public Result editVendor(String vendorID) {
         Form<Vendor> dataForm = formFactory.form(Vendor.class).bindFromRequest();
-        Vendor vendor = vendorManager.getVendorByID(vendorID);
+        Vendor dbVendor = vendorManager.getVendorByID(vendorID);
 
         Map<String, String> data = dataForm.data();
-        if (Utility.isNotEmpty(data.get("companyName"))) {
-            vendor.setCompanyName(data.get("companyName"));
+        if (!Objects.equals(dbVendor.getName(), data.get("name")) && Utility.isNotEmpty(data.get("name"))) {
+            dbVendor.setName(data.get("name"));
         }
-        if (Utility.isNotEmpty(data.get("website"))) {
-            vendor.setWebsite(data.get("website"));
+        if (!Objects.equals(dbVendor.getWebsite(), data.get("website")) && Utility.isNotEmpty(data.get("website"))) {
+            dbVendor.setWebsite(data.get("website"));
         }
-        vendorManager.updateVendor(vendor);
+        if (!Objects.equals(String.valueOf(dbVendor.isVerified()), data.get("verified")) && Utility.isNotEmpty(data.get("verified"))) {
+            Logger.debug("editvendor " + data.get("verified"));
+            dbVendor.setVerified(!dbVendor.isVerified());
+        }
+        if (!Objects.equals(String.valueOf(dbVendor.isBlocked()), data.get("blocked")) && Utility.isNotEmpty(data.get("blocked"))) {
+            Logger.debug("editvendor " + data.get("blocked"));
+            dbVendor.setBlocked(!dbVendor.isBlocked());
+        }
+        if (!Objects.equals(String.valueOf(dbVendor.isApproved()), data.get("approved")) && Utility.isNotEmpty(data.get("approved"))) {
+            Logger.debug("editvendor " + data.get("approved"));
+            dbVendor.setApproved(!dbVendor.isApproved());
+        }
 
-        return ok(Json.toJson(vendor));
+        vendorManager.updateVendor(dbVendor);
+        return ok(Json.toJson(dbVendor));
     }
 
     public Result editShopDetails(String shopID) {

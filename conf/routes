@@ -27,8 +27,6 @@ POST    /api/shop/edit/:shopID                          controllers.VendorContro
 
 POST    /api/vendor/approve/:vendorID                   controllers.VendorController.approveVendor(vendorID: String)
 
-POST    /api/vendor/edit/:vendorID                      controllers.VendorController.editVendorDetails(vendorID: String)
-
 POST    /api/vendor/disapprove/:vendorID                controllers.VendorController.disapproveVendor(vendorID: String)
 
 DELETE    /api/vendor/delete/:vendorID                  controllers.VendorController.deleteVendor(vendorID: String)

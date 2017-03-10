@@ -1,7 +1,6 @@
 import com.mongodb.DB;
 import com.mongodb.Mongo;
 import models.vendor.Vendor;
-import models.vendor.Shop;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
@@ -48,7 +47,7 @@ public class VendorModelTest {
         // read
         Vendor unilever = collection.findOne("{companyName: 'Unilever Ltd'}").as(Vendor.class);
         System.out.print(unilever);
-        assert unilever.getCompanyName().equals("Unilever Ltd");
+        assert unilever.getName().equals("Unilever Ltd");
 
     }
 
@@ -57,9 +56,9 @@ public class VendorModelTest {
         //update
         String newName = "Unilever Ltd";
         Vendor unilever = collection.findOne("{companyName: 'Unilever Ltd'}").as(Vendor.class);
-        unilever.setCompanyName(newName);
+        unilever.setName(newName);
         collection.update(unilever.get_id());
-        assert unilever.getCompanyName().equals(newName);
+        assert unilever.getName().equals(newName);
     }
 
     @Test
@@ -73,7 +72,7 @@ public class VendorModelTest {
             vendors.add(vendor);
         }
         for(Vendor v : vendors){
-            System.out.println(v.getCompanyName());
+            System.out.println(v.getName());
         }
 
 

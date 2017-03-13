@@ -153,7 +153,7 @@ GET  /api/orders                                        controllers.OrderControl
 
 GET  /api/orders/:courierID                             controllers.OrderController.viewCourierOrders(courierID: String)
 
-GET  /api/orders/courier/byParams                       controllers.OrderController.viewCourierOrdersByParams(courierID: String, isDelivered: String, vendorID: String)
+GET  /api/orders/courier/byParams                       controllers.OrderController.viewCourierOrdersByParams(courierID: String, isDelivered: String, vendorID: String, startDate: String, endDate: String)
 
 GET  /api/order/cartItems/:userID                       controllers.OrderController.getCartItems(userID: String)
 

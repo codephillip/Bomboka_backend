@@ -7,6 +7,7 @@ import models.order.Order;
 import models.user.User;
 import models.vendor.Product;
 import org.bson.types.ObjectId;
+import org.omg.CORBA.LocalObject;
 import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
@@ -16,6 +17,8 @@ import play.mvc.Result;
 import scala.reflect.internal.Trees;
 
 import javax.inject.Inject;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -99,21 +102,23 @@ public class OrderController extends Controller {
         return ok(Json.toJson(courierOrders));
     }
 
-    public Result viewCourierOrdersByParams(String courierID, String isDelivered, String vendorID) {
+    public Result viewCourierOrdersByParams(String courierID, String isDelivered, String vendorID, String startDate, String endDate) {
         List<Order> orders = orderManager.allOrders();
         List<Order> filteredOrders = new ArrayList<>();
 
         try {
             for (Order order : orders) {
-                Logger.debug(order.getCourier().getkey());
-                Logger.debug(courierID);
-                Logger.debug(order.getProduct().getVendor().getKey());
-                Logger.debug(vendorID);
-                Logger.debug(String.valueOf(order.isReceived()));
-                Logger.debug(isDelivered);
+                SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy");
+                Date realStartDate = formatter.parse(startDate);
+                Date realEndDate = formatter.parse(endDate);
+
+                Logger.debug(String.valueOf(realStartDate));
+                Logger.debug(String.valueOf(realEndDate));
+                Logger.debug(String.valueOf(order.getDeliveryTime()));
                 if (Objects.equals(order.getCourier().getkey(), courierID)
                         && Objects.equals(String.valueOf(order.isReceived()), isDelivered)
-                        && Objects.equals(order.getProduct().getVendor().getKey(), vendorID)){
+                        && Objects.equals(order.getProduct().getVendor().getKey(), vendorID)
+                        && isWithinDateRange(order.getDeliveryTime(), realStartDate, realEndDate)){
                     filteredOrders.add(order);
                 }
             }
@@ -124,6 +129,10 @@ public class OrderController extends Controller {
         Logger.debug("viewCourierOrdersByParams");
         Logger.debug(courierID + " # " + isDelivered);
         return ok(Json.toJson(filteredOrders));
+    }
+
+    private boolean isWithinDateRange(Date deliveryTime, Date startDate, Date endDate) {
+        return deliveryTime.after(startDate) && deliveryTime.before(endDate);
     }
 
     public Result receivedOrder(String orderID) {

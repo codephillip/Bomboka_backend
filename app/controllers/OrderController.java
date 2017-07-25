@@ -37,7 +37,6 @@ public class OrderController extends Controller {
     }
 
 
-
     public Result changeCourier(String orderID) {
         Form<Order> orderForm = formFactory.form(Order.class).bindFromRequest();
         Map<String, String> data = orderForm.data();
@@ -90,6 +89,16 @@ public class OrderController extends Controller {
         return ok(Json.toJson(orders));
     }
 
+    public Result viewUserOrders(String userId) {
+        Logger.debug("viewOrders#");
+        Logger.debug(userId);
+        List<Order> orders = orderManager.getUserOrders(userId);
+        for (Order order : orders) {
+            Logger.debug("viewOrders ID" + order.getKey());
+        }
+        return ok(Json.toJson(orders));
+    }
+
     public Result viewCourierOrders(String courierId) {
         Logger.debug("viewOrders#");
         List<Order> orders = orderManager.allOrders();
@@ -108,7 +117,7 @@ public class OrderController extends Controller {
 
         try {
             for (Order order : orders) {
-                SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 Date realStartDate = formatter.parse(startDate);
                 Date realEndDate = formatter.parse(endDate);
 
@@ -118,7 +127,7 @@ public class OrderController extends Controller {
                 if (Objects.equals(order.getCourier().getkey(), courierID)
                         && Objects.equals(String.valueOf(order.isReceived()), isDelivered)
                         && Objects.equals(order.getProduct().getVendor().getKey(), vendorID)
-                        && isWithinDateRange(order.getDeliveryTime(), realStartDate, realEndDate)){
+                        && isWithinDateRange(order.getDeliveryTime(), realStartDate, realEndDate)) {
                     filteredOrders.add(order);
                 }
             }
@@ -139,8 +148,8 @@ public class OrderController extends Controller {
         Form<Order> orderform = formFactory.form(Order.class).bindFromRequest();
         Map<String, String> data = orderform.data();
         Order order = orderManager.getOrderByID(orderID);
-        if (Integer.parseInt(data.get("verificationCode")) == order.getVerificationCode()){
-            if (!order.isReceived() && order.isValid()){
+        if (Integer.parseInt(data.get("verificationCode")) == order.getVerificationCode()) {
+            if (!order.isReceived() && order.isValid()) {
                 order.setReceived(true);
                 orderManager.updateOrder(order);
                 return ok("Successfully delivered");

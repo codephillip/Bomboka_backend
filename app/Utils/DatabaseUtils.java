@@ -208,8 +208,8 @@ public class DatabaseUtils {
         List<Order> orders = new ArrayList<Order>();
         while (cursor.hasNext()) {
             Order order = cursor.next();
-            Logger.debug(order.getBuyer() + " # " + userID);
-            if (Objects.equals(order.getBuyer(), userID))
+            Logger.debug(order.getBuyer().getKey() + " # " + userID);
+            if (Objects.equals(order.getBuyer().getKey(), userID))
                 orders.add(order);
         }
         return orders;

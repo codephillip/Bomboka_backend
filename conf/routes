@@ -107,7 +107,9 @@ GET /api/users                                          controllers.UserControll
 
 GET /api/user/:userID                                   controllers.UserController.getUserProfile(userID: String)
 
-POST     /api/user/addimage/:userID                    controllers.UserController.addOrReplaceUserImage(userID: String)
+GET /api/users/:userID/orders                           controllers.OrderController.viewUserOrders(userID: String)
+
+POST     /api/user/addimage/:userID                     controllers.UserController.addOrReplaceUserImage(userID: String)
 
 POST  /api/courier/add                                  controllers.CourierController.addCourier
 
